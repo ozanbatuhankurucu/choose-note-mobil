@@ -1,0 +1,25 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-elma-dev-30500-authRole",
+      "UnauthRoleArn": "arn:aws:iam::121309892392:role/amplify-elma-dev-30500-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::121309892392:role/amplify-elma-dev-30500-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-elma-dev-30500-deployment",
+      "UnauthRoleName": "amplify-elma-dev-30500-unauthRole",
+      "StackName": "amplify-elma-dev-30500",
+      "StackId": "arn:aws:cloudformation:eu-central-1:121309892392:stack/amplify-elma-dev-30500/bd5e0d80-3c50-11eb-b96a-06005fcc8dae",
+      "AmplifyAppId": "d989582uf2egd"
+    },
+    "categories": {
+      "auth": {
+        "elma4cadf092": {}
+      },
+      "function": {
+        "elma4cadf092PostConfirmation": {
+          "GROUP": "everyone"
+        }
+      }
+    }
+  }
+}

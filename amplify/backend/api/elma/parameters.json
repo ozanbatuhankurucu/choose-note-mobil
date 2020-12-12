@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "elma",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authelma4cadf092",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

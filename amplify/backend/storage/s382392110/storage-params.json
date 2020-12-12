@@ -1,0 +1,8 @@
+{
+    "groupPermissionMap": {
+        "everyone": [
+            "create/update",
+            "read"
+        ]
+    }
+}
