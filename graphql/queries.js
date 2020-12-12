@@ -161,3 +161,53 @@ export const listNotes = /* GraphQL */ `
     }
   }
 `;
+export const searchNotes = /* GraphQL */ `
+  query SearchNotes(
+    $filter: SearchableNoteFilterInput
+    $sort: SearchableNoteSortInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    searchNotes(
+      filter: $filter
+      sort: $sort
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        isPrivate
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          name
+          university
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      nextToken
+      total
+    }
+  }
+`;

@@ -66,16 +66,12 @@ const styles = StyleSheet.create({
 // const allNotes = await API.graphql(
 //   graphqlOperation(queries.searchNotes, {
 //     sort: {
-//       field: 'lesson',
-//       direction: 'asc',
+//       field: 'id',
+//       direction: 'desc',
 //     },
 //     filter: {
 //       and: [
-//         {
-//           cityID: {
-//             eq: 8,
-//           },
-//         },
+//        
 //         {
 //           university: {
 //             eq: 'ARTVİN ÇORUH ÜNİVERSİTESİ',
@@ -83,7 +79,7 @@ const styles = StyleSheet.create({
 //         },
 //         {
 //           department: {
-//             matchPhrasePrefix: 'Bilgiler',
+//             eq: 'Bilgiler',
 //           },
 //         },
 //         {

@@ -20,6 +20,7 @@ type User
 
 type Note
   @model
+  @searchable
   @key(fields: ["owner","createdAt"])
   @aws_cognito_user_pools
   @auth(
