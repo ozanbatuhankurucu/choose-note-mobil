@@ -32,15 +32,15 @@ import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
 import SearchScreen from './screens/SearchScreen/SearchScreen';
 import EditProfile from './screens/EditProfile/EditProfile';
 import UserNotesScreen from './screens/UserNotesScreen/UserNotesScreen';
+import SearchNotesScreen from './screens/SearchNotesScreen/SearchNotesScreen';
 import ImageViewScreen from './screens/ImageViewScreen/ImageViewScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import PSHeaderRight from './components/PSHeaderRight/PSHeaderRight';
 import {UserContextProvider} from './contexts/UserContext/UserContext';
-import {
-  withAuthenticator,Authenticator
-} from 'aws-amplify-react-native';
+import {SearchContextProvider} from './contexts/SearchContext/SearchContext';
+import {withAuthenticator, Authenticator} from 'aws-amplify-react-native';
 import NetInfo from '@react-native-community/netinfo';
 import Amplify from '@aws-amplify/core';
 import Auth from '@aws-amplify/auth';
@@ -125,7 +125,6 @@ function Home({navigation}) {
 const App = () => {
   const [isConnected, setIsConnected] = useState(true);
 
-
   function getHeaderTitle(route) {
     // If the focused route is not found, we need to assume it's the initial screen
     // This can happen during if there hasn't been any navigation inside the screen
@@ -156,45 +155,47 @@ const App = () => {
         return <PSHeaderRight whichOperation="signOut" />;
     }
   }
- 
- 
+
   return (
     <>
       <UserContextProvider>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Notes"
-              component={Home}
-              options={({route}) => ({
-                headerTitle: getHeaderTitle(route),
-                headerRight: () => getHeaderIcon(route),
-              })}
-            />
-            <Stack.Screen name="Create Note" component={CreateNoteScreen} />
-            <Stack.Screen
-              name="Edit Profile"
-              component={EditProfile}
-              options={({route}) => ({
-                headerRight: () => (
-                  <PSHeaderRight whichOperation="updateUserInfo" />
-                ),
-                headerRightContainerStyle: {
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  justifyContent: 'flex-start',
-                },
-              })}
-            />
+        <SearchContextProvider>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Notes"
+                component={Home}
+                options={({route}) => ({
+                  headerTitle: getHeaderTitle(route),
+                  headerRight: () => getHeaderIcon(route),
+                })}
+              />
+              <Stack.Screen name="Create Note" component={CreateNoteScreen} />
+              <Stack.Screen
+                name="Edit Profile"
+                component={EditProfile}
+                options={({route}) => ({
+                  headerRight: () => (
+                    <PSHeaderRight whichOperation="updateUserInfo" />
+                  ),
+                  headerRightContainerStyle: {
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
+                  },
+                })}
+              />
 
-            <Stack.Screen name="My Notes" component={UserNotesScreen} />
-            <Stack.Screen
-              name="Image View"
-              component={ImageViewScreen}
-              options={{headerShown: false}}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
+              <Stack.Screen name="My Notes" component={UserNotesScreen} />
+              <Stack.Screen name='Searched Notes'  component={SearchNotesScreen} />
+              <Stack.Screen
+                name="Image View"
+                component={ImageViewScreen}
+                options={{headerShown: false}}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SearchContextProvider>
       </UserContextProvider>
     </>
   );

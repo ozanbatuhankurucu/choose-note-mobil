@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect,useContext} from 'react';
 import {
   StyleSheet,
   Text,
@@ -21,24 +21,24 @@ import {terms} from '../../Datas/dropdownDatas';
 import SearchDropdown from '../../components/SearchDropdown/searchDropdown';
 import StandardTextInput from '../../components/StandardTextInput/standardTextInput';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {API} from 'aws-amplify';
+import {API,graphqlOperation} from 'aws-amplify';
 import * as queries from '../../graphql/queries';
+import {SearchContext} from '../../contexts/SearchContext/SearchContext';
+
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
-export default function SearchScreen() {
+export default function SearchScreen({navigation}) {
   const [university, setUniversity] = useState(null);
   const [term, setTerm] = useState(null);
   const [department, setDepartment] = useState(null);
   const [lesson, setLesson] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
-  const [searchedNotes, setSearchedNotes] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
+  
+  const {searchNote,isSearching,modalVisible,setModalVisible} = useContext(SearchContext);
 
-  console.log(searchedNotes);
-  async function searchNote() {
-    setIsSearching(true);
+  async function getInputDatas() {
+  
     let filterArray = [];
-
+    filterArray.push({isPrivate:{eq:false}})
     if (university !== null) {
       filterArray.push({university: {eq: university.name}});
     }
@@ -49,34 +49,24 @@ export default function SearchScreen() {
       filterArray.push({department: {eq: department.name}});
     }
     if (lesson !== '') {
-      filterArray.push({lesson: {contains: lesson}});
+      filterArray.push({lesson: {matchPhrasePrefix: lesson}});
     }
     console.log(filterArray);
-    //   let filter = {
-    //     or: [{ priority: {eq:1} },
-    //          { priority: {eq:2} }]
-    // };
+    
     let filter = {
       and: filterArray,
     };
-    try {
-      const resultNotes = await API.graphql({
-        query: queries.listNotes,
-        variables: {filter: filter},
-      });
-      console.log('----');
-      console.log(resultNotes.data.listNotes.items);
-      console.log(resultNotes.data.listNotes.items.length);
-      setIsSearching(false);
-      if(resultNotes.data.listNotes.items.length===0){
-        setModalVisible(true)
-      }else{
-        setSearchedNotes(resultNotes.data.listNotes.items);
-      }
-      
-    } catch (e) {
-      console.log(e);
+    const searchNavigationResult = await searchNote(filter)
+    console.log(searchNavigationResult)
+    if(searchNavigationResult===true){
+      setUniversity(null)
+      setTerm(null)
+      setDepartment(null)
+      setLesson('')
+      navigation.navigate('Searched Notes')
     }
+  
+  
   }
   function searchBtnDisableControl() {
     if (
@@ -116,10 +106,10 @@ export default function SearchScreen() {
                   color="black"
                   onPress={() => {
                     setModalVisible(!modalVisible);
-                    setDepartment(null)
-                    setUniversity(null)
-                    setTerm(null)
-                    setLesson('')
+                    setDepartment(null);
+                    setUniversity(null);
+                    setTerm(null);
+                    setLesson('');
                   }}></Entypo>
                 <View>
                   <Text style={styles.noResultMessage}>
@@ -176,7 +166,7 @@ export default function SearchScreen() {
               backgroundColor:
                 searchBtnDisableControl() === true ? '#CCC' : '#8ad7c1',
             }}
-            onPress={() => searchNote()}>
+            onPress={() => getInputDatas()}>
             <Text
               style={{
                 fontSize: 18,

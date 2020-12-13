@@ -30,8 +30,6 @@ function UserNotesScreen({navigation}) {
   const [deleteNoteDetails, setDeleteNoteDetails] = useState();
   const [isDeleteSpinner, setIsDeleteSpinner] = useState(false);
 
-
-
   console.log(deleteNoteDetails);
   const {
     user,
@@ -42,7 +40,7 @@ function UserNotesScreen({navigation}) {
   } = useContext(UserContext);
   async function onEndReached() {
     console.log('sonuna ulastik listenin');
-    const nextNotes = await getNotesWithNexToken(user.id);
+    const nextNotes = await getNotesWithNexToken(user.owner);
     console.log('satir 27 usernotesscreen');
     console.log(nextNotes);
     if (nextNotes !== null) {
@@ -144,7 +142,7 @@ function UserNotesScreen({navigation}) {
                   }}
                   onPress={async () => {
                     const tempArray = await getPictureUrls(item.documentFiles);
-                    downloadFile(tempArray[0].url)
+                    downloadFile(tempArray[0].url);
                     console.log(tempArray);
                   }}>
                   <Feather name="file" size={20} color="purple" />

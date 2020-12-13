@@ -80,7 +80,7 @@ export const UserContextProvider = (props) => {
     console.log(firstOperation.data.listNotes.items);
     return firstOperation.data.listNotes.items;
   }
-  async function getNotesWithNexToken(userId) {
+  async function getNotesWithNexToken(owner) {
     console.log(nextToken + 'nextTokeni bastigim yer withNextToken');
 
     if (nextToken !== null) {
@@ -88,7 +88,7 @@ export const UserContextProvider = (props) => {
       firstOperation = await API.graphql({
         query: queries.listNotes,
         variables: {
-          studentId: userId,
+          owner: owner,
           sortDirection: 'DESC',
           limit: 10,
           nextToken: nextToken,

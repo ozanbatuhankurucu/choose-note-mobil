@@ -20,7 +20,10 @@ export default function SearchDropdown({
   };
   return (
     <SearchableDropdown
-      onItemSelect={(item) => onItemSelect(item)}
+      onItemSelect={(item) => {
+        console.log(item)
+        onItemSelect(item)
+      }}
       containerStyle={{paddingVertical: 8, width: ScreenWidth * 0.9}}
       itemStyle={{
         padding: 10,

@@ -63,39 +63,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// const allNotes = await API.graphql(
-//   graphqlOperation(queries.searchNotes, {
-//     sort: {
-//       field: 'id',
-//       direction: 'desc',
-//     },
-//     filter: {
-//       and: [
-//        
-//         {
-//           university: {
-//             eq: 'ARTVİN ÇORUH ÜNİVERSİTESİ',
-//           },
-//         },
-//         {
-//           department: {
-//             eq: 'Bilgiler',
-//           },
-//         },
-//         {
-//           lesson: {
-//             matchPhrasePrefix: 'Tar',
-//           },
-//         },
-//         {
-//           termID: {
-//             eq: 3,
-//           },
-//         },
-//       ],
-//     },
-//   }),
-// );
+
 
 // {allNotes !== null ? (
 //   allNotes.map((note, index) => {

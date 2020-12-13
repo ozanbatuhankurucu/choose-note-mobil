@@ -199,6 +199,11 @@ export const searchNotes = /* GraphQL */ `
           username
           owner
           email
+          profilePicture {
+          bucket
+          region
+          key
+        }
           name
           university
           createdAt
