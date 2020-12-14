@@ -15,18 +15,6 @@ export const SearchContextProvider = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
-  async function addNotesWithPPUrls(notes) {
-    console.log(notes[0].student.profilePicture)
-    console.log(notes)
-    for (const note of notes) {
-      console.log(note.student.profilePicture.key);
-      const tempPicUrl = await Storage.get(note.student.profilePicture.key);
-      note.student.profilePicture = tempPicUrl
-
-    }
-
-    setSearchedNotes(notes);
-  }
   async function searchNote(filter) {
     let result;
     setIsSearching(true);
@@ -34,7 +22,7 @@ export const SearchContextProvider = (props) => {
       const allNotes = await API.graphql(
         graphqlOperation(queries.searchNotes, {
           sort: {
-            field: 'id',
+            field: 'createdAt',
             direction: 'desc',
           },
           filter: filter,
@@ -46,7 +34,7 @@ export const SearchContextProvider = (props) => {
         setModalVisible(true);
         result = false;
       } else {
-        await addNotesWithPPUrls(allNotes.data.searchNotes.items);
+        setSearchedNotes(allNotes.data.searchNotes.items);
         result = true;
         console.log(allNotes.data.searchNotes.items.length);
       }

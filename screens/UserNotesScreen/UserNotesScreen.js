@@ -13,6 +13,7 @@ import {
   Linking,
   Modal,
   RefreshControl,
+  Dimensions,
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
@@ -25,6 +26,8 @@ import * as queries from '../../graphql/queries';
 import {graphqlOperation} from 'aws-amplify';
 import {UserContext} from '../../contexts/UserContext/UserContext';
 import * as mutations from '../../graphql/mutations';
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 function UserNotesScreen({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteNoteDetails, setDeleteNoteDetails] = useState();
@@ -91,12 +94,14 @@ function UserNotesScreen({navigation}) {
       <TouchableOpacity
         key={item.id}
         onLongPress={() => {
-          setDeleteNoteDetails({
-            owner: item.owner,
-            createdAt: item.createdAt,
-            id: item.id,
-          });
-          setModalVisible(!modalVisible);
+          if (item.isPrivate) {
+            setDeleteNoteDetails({
+              owner: item.owner,
+              createdAt: item.createdAt,
+              id: item.id,
+            });
+            setModalVisible(!modalVisible);
+          }
         }}>
         <View style={styles.boxWithShadow}>
           <View style={{flex: 5}}>
@@ -159,7 +164,7 @@ function UserNotesScreen({navigation}) {
   }
 
   return (
-    <View>
+    <View style={{position: 'relative'}}>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
@@ -192,18 +197,13 @@ function UserNotesScreen({navigation}) {
           </View>
         </View>
       </Modal>
-      {/* {isDeleteSpinner === true ? (
-        <View style={{marginTop:240}}>
-          <ActivityIndicator size={'large'} color={'gray'} />
+
+      {isDeleteSpinner === true ? (
+        <View style={styles.deleteSpinner}>
+          <ActivityIndicator size={'large'} color={'green'} />
         </View>
-      ) : null} */}
+      ) : null}
       <FlatList
-        refreshControl={
-          <RefreshControl
-            colors={['#9Bd35A', '#689F38']}
-            refreshing={isDeleteSpinner}
-          />
-        }
         keyExtractor={(item, index) => {
           return item.id;
         }}
@@ -266,6 +266,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+  },
+  deleteSpinner: {
+    position: 'absolute',
+    top: 50,
+    zIndex: 1,
+    left: windowWidth * 0.5,
   },
 });
 

@@ -53,7 +53,7 @@ function EditProfile({navigation}) {
             <View style={{flex: 2, alignItems: 'center'}}>
               <Image
                 source={{
-                  uri: image === null ? user.ppTemp : image.path,
+                  uri: image === null ? user.profilePicture : image.path,
                 }}
                 style={styles.pickUpImage}
               />

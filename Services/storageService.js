@@ -19,7 +19,12 @@ const {
     })
       .then((data) => {
         console.log(data + '21. satir');
-        picUrl = key;
+        if(folderName==='profilePictures'){
+          picUrl= url;
+        }else{
+          picUrl = key;
+        }
+       
       })
       .catch((err) => console.log(err));
     console.log(picUrl);

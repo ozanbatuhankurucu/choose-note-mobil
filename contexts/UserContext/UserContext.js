@@ -36,14 +36,14 @@ export const UserContextProvider = (props) => {
             }),
           );
 
-          const ppUrl = await Storage.get(
-            currentUser.data.getUser.profilePicture.key,
-          );
+          // const ppUrl = await Storage.get(
+          //   currentUser.data.getUser.profilePicture.key,
+          // );
           console.log('---------');
-          console.log(ppUrl + '34');
+
           // console.log(currentUser);
-          console.log(currentUser.data.getUser.owner)
-          currentUser.data.getUser.ppTemp = ppUrl;
+          console.log(currentUser.data.getUser.owner);
+          //currentUser.data.getUser.ppTemp = ppUrl;
           const notes = await getNotes(currentUser.data.getUser.owner);
           setUserNotes(notes);
           setUser(currentUser.data.getUser);
@@ -110,20 +110,14 @@ export const UserContextProvider = (props) => {
       setUpdateProfileIsLoading(true);
       if (image !== null) {
         resultUrl = await storageService(image, 'profilePictures');
-        resultUrlWithKey = resultUrl;
-        resultUrl = await Storage.get(resultUrl);
       }
       console.log(user.id);
       console.log(resultUrl);
 
-      const newProfilePicture = {
-        ...user.profilePicture,
-        key: resultUrlWithKey,
-      };
       const userDetails = {
         id: user.id,
         profilePicture:
-          resultUrl !== undefined ? newProfilePicture : user.profilePicture,
+          resultUrl !== undefined ? resultUrl : user.profilePicture,
         name: name !== null ? name : user.name,
         university: university !== null ? university : user.university,
       };
@@ -135,11 +129,6 @@ export const UserContextProvider = (props) => {
           },
         });
         let updatedUserTemp = updatedUser.data.updateUser;
-        if (resultUrl !== undefined) {
-          updatedUserTemp.ppTemp = resultUrl;
-        } else {
-          updatedUserTemp.ppTemp = user.ppTemp;
-        }
 
         console.log(updatedUserTemp);
         setUser(updatedUserTemp);

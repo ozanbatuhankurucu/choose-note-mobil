@@ -5,11 +5,7 @@ export const getUser = /* GraphQL */ `
       username
       owner
       email
-      profilePicture {
-        bucket
-        region
-        key
-      }
+      profilePicture
       name
       university
       createdAt

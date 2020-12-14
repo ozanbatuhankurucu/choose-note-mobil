@@ -35,7 +35,10 @@ function SearchNotesScreen({navigation}) {
           <View style={{flex: 5}}>
             <View>
               <Text>Username: {item.student.username}</Text>
-              <Image source={{uri: item.student.profilePicture}} style={styles.pickUpImage} />
+              <Image
+                source={{uri: item.student.profilePicture}}
+                style={styles.pickUpImage}
+              />
 
               <Text>University:{item.university}</Text>
               <Text>Department: {item.department}</Text>

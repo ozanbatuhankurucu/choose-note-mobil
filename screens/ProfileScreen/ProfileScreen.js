@@ -31,9 +31,9 @@ export default function ProfileScreen({navigation}) {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
-        <TouchableOpacity onPress={()=> navigation.navigate('Image View',[{url:user.ppTemp}])}>
+        <TouchableOpacity onPress={()=> navigation.navigate('Image View',[{url:user.profilePicture}])}>
           <Image
-            source={{uri: user.ppTemp}}
+            source={{uri: user.profilePicture}}
             style={styles.pickUpImage}
           />
 

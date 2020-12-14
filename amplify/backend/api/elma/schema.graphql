@@ -11,11 +11,12 @@ type User
   username:String!
   owner:String!
   email:String!
-  profilePicture:S3Object
+  profilePicture:String
   name:String
   university:String
   createdAt:String!
   notes:[Note] @connection(name: "userNotes")
+  noteMaps: [NoteMap]! @connection(name: "User")
 }
 
 type Note
@@ -39,12 +40,28 @@ type Note
   documentFiles:[S3Object]
   isPrivate:Boolean
   owner: String!
-  createdAt: String!
+  createdAt: AWSDateTime! 
   student: User @connection(name:"userNotes")
+  noteMaps: [NoteMap!]! @connection(name: "Note")
 }
 
 type S3Object {
   bucket:String!
   region:String!
   key:String!
+}
+
+type NoteMap
+  @model
+  @aws_iam
+  @aws_cognito_user_pools
+  @auth(
+     rules: [
+      {allow: owner, operations: [create, read, update, delete]}
+      {allow: groups, groups: ["everyone"], operations: [read]}
+    ]
+  ) {
+  id: ID!
+  note: Note @connection(name: "Note")
+  user: User @connection(name: "User")
 }
