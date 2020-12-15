@@ -27,15 +27,6 @@ export const onCreateUser = /* GraphQL */ `
         }
         nextToken
       }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       updatedAt
     }
   }
@@ -66,15 +57,6 @@ export const onUpdateUser = /* GraphQL */ `
         }
         nextToken
       }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       updatedAt
     }
   }
@@ -102,15 +84,6 @@ export const onDeleteUser = /* GraphQL */ `
           owner
           createdAt
           updatedAt
-        }
-        nextToken
-      }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
         }
         nextToken
       }
@@ -152,19 +125,7 @@ export const onCreateNote = /* GraphQL */ `
         notes {
           nextToken
         }
-        noteMaps {
-          nextToken
-        }
         updatedAt
-      }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
       }
       updatedAt
     }
@@ -204,19 +165,7 @@ export const onUpdateNote = /* GraphQL */ `
         notes {
           nextToken
         }
-        noteMaps {
-          nextToken
-        }
         updatedAt
-      }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
       }
       updatedAt
     }
@@ -256,210 +205,9 @@ export const onDeleteNote = /* GraphQL */ `
         notes {
           nextToken
         }
-        noteMaps {
-          nextToken
-        }
         updatedAt
-      }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
       }
       updatedAt
-    }
-  }
-`;
-export const onCreateNoteMap = /* GraphQL */ `
-  subscription OnCreateNoteMap($owner: String) {
-    onCreateNoteMap(owner: $owner) {
-      id
-      note {
-        id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          profilePicture
-          name
-          university
-          createdAt
-          updatedAt
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      user {
-        id
-        username
-        owner
-        email
-        profilePicture
-        name
-        university
-        createdAt
-        notes {
-          nextToken
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onUpdateNoteMap = /* GraphQL */ `
-  subscription OnUpdateNoteMap($owner: String) {
-    onUpdateNoteMap(owner: $owner) {
-      id
-      note {
-        id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          profilePicture
-          name
-          university
-          createdAt
-          updatedAt
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      user {
-        id
-        username
-        owner
-        email
-        profilePicture
-        name
-        university
-        createdAt
-        notes {
-          nextToken
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const onDeleteNoteMap = /* GraphQL */ `
-  subscription OnDeleteNoteMap($owner: String) {
-    onDeleteNoteMap(owner: $owner) {
-      id
-      note {
-        id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          profilePicture
-          name
-          university
-          createdAt
-          updatedAt
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      user {
-        id
-        username
-        owner
-        email
-        profilePicture
-        name
-        university
-        createdAt
-        notes {
-          nextToken
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;

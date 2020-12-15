@@ -161,6 +161,8 @@ export default function CreateNoteScreen({navigation}) {
         variables: {input: noteDetails},
       });
       addNoteToUserNotes(newNote.data.createNote);
+      
+
       console.log('302.satir' + newNote);
       console.log(newNote.data.createNote);
       setIsUploadPicture(false);
@@ -168,6 +170,7 @@ export default function CreateNoteScreen({navigation}) {
     } catch (e) {
       console.log(e);
     }
+    
   }
   function createBtnDisableControl() {
     if (

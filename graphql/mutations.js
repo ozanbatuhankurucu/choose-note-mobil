@@ -30,15 +30,6 @@ export const createUser = /* GraphQL */ `
         }
         nextToken
       }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       updatedAt
     }
   }
@@ -72,15 +63,6 @@ export const updateUser = /* GraphQL */ `
         }
         nextToken
       }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
-      }
       updatedAt
     }
   }
@@ -111,15 +93,6 @@ export const deleteUser = /* GraphQL */ `
           owner
           createdAt
           updatedAt
-        }
-        nextToken
-      }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
         }
         nextToken
       }
@@ -164,19 +137,7 @@ export const createNote = /* GraphQL */ `
         notes {
           nextToken
         }
-        noteMaps {
-          nextToken
-        }
         updatedAt
-      }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
       }
       updatedAt
     }
@@ -219,19 +180,7 @@ export const updateNote = /* GraphQL */ `
         notes {
           nextToken
         }
-        noteMaps {
-          nextToken
-        }
         updatedAt
-      }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
       }
       updatedAt
     }
@@ -274,172 +223,9 @@ export const deleteNote = /* GraphQL */ `
         notes {
           nextToken
         }
-        noteMaps {
-          nextToken
-        }
         updatedAt
-      }
-      noteMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
       }
       updatedAt
-    }
-  }
-`;
-export const createNoteMap = /* GraphQL */ `
-  mutation CreateNoteMap(
-    $input: CreateNoteMapInput!
-    $condition: ModelNoteMapConditionInput
-  ) {
-    createNoteMap(input: $input, condition: $condition) {
-      id
-      note {
-        id
-      }
-      user {
-        id
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateNoteMap = /* GraphQL */ `
-  mutation UpdateNoteMap(
-    $input: UpdateNoteMapInput!
-    $condition: ModelNoteMapConditionInput
-  ) {
-    updateNoteMap(input: $input, condition: $condition) {
-      id
-      note {
-        id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          profilePicture
-          name
-          university
-          createdAt
-          updatedAt
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      user {
-        id
-        username
-        owner
-        email
-        profilePicture
-        name
-        university
-        createdAt
-        notes {
-          nextToken
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteNoteMap = /* GraphQL */ `
-  mutation DeleteNoteMap(
-    $input: DeleteNoteMapInput!
-    $condition: ModelNoteMapConditionInput
-  ) {
-    deleteNoteMap(input: $input, condition: $condition) {
-      id
-      note {
-        id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          profilePicture
-          name
-          university
-          createdAt
-          updatedAt
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      user {
-        id
-        username
-        owner
-        email
-        profilePicture
-        name
-        university
-        createdAt
-        notes {
-          nextToken
-        }
-        noteMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
