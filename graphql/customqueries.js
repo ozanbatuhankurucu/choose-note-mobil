@@ -9,6 +9,12 @@ export const getUser = /* GraphQL */ `
       name
       university
       createdAt
+      notes {
+        items {
+          id
+        }
+        nextToken
+      }
       updatedAt
     }
   }

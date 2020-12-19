@@ -1,22 +1,22 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-elma-dev-30500-authRole",
-      "UnauthRoleArn": "arn:aws:iam::121309892392:role/amplify-elma-dev-30500-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::121309892392:role/amplify-elma-dev-30500-authRole",
+      "AuthRoleName": "amplify-elma-dev-32733-authRole",
+      "UnauthRoleArn": "arn:aws:iam::121309892392:role/amplify-elma-dev-32733-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::121309892392:role/amplify-elma-dev-32733-authRole",
       "Region": "eu-central-1",
-      "DeploymentBucketName": "amplify-elma-dev-30500-deployment",
-      "UnauthRoleName": "amplify-elma-dev-30500-unauthRole",
-      "StackName": "amplify-elma-dev-30500",
-      "StackId": "arn:aws:cloudformation:eu-central-1:121309892392:stack/amplify-elma-dev-30500/bd5e0d80-3c50-11eb-b96a-06005fcc8dae",
-      "AmplifyAppId": "d989582uf2egd"
+      "DeploymentBucketName": "amplify-elma-dev-32733-deployment",
+      "UnauthRoleName": "amplify-elma-dev-32733-unauthRole",
+      "StackName": "amplify-elma-dev-32733",
+      "StackId": "arn:aws:cloudformation:eu-central-1:121309892392:stack/amplify-elma-dev-32733/0d7b2ae0-41d4-11eb-97ea-06ccba0e0894",
+      "AmplifyAppId": "d39uc4cgp48vsl"
     },
     "categories": {
       "auth": {
-        "elma4cadf092": {}
+        "elma93edd947": {}
       },
       "function": {
-        "elma4cadf092PostConfirmation": {
+        "elma93edd947PostConfirmation": {
           "GROUP": "everyone"
         }
       }

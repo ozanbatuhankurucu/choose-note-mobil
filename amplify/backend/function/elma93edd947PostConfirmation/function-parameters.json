@@ -1,0 +1,19 @@
+{
+  "trigger": true,
+  "modules": [
+    "add-to-group",
+    "custom"
+  ],
+  "parentResource": "elma93edd947",
+  "functionName": "elma93edd947PostConfirmation",
+  "resourceName": "elma93edd947PostConfirmation",
+  "parentStack": "auth",
+  "triggerEnvs": "[]",
+  "triggerDir": "C:\\Users\\partn\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PostConfirmation",
+  "triggerTemplate": "PostConfirmation.json.ejs",
+  "roleName": "elma93edd947PostConfirmation",
+  "skipEdit": true,
+  "GROUP": "everyone",
+  "enableCors": false,
+  "triggerEventPath": "PostConfirmation.event.json"
+}

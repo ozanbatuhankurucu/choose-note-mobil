@@ -18,6 +18,7 @@ export const SearchContextProvider = (props) => {
   async function searchNote(filter) {
     let result;
     setIsSearching(true);
+    
     try {
       const allNotes = await API.graphql(
         graphqlOperation(queries.searchNotes, {

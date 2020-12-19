@@ -1,23 +1,23 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
     "Parameters": {
-        "authelma4cadf092UserPoolId": {
+        "authelma93edd947UserPoolId": {
             "Type": "String",
-            "Default": "authelma4cadf092UserPoolId"
+            "Default": "authelma93edd947UserPoolId"
         },
         
-        "authelma4cadf092IdentityPoolId": {
+        "authelma93edd947IdentityPoolId": {
             "Type": "String",
-            "Default": "authelma4cadf092IdentityPoolId"
+            "Default": "authelma93edd947IdentityPoolId"
         },
         
-        "authelma4cadf092AppClientID": {
+        "authelma93edd947AppClientID": {
             "Type": "String",
-            "Default": "authelma4cadf092AppClientID"
+            "Default": "authelma93edd947AppClientID"
         },
-        "authelma4cadf092AppClientIDWeb": {
+        "authelma93edd947AppClientIDWeb": {
             "Type": "String",
-            "Default": "authelma4cadf092AppClientIDWeb"
+            "Default": "authelma93edd947AppClientIDWeb"
         },
         "AuthRoleArn": {
             "Type": "String"
@@ -55,7 +55,7 @@
               },
               
               "UserPoolId" : {
-                "Ref": "authelma4cadf092UserPoolId"
+                "Ref": "authelma93edd947UserPoolId"
               } 
             }
         },
@@ -68,7 +68,7 @@
                         "",
                         [
                           {
-                            "Ref": "authelma4cadf092UserPoolId"
+                            "Ref": "authelma93edd947UserPoolId"
                           },
                           "-everyoneGroupRole"
                         ]
@@ -85,7 +85,7 @@
                             },
                             "Action": "sts:AssumeRoleWithWebIdentity",
                             "Condition": {
-                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authelma4cadf092IdentityPoolId"}},
+                              "StringEquals": {"cognito-identity.amazonaws.com:aud": {"Ref":"authelma93edd947IdentityPoolId"}},
                               "ForAnyValue:StringLike": {"cognito-identity.amazonaws.com:amr": "authenticated"}
                             }
                         }
@@ -111,7 +111,7 @@
                                 "",
                                 [
                                   
-                                  "elma4cadf092",
+                                  "elma93edd947",
                                   "-ExecutionRole-",
                                   {
                                     "Ref": "env"
@@ -270,16 +270,16 @@
                     "Ref": "UnauthRoleArn"
                 },
                 "identityPoolId": {
-                    "Ref": "authelma4cadf092IdentityPoolId"
+                    "Ref": "authelma93edd947IdentityPoolId"
                 },
                 "userPoolId": {
-                    "Ref": "authelma4cadf092UserPoolId"
+                    "Ref": "authelma93edd947UserPoolId"
                 },
                 "appClientIDWeb": {
-                    "Ref": "authelma4cadf092AppClientIDWeb"
+                    "Ref": "authelma93edd947AppClientIDWeb"
                 },
                 "appClientID": {
-                    "Ref": "authelma4cadf092AppClientID"
+                    "Ref": "authelma93edd947AppClientID"
                 },
                 "region": {
                     "Ref": "AWS::Region"

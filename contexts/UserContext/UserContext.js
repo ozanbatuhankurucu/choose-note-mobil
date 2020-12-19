@@ -22,6 +22,9 @@ export const UserContextProvider = (props) => {
   const [nextToken, setNextToken] = useState();
   const [userNotes, setUserNotes] = useState(null);
   const [progressCircle, setProgressCircle] = useState(false);
+  console.log('satir 25 --------------------')
+  console.log(userNotes)
+  console.log('satir 25------------------------------')
   async function checkUser() {
     const unsubscribe = NetInfo.addEventListener(async (state) => {
       console.log('Connection type', state.type);
@@ -36,16 +39,16 @@ export const UserContextProvider = (props) => {
             }),
           );
 
-          // const ppUrl = await Storage.get(
-          //   currentUser.data.getUser.profilePicture.key,
-          // );
+         
           console.log('---------');
-
+          console.log(currentUser.data.getUser)
           // console.log(currentUser);
           console.log(currentUser.data.getUser.owner);
           //currentUser.data.getUser.ppTemp = ppUrl;
+        
           const notes = await getNotes(currentUser.data.getUser.owner);
           setUserNotes(notes);
+         
           setUser(currentUser.data.getUser);
           setProgressCircle(false);
           console.log('user', currentUser.data.getUser);
@@ -60,43 +63,57 @@ export const UserContextProvider = (props) => {
   }
   console.log(nextToken);
   async function getNotes(owner) {
-    // const { data: { listProducts: { items: itemsPage1, nextToken } } } = await API.graphql({ query: listProducts, variables: { limit: 20, /* add filter as needed */ }}));
+    let filter = {
+      owner: {
+          eq: owner 
+      }
+  };
+   
     let firstOperation;
     console.log(nextToken + 'nextTokeni bastigim yer');
 
     console.log('next token null 43');
-    firstOperation = await API.graphql({
-      query: queries.listNotes,
-      variables: {
-        owner: owner,
-        sortDirection: 'DESC',
-        limit: 10,
-      },
-    });
-    console.log(firstOperation.data.listNotes.nextToken);
-    setNextToken(firstOperation.data.listNotes.nextToken);
+    firstOperation =  await API.graphql(
+      graphqlOperation(queries.searchNotes, {
+        sort: {
+          field: 'createdAt',
+          direction: 'desc',
+        },
+        filter: filter,
+        limit: 10
+      }),
+    );
+    console.log(firstOperation.data.searchNotes.nextToken);
+    setNextToken(firstOperation.data.searchNotes.nextToken);
 
     console.log('satir 50');
-    console.log(firstOperation.data.listNotes.items);
-    return firstOperation.data.listNotes.items;
+    console.log(firstOperation.data.searchNotes.items);
+    return firstOperation.data.searchNotes.items;
   }
   async function getNotesWithNexToken(owner) {
     console.log(nextToken + 'nextTokeni bastigim yer withNextToken');
-
+    let filter = {
+      owner: {
+          eq: owner 
+      }
+  };
     if (nextToken !== null) {
       let firstOperation;
-      firstOperation = await API.graphql({
-        query: queries.listNotes,
-        variables: {
-          owner: owner,
-          sortDirection: 'DESC',
+      firstOperation = await API.graphql(
+        graphqlOperation(queries.searchNotes, {
+          sort: {
+            field: 'createdAt',
+            direction: 'desc',
+          },
+          filter: filter,
           limit: 10,
           nextToken: nextToken,
-        },
-      });
-      console.log(firstOperation.data.listNotes);
-      setNextToken(firstOperation.data.listNotes.nextToken);
-      return firstOperation.data.listNotes.items;
+        }),
+      );
+     
+      console.log(firstOperation.data.searchNotes);
+      setNextToken(firstOperation.data.searchNotes.nextToken);
+      return firstOperation.data.searchNotes.items;
     } else {
       return null;
     }
@@ -139,6 +156,7 @@ export const UserContextProvider = (props) => {
     }
   }
   function addNoteToUserNotes(newNote) {
+    console.log('addNoteToUSERnOTES')
     setUserNotes((prev) => {
       const newArray = [newNote].concat(userNotes);
       return newArray;
@@ -186,3 +204,14 @@ export const UserContextProvider = (props) => {
     </>
   );
 };
+
+
+
+// await API.graphql({
+//   query: queries.listNotes,
+//   variables: {
+//     owner: owner,
+//     sortDirection: 'DESC',
+//     limit: 10,
+//   },
+// });

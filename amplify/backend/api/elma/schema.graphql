@@ -16,6 +16,21 @@ type User
   university:String
   createdAt:String!
   notes:[Note] @connection(name: "userNotes")
+  addOnMaps: [AddOnMap]! @connection(name: "AddonUser")
+}
+
+type AddOnMap
+  @model
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: owner, operations: [create, read, update, delete] }
+      { allow: groups, groups: ["everyone"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  user: User @connection(name: "AddonUser")
+  note: Note @connection(name: "AddonNote")
 }
 
 
@@ -23,7 +38,6 @@ type User
 type Note
   @model
   @searchable
-  @key(fields: ["owner","createdAt"])
   @aws_cognito_user_pools
   @auth(
     rules: [
@@ -43,6 +57,7 @@ type Note
   owner: String!
   createdAt: AWSDateTime! 
   student: User @connection(name:"userNotes")
+  addOnMaps: [AddOnMap!]! @connection(name: "AddonNote")
 }
 
 type S3Object {
@@ -50,4 +65,3 @@ type S3Object {
   region:String!
   key:String!
 }
-

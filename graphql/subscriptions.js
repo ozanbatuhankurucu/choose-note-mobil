@@ -27,6 +27,15 @@ export const onCreateUser = /* GraphQL */ `
         }
         nextToken
       }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       updatedAt
     }
   }
@@ -54,6 +63,15 @@ export const onUpdateUser = /* GraphQL */ `
           owner
           createdAt
           updatedAt
+        }
+        nextToken
+      }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
       }
@@ -87,7 +105,205 @@ export const onDeleteUser = /* GraphQL */ `
         }
         nextToken
       }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       updatedAt
+    }
+  }
+`;
+export const onCreateAddOnMap = /* GraphQL */ `
+  subscription OnCreateAddOnMap($owner: String) {
+    onCreateAddOnMap(owner: $owner) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        profilePicture
+        name
+        university
+        createdAt
+        notes {
+          nextToken
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        isPrivate
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          profilePicture
+          name
+          university
+          createdAt
+          updatedAt
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onUpdateAddOnMap = /* GraphQL */ `
+  subscription OnUpdateAddOnMap($owner: String) {
+    onUpdateAddOnMap(owner: $owner) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        profilePicture
+        name
+        university
+        createdAt
+        notes {
+          nextToken
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        isPrivate
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          profilePicture
+          name
+          university
+          createdAt
+          updatedAt
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const onDeleteAddOnMap = /* GraphQL */ `
+  subscription OnDeleteAddOnMap($owner: String) {
+    onDeleteAddOnMap(owner: $owner) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        profilePicture
+        name
+        university
+        createdAt
+        notes {
+          nextToken
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        isPrivate
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          profilePicture
+          name
+          university
+          createdAt
+          updatedAt
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;
@@ -125,7 +341,19 @@ export const onCreateNote = /* GraphQL */ `
         notes {
           nextToken
         }
+        addOnMaps {
+          nextToken
+        }
         updatedAt
+      }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
       }
       updatedAt
     }
@@ -165,7 +393,19 @@ export const onUpdateNote = /* GraphQL */ `
         notes {
           nextToken
         }
+        addOnMaps {
+          nextToken
+        }
         updatedAt
+      }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
       }
       updatedAt
     }
@@ -205,7 +445,19 @@ export const onDeleteNote = /* GraphQL */ `
         notes {
           nextToken
         }
+        addOnMaps {
+          nextToken
+        }
         updatedAt
+      }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
       }
       updatedAt
     }

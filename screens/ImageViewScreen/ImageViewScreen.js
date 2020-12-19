@@ -3,7 +3,7 @@ import {View, Text, Modal,TouchableOpacity} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Entypo from 'react-native-vector-icons/Entypo';
 function ImageViewScreen({route, navigation}) {
-  console.log(route.params)
+  //console.log(route.params)
 
  
   return (

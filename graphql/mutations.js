@@ -30,6 +30,15 @@ export const createUser = /* GraphQL */ `
         }
         nextToken
       }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       updatedAt
     }
   }
@@ -60,6 +69,15 @@ export const updateUser = /* GraphQL */ `
           owner
           createdAt
           updatedAt
+        }
+        nextToken
+      }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
         }
         nextToken
       }
@@ -96,7 +114,214 @@ export const deleteUser = /* GraphQL */ `
         }
         nextToken
       }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       updatedAt
+    }
+  }
+`;
+export const createAddOnMap = /* GraphQL */ `
+  mutation CreateAddOnMap(
+    $input: CreateAddOnMapInput!
+    $condition: ModelAddOnMapConditionInput
+  ) {
+    createAddOnMap(input: $input, condition: $condition) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        profilePicture
+        name
+        university
+        createdAt
+        notes {
+          nextToken
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        isPrivate
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          profilePicture
+          name
+          university
+          createdAt
+          updatedAt
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const updateAddOnMap = /* GraphQL */ `
+  mutation UpdateAddOnMap(
+    $input: UpdateAddOnMapInput!
+    $condition: ModelAddOnMapConditionInput
+  ) {
+    updateAddOnMap(input: $input, condition: $condition) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        profilePicture
+        name
+        university
+        createdAt
+        notes {
+          nextToken
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        isPrivate
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          profilePicture
+          name
+          university
+          createdAt
+          updatedAt
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const deleteAddOnMap = /* GraphQL */ `
+  mutation DeleteAddOnMap(
+    $input: DeleteAddOnMapInput!
+    $condition: ModelAddOnMapConditionInput
+  ) {
+    deleteAddOnMap(input: $input, condition: $condition) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        profilePicture
+        name
+        university
+        createdAt
+        notes {
+          nextToken
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        isPrivate
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          profilePicture
+          name
+          university
+          createdAt
+          updatedAt
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
     }
   }
 `;
@@ -137,7 +362,19 @@ export const createNote = /* GraphQL */ `
         notes {
           nextToken
         }
+        addOnMaps {
+          nextToken
+        }
         updatedAt
+      }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
       }
       updatedAt
     }
@@ -180,7 +417,19 @@ export const updateNote = /* GraphQL */ `
         notes {
           nextToken
         }
+        addOnMaps {
+          nextToken
+        }
         updatedAt
+      }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
       }
       updatedAt
     }
@@ -223,7 +472,19 @@ export const deleteNote = /* GraphQL */ `
         notes {
           nextToken
         }
+        addOnMaps {
+          nextToken
+        }
         updatedAt
+      }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
       }
       updatedAt
     }

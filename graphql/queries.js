@@ -27,6 +27,15 @@ export const getUser = /* GraphQL */ `
         }
         nextToken
       }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
+      }
       updatedAt
     }
   }
@@ -50,15 +59,121 @@ export const listUsers = /* GraphQL */ `
         notes {
           nextToken
         }
+        addOnMaps {
+          nextToken
+        }
         updatedAt
       }
       nextToken
     }
   }
 `;
+export const getAddOnMap = /* GraphQL */ `
+  query GetAddOnMap($id: ID!) {
+    getAddOnMap(id: $id) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        profilePicture
+        name
+        university
+        createdAt
+        notes {
+          nextToken
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        isPrivate
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          profilePicture
+          name
+          university
+          createdAt
+          updatedAt
+        }
+        addOnMaps {
+          nextToken
+        }
+        updatedAt
+      }
+      createdAt
+      updatedAt
+      owner
+    }
+  }
+`;
+export const listAddOnMaps = /* GraphQL */ `
+  query ListAddOnMaps(
+    $filter: ModelAddOnMapFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAddOnMaps(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        user {
+          id
+          username
+          owner
+          email
+          profilePicture
+          name
+          university
+          createdAt
+          updatedAt
+        }
+        note {
+          id
+          university
+          termID
+          department
+          lesson
+          description
+          isPrivate
+          owner
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const getNote = /* GraphQL */ `
-  query GetNote($owner: String!, $createdAt: AWSDateTime!) {
-    getNote(owner: $owner, createdAt: $createdAt) {
+  query GetNote($id: ID!) {
+    getNote(id: $id) {
       id
       university
       termID
@@ -90,7 +205,19 @@ export const getNote = /* GraphQL */ `
         notes {
           nextToken
         }
+        addOnMaps {
+          nextToken
+        }
         updatedAt
+      }
+      addOnMaps {
+        items {
+          id
+          createdAt
+          updatedAt
+          owner
+        }
+        nextToken
       }
       updatedAt
     }
@@ -98,21 +225,11 @@ export const getNote = /* GraphQL */ `
 `;
 export const listNotes = /* GraphQL */ `
   query ListNotes(
-    $owner: String
-    $createdAt: ModelStringKeyConditionInput
     $filter: ModelNoteFilterInput
     $limit: Int
     $nextToken: String
-    $sortDirection: ModelSortDirection
   ) {
-    listNotes(
-      owner: $owner
-      createdAt: $createdAt
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
+    listNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         university
@@ -143,6 +260,9 @@ export const listNotes = /* GraphQL */ `
           university
           createdAt
           updatedAt
+        }
+        addOnMaps {
+          nextToken
         }
         updatedAt
       }
@@ -193,6 +313,9 @@ export const searchNotes = /* GraphQL */ `
           university
           createdAt
           updatedAt
+        }
+        addOnMaps {
+          nextToken
         }
         updatedAt
       }
