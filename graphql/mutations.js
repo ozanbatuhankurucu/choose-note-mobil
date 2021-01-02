@@ -11,9 +11,12 @@ export const createUser = /* GraphQL */ `
       username
       owner
       email
+      iban
+      address
       profilePicture
       name
       university
+      department
       createdAt
       notes {
         items {
@@ -23,19 +26,30 @@ export const createUser = /* GraphQL */ `
           department
           lesson
           description
-          isPrivate
+          price
           owner
           createdAt
           updatedAt
         }
         nextToken
       }
-      addOnMaps {
+      orders {
         items {
           id
+          totalPrice
+          owner
           createdAt
           updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
           owner
+          createdAt
+          description
+          updatedAt
         }
         nextToken
       }
@@ -53,9 +67,12 @@ export const updateUser = /* GraphQL */ `
       username
       owner
       email
+      iban
+      address
       profilePicture
       name
       university
+      department
       createdAt
       notes {
         items {
@@ -65,19 +82,30 @@ export const updateUser = /* GraphQL */ `
           department
           lesson
           description
-          isPrivate
+          price
           owner
           createdAt
           updatedAt
         }
         nextToken
       }
-      addOnMaps {
+      orders {
         items {
           id
+          totalPrice
+          owner
           createdAt
           updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
           owner
+          createdAt
+          description
+          updatedAt
         }
         nextToken
       }
@@ -95,9 +123,12 @@ export const deleteUser = /* GraphQL */ `
       username
       owner
       email
+      iban
+      address
       profilePicture
       name
       university
+      department
       createdAt
       notes {
         items {
@@ -107,221 +138,34 @@ export const deleteUser = /* GraphQL */ `
           department
           lesson
           description
-          isPrivate
+          price
           owner
           createdAt
           updatedAt
         }
         nextToken
       }
-      addOnMaps {
+      orders {
         items {
           id
+          totalPrice
+          owner
           createdAt
           updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
           owner
+          createdAt
+          description
+          updatedAt
         }
         nextToken
       }
       updatedAt
-    }
-  }
-`;
-export const createAddOnMap = /* GraphQL */ `
-  mutation CreateAddOnMap(
-    $input: CreateAddOnMapInput!
-    $condition: ModelAddOnMapConditionInput
-  ) {
-    createAddOnMap(input: $input, condition: $condition) {
-      id
-      user {
-        id
-        username
-        owner
-        email
-        profilePicture
-        name
-        university
-        createdAt
-        notes {
-          nextToken
-        }
-        addOnMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      note {
-        id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          profilePicture
-          name
-          university
-          createdAt
-          updatedAt
-        }
-        addOnMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const updateAddOnMap = /* GraphQL */ `
-  mutation UpdateAddOnMap(
-    $input: UpdateAddOnMapInput!
-    $condition: ModelAddOnMapConditionInput
-  ) {
-    updateAddOnMap(input: $input, condition: $condition) {
-      id
-      user {
-        id
-        username
-        owner
-        email
-        profilePicture
-        name
-        university
-        createdAt
-        notes {
-          nextToken
-        }
-        addOnMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      note {
-        id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          profilePicture
-          name
-          university
-          createdAt
-          updatedAt
-        }
-        addOnMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
-    }
-  }
-`;
-export const deleteAddOnMap = /* GraphQL */ `
-  mutation DeleteAddOnMap(
-    $input: DeleteAddOnMapInput!
-    $condition: ModelAddOnMapConditionInput
-  ) {
-    deleteAddOnMap(input: $input, condition: $condition) {
-      id
-      user {
-        id
-        username
-        owner
-        email
-        profilePicture
-        name
-        university
-        createdAt
-        notes {
-          nextToken
-        }
-        addOnMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      note {
-        id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          profilePicture
-          name
-          university
-          createdAt
-          updatedAt
-        }
-        addOnMaps {
-          nextToken
-        }
-        updatedAt
-      }
-      createdAt
-      updatedAt
-      owner
     }
   }
 `;
@@ -347,7 +191,17 @@ export const createNote = /* GraphQL */ `
         region
         key
       }
-      isPrivate
+      price
+      comments {
+        items {
+          id
+          owner
+          createdAt
+          description
+          updatedAt
+        }
+        nextToken
+      }
       owner
       createdAt
       student {
@@ -355,26 +209,23 @@ export const createNote = /* GraphQL */ `
         username
         owner
         email
+        iban
+        address
         profilePicture
         name
         university
+        department
         createdAt
         notes {
           nextToken
         }
-        addOnMaps {
+        orders {
+          nextToken
+        }
+        comments {
           nextToken
         }
         updatedAt
-      }
-      addOnMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
       }
       updatedAt
     }
@@ -402,7 +253,17 @@ export const updateNote = /* GraphQL */ `
         region
         key
       }
-      isPrivate
+      price
+      comments {
+        items {
+          id
+          owner
+          createdAt
+          description
+          updatedAt
+        }
+        nextToken
+      }
       owner
       createdAt
       student {
@@ -410,26 +271,23 @@ export const updateNote = /* GraphQL */ `
         username
         owner
         email
+        iban
+        address
         profilePicture
         name
         university
+        department
         createdAt
         notes {
           nextToken
         }
-        addOnMaps {
+        orders {
+          nextToken
+        }
+        comments {
           nextToken
         }
         updatedAt
-      }
-      addOnMaps {
-        items {
-          id
-          createdAt
-          updatedAt
-          owner
-        }
-        nextToken
       }
       updatedAt
     }
@@ -457,7 +315,17 @@ export const deleteNote = /* GraphQL */ `
         region
         key
       }
-      isPrivate
+      price
+      comments {
+        items {
+          id
+          owner
+          createdAt
+          description
+          updatedAt
+        }
+        nextToken
+      }
       owner
       createdAt
       student {
@@ -465,27 +333,480 @@ export const deleteNote = /* GraphQL */ `
         username
         owner
         email
+        iban
+        address
         profilePicture
         name
         university
+        department
         createdAt
         notes {
           nextToken
         }
-        addOnMaps {
+        orders {
+          nextToken
+        }
+        comments {
           nextToken
         }
         updatedAt
       }
-      addOnMaps {
-        items {
+      updatedAt
+    }
+  }
+`;
+export const createComment = /* GraphQL */ `
+  mutation CreateComment(
+    $input: CreateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    createComment(input: $input, condition: $condition) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        iban
+        address
+        profilePicture
+        name
+        university
+        department
+        createdAt
+        notes {
+          nextToken
+        }
+        orders {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        price
+        comments {
+          nextToken
+        }
+        owner
+        createdAt
+        student {
           id
+          username
+          owner
+          email
+          iban
+          address
+          profilePicture
+          name
+          university
+          department
           createdAt
           updatedAt
-          owner
         }
-        nextToken
+        updatedAt
       }
+      owner
+      createdAt
+      description
+      updatedAt
+    }
+  }
+`;
+export const updateComment = /* GraphQL */ `
+  mutation UpdateComment(
+    $input: UpdateCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    updateComment(input: $input, condition: $condition) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        iban
+        address
+        profilePicture
+        name
+        university
+        department
+        createdAt
+        notes {
+          nextToken
+        }
+        orders {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        price
+        comments {
+          nextToken
+        }
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          iban
+          address
+          profilePicture
+          name
+          university
+          department
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      owner
+      createdAt
+      description
+      updatedAt
+    }
+  }
+`;
+export const deleteComment = /* GraphQL */ `
+  mutation DeleteComment(
+    $input: DeleteCommentInput!
+    $condition: ModelCommentConditionInput
+  ) {
+    deleteComment(input: $input, condition: $condition) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        iban
+        address
+        profilePicture
+        name
+        university
+        department
+        createdAt
+        notes {
+          nextToken
+        }
+        orders {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        updatedAt
+      }
+      note {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        price
+        comments {
+          nextToken
+        }
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          iban
+          address
+          profilePicture
+          name
+          university
+          department
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      owner
+      createdAt
+      description
+      updatedAt
+    }
+  }
+`;
+export const createOrder = /* GraphQL */ `
+  mutation CreateOrder(
+    $input: CreateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    createOrder(input: $input, condition: $condition) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        iban
+        address
+        profilePicture
+        name
+        university
+        department
+        createdAt
+        notes {
+          nextToken
+        }
+        orders {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        updatedAt
+      }
+      notes {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        price
+        comments {
+          nextToken
+        }
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          iban
+          address
+          profilePicture
+          name
+          university
+          department
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      totalPrice
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateOrder = /* GraphQL */ `
+  mutation UpdateOrder(
+    $input: UpdateOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    updateOrder(input: $input, condition: $condition) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        iban
+        address
+        profilePicture
+        name
+        university
+        department
+        createdAt
+        notes {
+          nextToken
+        }
+        orders {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        updatedAt
+      }
+      notes {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        price
+        comments {
+          nextToken
+        }
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          iban
+          address
+          profilePicture
+          name
+          university
+          department
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      totalPrice
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteOrder = /* GraphQL */ `
+  mutation DeleteOrder(
+    $input: DeleteOrderInput!
+    $condition: ModelOrderConditionInput
+  ) {
+    deleteOrder(input: $input, condition: $condition) {
+      id
+      user {
+        id
+        username
+        owner
+        email
+        iban
+        address
+        profilePicture
+        name
+        university
+        department
+        createdAt
+        notes {
+          nextToken
+        }
+        orders {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        updatedAt
+      }
+      notes {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        price
+        comments {
+          nextToken
+        }
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          iban
+          address
+          profilePicture
+          name
+          university
+          department
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      totalPrice
+      owner
+      createdAt
       updatedAt
     }
   }

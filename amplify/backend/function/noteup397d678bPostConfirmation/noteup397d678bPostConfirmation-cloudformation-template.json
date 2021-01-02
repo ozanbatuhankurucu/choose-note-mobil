@@ -61,12 +61,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "elma93edd947PostConfirmation",
+            "noteup397d678bPostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "elma93edd947PostConfirmation",
+                  "noteup397d678bPostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -101,8 +101,8 @@
         "Runtime": "nodejs10.x",
         "Timeout": "25",
         "Code": {
-          "S3Bucket": "amplify-elma-dev-32733-deployment",
-          "S3Key": "amplify-builds/elma93edd947PostConfirmation-434d486e462f41493570-build.zip"
+          "S3Bucket": "amplify-noteup-dev-174706-deployment",
+          "S3Key": "amplify-builds/noteup397d678bPostConfirmation-472f567761666562537a-build.zip"
         }
       }
     },
@@ -112,12 +112,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "elma93edd947PostConfirmation",
+            "noteup397d678bPostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "elma93edd947PostConfirmation",
+                  "noteup397d678bPostConfirmation",
                   "-",
                   {
                     "Ref": "env"

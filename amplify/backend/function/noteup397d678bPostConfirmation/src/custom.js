@@ -6,10 +6,10 @@ exports.handler = async (event, context, callback) => {
 
   let date = new Date();
 
-  const tableName = 'User-cid5y722mvfrbldletr5fpatz4-dev';
+  const tableName = 'User-4t3qj766djfldlu2cnvfrkblpm-dev';
   const region = 'eu-central-1';
-  const bucket = 'elma48f004463c8a496bbd4f114a620be25c30500-dev';
-  const url = 'https://elma48f004463c8a496bbd4f114a620be25c30500-dev.s3.eu-central-1.amazonaws.com/public/profilePictures/anonimpp.jpg';
+  const bucket = 'elma465e3c0417e547c9bd6e56b2048a968b32733-dev';
+  const url = 'https://elma465e3c0417e547c9bd6e56b2048a968b32733-dev.s3.eu-central-1.amazonaws.com/public/profilePictures/anonimpp.jpg';
  
   console.log("table=" + tableName + " -- region=" + region);
 
@@ -29,6 +29,9 @@ exports.handler = async (event, context, callback) => {
               'profilePicture':{S: url},
               'name':{S:''},
               'university':{S:''},
+              'department':{S:''},
+              'iban':{S:''},
+              'address':{S:''},
               'createdAt': {S: date.toISOString()},
               'updatedAt': {S: date.toISOString()}
           },

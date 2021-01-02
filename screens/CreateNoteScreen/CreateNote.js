@@ -15,6 +15,7 @@ import {
   ActivityIndicator,
   LogBox,
   Alert,
+  TextInput,
 } from 'react-native';
 import universitiesData from '../../Datas/universities.json';
 import departmentsData from '../../Datas/departments.json';
@@ -24,6 +25,7 @@ import StandardTextInput from '../../components/StandardTextInput/standardTextIn
 import ImagePicker from 'react-native-image-crop-picker';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import DocumentPicker from 'react-native-document-picker';
 import RadioButtonRN from 'radio-buttons-react-native';
@@ -50,23 +52,16 @@ export default function CreateNoteScreen({navigation}) {
   const [department, setDepartment] = useState(null);
   const [lesson, setLesson] = useState('');
   const [description, setDescription] = useState('');
+  const [price, setPrice] = useState('');
   const [Pictures, setPictures] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [isUploadPicture, setIsUploadPicture] = useState(false);
   const {user, addNoteToUserNotes} = useContext(UserContext);
   const [file, setFile] = useState(null);
   const [sizeControl, setSizeControl] = useState(false);
-  const [isPrivate, setIsPrivate] = useState(null);
   const maxKb = 10240000;
-  const privacyData = [
-    {
-      label: 'Public',
-    },
-    {
-      label: 'Private',
-    },
-  ];
-  console.log('isPrivate' + isPrivate);
+  console.log(typeof price);
+  console.log(price);
   selectMultipleImagesFromGallery = () => {
     ImagePicker.openPicker({
       multiple: true,
@@ -89,7 +84,7 @@ export default function CreateNoteScreen({navigation}) {
     // Pick a single file
     try {
       const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
+        type: [DocumentPicker.types.pdf],
       });
       if (res.size < maxKb) {
         setFile(res);
@@ -145,14 +140,14 @@ export default function CreateNoteScreen({navigation}) {
     const noteDetails = {
       university: university.name,
       termID: term.id,
-      owner:user.owner,
+      owner: user.owner,
       department: department.name,
       lesson: lesson,
       description: description,
       documents: pictureUrls,
       noteStudentId: user.id,
       documentFiles: fileDocumentUrls,
-      isPrivate: isPrivate,
+      price: price,
     };
 
     try {
@@ -161,7 +156,6 @@ export default function CreateNoteScreen({navigation}) {
         variables: {input: noteDetails},
       });
       addNoteToUserNotes(newNote.data.createNote);
-      
 
       console.log('302.satir' + newNote);
       console.log(newNote.data.createNote);
@@ -170,7 +164,6 @@ export default function CreateNoteScreen({navigation}) {
     } catch (e) {
       console.log(e);
     }
-    
   }
   function createBtnDisableControl() {
     if (
@@ -179,7 +172,7 @@ export default function CreateNoteScreen({navigation}) {
       department !== null &&
       lesson !== '' &&
       description !== '' &&
-      isPrivate !== null
+      price !== ''
     ) {
       if (Pictures === null && file === null) {
         return true;
@@ -208,7 +201,10 @@ export default function CreateNoteScreen({navigation}) {
         </View>
       ) : (
         <ScrollView
-          contentContainerStyle={{alignItems: 'center'}}
+          contentContainerStyle={{
+            alignItems: 'center',
+            backgroundColor: 'white',
+          }}
           keyboardShouldPersistTaps="always">
           <Modal
             animationType="slide"
@@ -237,6 +233,31 @@ export default function CreateNoteScreen({navigation}) {
               </View>
             </View>
           </Modal>
+
+          <View>
+            <Text style={{marginTop: 5, fontWeight: '700'}}>
+              Price<Text style={{color: 'red'}}>*</Text>
+            </Text>
+            <View style={styles.TLSection}>
+              <TextInput
+                maxLength={10}
+                style={styles.priceInput}
+                underlineColorAndroid="transparent"
+                placeholder="Enter price"
+                keyboardType="numeric"
+                onChangeText={(val) => {
+                  setPrice(parseFloat(val.replace(',', '.')).toFixed(2));
+                }}
+              />
+              <FontAwesome
+                style={styles.TLicon}
+                name="turkish-lira"
+                size={20}
+                color="#000"
+              />
+            </View>
+          </View>
+
           <View>
             <Text style={{marginTop: 5, fontWeight: '700'}}>
               University<Text style={{color: 'red'}}>*</Text>
@@ -368,7 +389,7 @@ export default function CreateNoteScreen({navigation}) {
                 borderRadius: 5,
               }}>
               <View style={{flex: 5}}>
-                <Text style={{fontWeight: '700'}}>Upload Pdf or Word File</Text>
+                <Text style={{fontWeight: '700'}}>Upload Pdf File</Text>
                 {sizeControl === true ? (
                   <Text style={{color: 'red'}}>
                     Please select a maximum file size of 10mb.
@@ -387,21 +408,7 @@ export default function CreateNoteScreen({navigation}) {
               </View>
             </View>
           </TouchableOpacity>
-          <View style={{width: ScreenWidth * 0.9, marginTop: 15}}>
-            <Text style={{marginTop: 5, fontWeight: '700'}}>
-              Select note privacy<Text style={{color: 'red'}}>*</Text>
-            </Text>
-            <RadioButtonRN
-              data={privacyData}
-              selectedBtn={(e) => {
-                if (e.label === 'Private') {
-                  setIsPrivate(true);
-                } else {
-                  setIsPrivate(false);
-                }
-              }}
-            />
-          </View>
+
           <TouchableOpacity
             disabled={createBtnDisableControl()}
             style={{
@@ -460,5 +467,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 22,
+  },
+  TLSection: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 8,
+    backgroundColor: 'white',
+    borderColor: '#bbb',
+    borderWidth: 1,
+    borderRadius: 5,
+    width: ScreenWidth * 0.9,
+  },
+  TLicon: {
+    padding: 10,
+  },
+  priceInput: {
+    flex: 1,
+    padding: 10,
+    color: 'black',
   },
 });

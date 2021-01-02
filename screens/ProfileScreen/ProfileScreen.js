@@ -55,9 +55,9 @@ export default function ProfileScreen({navigation}) {
         title="Personal information"
       />
       <ProfileCard
-        navigationPress={() => navigation.navigate('My Notes')}
+        navigationPress={() => navigation.navigate('For Sale')}
         iconName="note-multiple-outline"
-        title="My notes"
+        title="For Sale"
       />
 
       

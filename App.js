@@ -186,7 +186,7 @@ const App = () => {
                 })}
               />
 
-              <Stack.Screen name="My Notes" component={UserNotesScreen} />
+              <Stack.Screen name="For Sale" component={UserNotesScreen} />
               <Stack.Screen name='Searched Notes'  component={SearchNotesScreen} />
               <Stack.Screen
                 name="Image View"

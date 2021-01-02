@@ -91,18 +91,9 @@ function UserNotesScreen({navigation}) {
   }
   function _renderItem({item}) {
     return (
-      <TouchableOpacity
+      <View
         key={item.id}
-        onLongPress={() => {
-          if (item.isPrivate) {
-            setDeleteNoteDetails({
-              owner: item.owner,
-              createdAt: item.createdAt,
-              id: item.id,
-            });
-            setModalVisible(!modalVisible);
-          }
-        }}>
+       >
         <View style={styles.boxWithShadow}>
           <View style={{flex: 5}}>
             <View>
@@ -125,11 +116,12 @@ function UserNotesScreen({navigation}) {
               flexDirection: 'column',
               justifyContent: 'space-between',
             }}>
+            <Text style={{fontWeight:'bold'}}>{item.price}₺</Text>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                paddingBottom: 12,
+              
               }}>
               {item.documents.length === 0 ? null : (
                 <TouchableOpacity
@@ -154,12 +146,10 @@ function UserNotesScreen({navigation}) {
                 </TouchableOpacity>
               )}
             </View>
-            {item.isPrivate ? (
-              <Feather name="lock" size={22} color="black" />
-            ) : null}
+          
           </View>
         </View>
-      </TouchableOpacity>
+      </View>
     );
   }
 
@@ -276,3 +266,16 @@ const styles = StyleSheet.create({
 });
 
 export default UserNotesScreen;
+
+
+
+// onLongPress={() => {
+//   if (item.isPrivate) {
+//     setDeleteNoteDetails({
+//       owner: item.owner,
+//       createdAt: item.createdAt,
+//       id: item.id,
+//     });
+//     setModalVisible(!modalVisible);
+//   }
+// }}

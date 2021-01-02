@@ -8,9 +8,12 @@ export const getUser = /* GraphQL */ `
       username
       owner
       email
+      iban
+      address
       profilePicture
       name
       university
+      department
       createdAt
       notes {
         items {
@@ -20,19 +23,30 @@ export const getUser = /* GraphQL */ `
           department
           lesson
           description
-          isPrivate
+          price
           owner
           createdAt
           updatedAt
         }
         nextToken
       }
-      addOnMaps {
+      orders {
         items {
           id
+          totalPrice
+          owner
           createdAt
           updatedAt
+        }
+        nextToken
+      }
+      comments {
+        items {
+          id
           owner
+          createdAt
+          description
+          updatedAt
         }
         nextToken
       }
@@ -52,14 +66,20 @@ export const listUsers = /* GraphQL */ `
         username
         owner
         email
+        iban
+        address
         profilePicture
         name
         university
+        department
         createdAt
         notes {
           nextToken
         }
-        addOnMaps {
+        orders {
+          nextToken
+        }
+        comments {
           nextToken
         }
         updatedAt
@@ -68,23 +88,148 @@ export const listUsers = /* GraphQL */ `
     }
   }
 `;
-export const getAddOnMap = /* GraphQL */ `
-  query GetAddOnMap($id: ID!) {
-    getAddOnMap(id: $id) {
+export const getNote = /* GraphQL */ `
+  query GetNote($owner: String!, $createdAt: AWSDateTime!) {
+    getNote(owner: $owner, createdAt: $createdAt) {
+      id
+      university
+      termID
+      department
+      lesson
+      description
+      documents {
+        bucket
+        region
+        key
+      }
+      documentFiles {
+        bucket
+        region
+        key
+      }
+      price
+      comments {
+        items {
+          id
+          owner
+          createdAt
+          description
+          updatedAt
+        }
+        nextToken
+      }
+      owner
+      createdAt
+      student {
+        id
+        username
+        owner
+        email
+        iban
+        address
+        profilePicture
+        name
+        university
+        department
+        createdAt
+        notes {
+          nextToken
+        }
+        orders {
+          nextToken
+        }
+        comments {
+          nextToken
+        }
+        updatedAt
+      }
+      updatedAt
+    }
+  }
+`;
+export const listNotes = /* GraphQL */ `
+  query ListNotes(
+    $owner: String
+    $createdAt: ModelStringKeyConditionInput
+    $filter: ModelNoteFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listNotes(
+      owner: $owner
+      createdAt: $createdAt
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        price
+        comments {
+          nextToken
+        }
+        owner
+        createdAt
+        student {
+          id
+          username
+          owner
+          email
+          iban
+          address
+          profilePicture
+          name
+          university
+          department
+          createdAt
+          updatedAt
+        }
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getComment = /* GraphQL */ `
+  query GetComment($id: ID!) {
+    getComment(id: $id) {
       id
       user {
         id
         username
         owner
         email
+        iban
+        address
         profilePicture
         name
         university
+        department
         createdAt
         notes {
           nextToken
         }
-        addOnMaps {
+        orders {
+          nextToken
+        }
+        comments {
           nextToken
         }
         updatedAt
@@ -106,7 +251,10 @@ export const getAddOnMap = /* GraphQL */ `
           region
           key
         }
-        isPrivate
+        price
+        comments {
+          nextToken
+        }
         owner
         createdAt
         student {
@@ -114,30 +262,31 @@ export const getAddOnMap = /* GraphQL */ `
           username
           owner
           email
+          iban
+          address
           profilePicture
           name
           university
+          department
           createdAt
           updatedAt
         }
-        addOnMaps {
-          nextToken
-        }
         updatedAt
       }
-      createdAt
-      updatedAt
       owner
+      createdAt
+      description
+      updatedAt
     }
   }
 `;
-export const listAddOnMaps = /* GraphQL */ `
-  query ListAddOnMaps(
-    $filter: ModelAddOnMapFilterInput
+export const listComments = /* GraphQL */ `
+  query ListComments(
+    $filter: ModelCommentFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listAddOnMaps(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         user {
@@ -145,9 +294,12 @@ export const listAddOnMaps = /* GraphQL */ `
           username
           owner
           email
+          iban
+          address
           profilePicture
           name
           university
+          department
           createdAt
           updatedAt
         }
@@ -158,169 +310,134 @@ export const listAddOnMaps = /* GraphQL */ `
           department
           lesson
           description
-          isPrivate
+          price
           owner
           createdAt
           updatedAt
         }
-        createdAt
-        updatedAt
         owner
+        createdAt
+        description
+        updatedAt
       }
       nextToken
     }
   }
 `;
-export const getNote = /* GraphQL */ `
-  query GetNote($id: ID!) {
-    getNote(id: $id) {
+export const getOrder = /* GraphQL */ `
+  query GetOrder($id: ID!) {
+    getOrder(id: $id) {
       id
-      university
-      termID
-      department
-      lesson
-      description
-      documents {
-        bucket
-        region
-        key
-      }
-      documentFiles {
-        bucket
-        region
-        key
-      }
-      isPrivate
-      owner
-      createdAt
-      student {
+      user {
         id
         username
         owner
         email
+        iban
+        address
         profilePicture
         name
         university
+        department
         createdAt
         notes {
           nextToken
         }
-        addOnMaps {
+        orders {
+          nextToken
+        }
+        comments {
           nextToken
         }
         updatedAt
       }
-      addOnMaps {
-        items {
+      notes {
+        id
+        university
+        termID
+        department
+        lesson
+        description
+        documents {
+          bucket
+          region
+          key
+        }
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        price
+        comments {
+          nextToken
+        }
+        owner
+        createdAt
+        student {
           id
+          username
+          owner
+          email
+          iban
+          address
+          profilePicture
+          name
+          university
+          department
           createdAt
           updatedAt
-          owner
         }
-        nextToken
+        updatedAt
       }
+      totalPrice
+      owner
+      createdAt
       updatedAt
     }
   }
 `;
-export const listNotes = /* GraphQL */ `
-  query ListNotes(
-    $filter: ModelNoteFilterInput
+export const listOrders = /* GraphQL */ `
+  query ListOrders(
+    $filter: ModelOrderFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
-        owner
-        createdAt
-        student {
+        user {
           id
           username
           owner
           email
+          iban
+          address
           profilePicture
           name
           university
+          department
           createdAt
           updatedAt
         }
-        addOnMaps {
-          nextToken
+        notes {
+          id
+          university
+          termID
+          department
+          lesson
+          description
+          price
+          owner
+          createdAt
+          updatedAt
         }
-        updatedAt
-      }
-      nextToken
-    }
-  }
-`;
-export const searchNotes = /* GraphQL */ `
-  query SearchNotes(
-    $filter: SearchableNoteFilterInput
-    $sort: SearchableNoteSortInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    searchNotes(
-      filter: $filter
-      sort: $sort
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        university
-        termID
-        department
-        lesson
-        description
-        documents {
-          bucket
-          region
-          key
-        }
-        documentFiles {
-          bucket
-          region
-          key
-        }
-        isPrivate
+        totalPrice
         owner
         createdAt
-        student {
-          id
-          username
-          owner
-          email
-          profilePicture
-          name
-          university
-          createdAt
-          updatedAt
-        }
-        addOnMaps {
-          nextToken
-        }
         updatedAt
       }
       nextToken
-      total
     }
   }
 `;

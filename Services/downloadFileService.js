@@ -12,7 +12,7 @@ import RNFetchBlob from 'rn-fetch-blob';
         notification: true,
         path:
           dirs.DownloadDir +
-          '/AppName-' +
+          '/NoteUp-' +
           Math.floor(date.getTime() + date.getSeconds() / 2), // this is the path where your downloaded file will live in
         description: 'Downloading file.',
       },

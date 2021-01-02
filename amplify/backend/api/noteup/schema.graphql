@@ -1,0 +1,83 @@
+type User
+  @model
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      {allow: owner, operations: [create, read, update, delete]}
+      {allow: groups, groups: ["everyone"], operations: [read]}
+    ]
+  ) {
+  id: ID!
+  username: String!
+  owner: String!
+  email: String!
+  iban: String
+  address: String
+  profilePicture: String
+  name: String
+  university: String
+  department:String
+  createdAt: String!
+  notes: [Note] @connection(name: "userNotes")
+  orders: [Order] @connection(name: "UserOrders")
+  comments: [Comment] @connection(name: "userComments")
+}
+
+type Note
+  @model
+  @key(fields: ["owner", "createdAt"])
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      {allow: owner, operations: [create, read, update, delete]}
+      {allow: groups, groups: ["everyone"], operations: [read]}
+    ]
+  ) {
+  id: ID!
+  university: String
+  termID: String
+  department: String
+  lesson: String
+  description: String
+  documents: [S3Object]
+  documentFiles: [S3Object]
+  price: Float
+  comments: [Comment] @connection(name: "noteComments")
+  owner: String!
+  createdAt: AWSDateTime!
+  student: User @connection(name: "userNotes")
+}
+
+type S3Object {
+  bucket: String!
+  region: String!
+  key: String!
+}
+type Comment
+  @model
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      {allow: owner, operations: [create, read, update, delete]}
+      {allow: groups, groups: ["everyone"], operations: [read]}
+    ]
+  ) {
+  id: ID!
+  user: User @connection(name: "userComments")
+  note: Note @connection(name: "noteComments")
+  owner: String
+  createdAt: String!
+  description: String
+}
+
+type Order
+  @model
+  @aws_cognito_user_pools
+  @auth(rules: [{allow: owner, operations: [create, read, update, delete]}]) {
+  id: ID!
+  user: User @connection(name: "UserOrders")
+  notes: [Note]
+  totalPrice: Float
+  owner: String
+  createdAt: String!
+}

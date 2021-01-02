@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "elma93edd947_identitypool_93edd947",
+    "identityPoolName": "noteup397d678b_identitypool_397d678b",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "elma93edd947",
-    "userPoolName": "elma93edd947_userpool_93edd947",
+    "resourceNameTruncated": "noteup397d678b",
+    "userPoolName": "noteup397d678b_userpool_397d678b",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,10 +28,10 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "elma9393edd947_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "noteup397d678b_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "93edd947",
-    "resourceName": "elma93edd947",
+    "sharedId": "397d678b",
+    "resourceName": "noteup397d678b",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -46,14 +46,21 @@
         ]
     },
     "useDefault": "manual",
+    "triggers": "{\n  \"PostConfirmation\": [\n    \"add-to-group\",\n    \"custom\"\n  ]\n}",
     "userPoolGroupList": [
         "everyone"
     ],
     "serviceName": "Cognito",
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [
+        "{\n  \"policyName\": \"AddToGroupCognito\",\n  \"trigger\": \"PostConfirmation\",\n  \"effect\": \"Allow\",\n  \"actions\": [\n    \"cognito-idp:AdminAddUserToGroup\",\n    \"cognito-idp:GetGroup\",\n    \"cognito-idp:CreateGroup\"\n  ],\n  \"resource\": {\n    \"paramType\": \"!GetAtt\",\n    \"keys\": [\n      \"UserPool\",\n      \"Arn\"\n    ]\n  }\n}"
+    ],
     "dependsOn": [
         {
             "category": "function",
-            "resourceName": "elma93edd947PostConfirmation",
+            "resourceName": "noteup397d678bPostConfirmation",
             "triggerProvider": "Cognito",
             "attributes": [
                 "Arn",
@@ -64,12 +71,5 @@
     "thirdPartyAuth": false,
     "userPoolGroups": true,
     "adminQueries": false,
-    "triggers": "{\n  \"PostConfirmation\": [\n    \"add-to-group\",\n    \"custom\"\n  ]\n}",
-    "hostedUI": false,
-    "parentStack": {
-        "Ref": "AWS::StackId"
-    },
-    "permissions": [
-        "{\n  \"policyName\": \"AddToGroupCognito\",\n  \"trigger\": \"PostConfirmation\",\n  \"effect\": \"Allow\",\n  \"actions\": [\n    \"cognito-idp:AdminAddUserToGroup\",\n    \"cognito-idp:GetGroup\",\n    \"cognito-idp:CreateGroup\"\n  ],\n  \"resource\": {\n    \"paramType\": \"!GetAtt\",\n    \"keys\": [\n      \"UserPool\",\n      \"Arn\"\n    ]\n  }\n}"
-    ]
+    "hostedUI": false
 }

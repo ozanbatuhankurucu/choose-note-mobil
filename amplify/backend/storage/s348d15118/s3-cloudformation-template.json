@@ -85,9 +85,9 @@
 	
     
     
-        "authelma93edd947UserPoolId": {
+        "authnoteup397d678bUserPoolId": {
             "Type": "String",
-            "Default": "authelma93edd947UserPoolId"
+            "Default": "authnoteup397d678bUserPoolId"
         },
         
         
@@ -258,7 +258,7 @@
                         "",
                         [
                           {
-                            "Ref": "authelma93edd947UserPoolId"
+                            "Ref": "authnoteup397d678bUserPoolId"
                           },
                           "-everyoneGroupRole"
                         ]

@@ -1,12 +1,19 @@
 {
+  "function": {
+    "noteup397d678bPostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
   "auth": {
-    "elma93edd947": {
+    "noteup397d678b": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "elma93edd947PostConfirmation",
+          "resourceName": "noteup397d678bPostConfirmation",
           "triggerProvider": "Cognito",
           "attributes": [
             "Arn",
@@ -22,7 +29,7 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "elma93edd947",
+          "resourceName": "noteup397d678b",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
@@ -34,7 +41,7 @@
     }
   },
   "api": {
-    "elma": {
+    "noteup": {
       "service": "AppSync",
       "providerPlugin": "awscloudformation",
       "output": {
@@ -42,7 +49,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authelma93edd947"
+              "userPoolId": "authnoteup397d678b"
             }
           },
           "additionalAuthenticationProviders": []
@@ -50,21 +57,14 @@
       }
     }
   },
-  "function": {
-    "elma93edd947PostConfirmation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
   "storage": {
-    "s377427bdf": {
+    "s348d15118": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "elma93edd947",
+          "resourceName": "noteup397d678b",
           "attributes": [
             "UserPoolId"
           ]

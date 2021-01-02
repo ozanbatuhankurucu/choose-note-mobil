@@ -12,6 +12,15 @@ export const getUser = /* GraphQL */ `
       notes {
         items {
           id
+          university
+          termID
+          department
+          lesson
+          description
+          price
+          owner
+          createdAt
+          updatedAt
         }
         nextToken
       }
