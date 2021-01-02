@@ -16,6 +16,7 @@ import {
   LogBox,
   Alert,
   TextInput,
+  CheckBox,
 } from 'react-native';
 import universitiesData from '../../Datas/universities.json';
 import departmentsData from '../../Datas/departments.json';
@@ -56,15 +57,17 @@ export default function CreateNoteScreen({navigation}) {
   const [Pictures, setPictures] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
   const [isUploadPicture, setIsUploadPicture] = useState(false);
-  const {user, addNoteToUserNotes} = useContext(UserContext);
+  const {user, addNoteToUserNotes, setUser} = useContext(UserContext);
   const [file, setFile] = useState(null);
   const [sizeControl, setSizeControl] = useState(false);
+  const [saveUserInfo, setSaveUserInfo] = useState(false);
   const maxKb = 10240000;
-  console.log(typeof price);
-  console.log(price);
-  selectMultipleImagesFromGallery = () => {
+
+  console.log(saveUserInfo);
+  function selectMultipleImagesFromGallery() {
     ImagePicker.openPicker({
       multiple: true,
+      cropping: false,
       maxFiles: 20,
       compressImageQuality: 0.4,
       mediaType: 'photo',
@@ -74,9 +77,11 @@ export default function CreateNoteScreen({navigation}) {
         setPictures(images);
       })
       .catch((error) => {
+        console.log('----------');
         console.log('Error', error);
+        console.log('----------');
       });
-  };
+  }
 
   async function pickDocumentFile() {
     setSizeControl(false);
@@ -113,9 +118,37 @@ export default function CreateNoteScreen({navigation}) {
   console.log(department);
   console.log(lesson);
   console.log(description);
-
+  async function updateUserUniAndDepartment() {
+    const userDetails = {
+      id: user.id,
+      university: user.university === '' ? university.name : user.university,
+      department: user.university === '' ? department.name : user.department,
+    };
+    try {
+      const updatedUser = await API.graphql({
+        query: mutations.updateUser,
+        variables: {
+          input: userDetails,
+        },
+      });
+      let updatedUserTemp = updatedUser.data.updateUser;
+      setUser(updatedUserTemp);
+      console.log(updatedUserTemp);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  console.log(user);
   async function createNote() {
     setIsUploadPicture(true);
+    if (
+      user.university === '' &&
+      user.department === '' &&
+      saveUserInfo === true
+    ) {
+      await updateUserUniAndDepartment();
+    }
+
     const pictureUrls = [];
     const fileDocumentUrls = [];
 
@@ -138,10 +171,10 @@ export default function CreateNoteScreen({navigation}) {
     }
 
     const noteDetails = {
-      university: university.name,
+      university: user.university === '' ? university.name : user.university,
       termID: term.id,
       owner: user.owner,
-      department: department.name,
+      department: user.department === '' ? department.name : user.department,
       lesson: lesson,
       description: description,
       documents: pictureUrls,
@@ -165,28 +198,47 @@ export default function CreateNoteScreen({navigation}) {
       console.log(e);
     }
   }
-  function createBtnDisableControl() {
-    if (
-      university !== null &&
-      term !== null &&
-      department !== null &&
-      lesson !== '' &&
-      description !== '' &&
-      price !== ''
-    ) {
-      if (Pictures === null && file === null) {
-        return true;
-      } else {
-        if (Pictures !== null) {
-          if (Pictures.length > 20) {
-            return true;
-          } else {
-            return false;
-          }
+  function btnDisableTempControl() {
+    if (Pictures === null && file === null) {
+      return true;
+    } else {
+      if (Pictures !== null) {
+        if (Pictures.length > 20) {
+          return true;
+        } else {
+          return false;
         }
       }
+    }
+  }
+  function createBtnDisableControl() {
+    if (user.university !== '' && user.department !== '') {
+      if (
+        term !== null &&
+        lesson !== '' &&
+        description !== '' &&
+        price !== ''
+      ) {
+        console.log(btnDisableTempControl);
+        btnDisableTempControl();
+      } else {
+        return true;
+      }
     } else {
-      return true;
+      console.log('elseteyim');
+      if (
+        university !== null &&
+        term !== null &&
+        department !== null &&
+        lesson !== '' &&
+        description !== '' &&
+        price !== ''
+      ) {
+        console.log(btnDisableTempControl);
+        btnDisableTempControl();
+      } else {
+        return true;
+      }
     }
   }
 
@@ -258,26 +310,30 @@ export default function CreateNoteScreen({navigation}) {
             </View>
           </View>
 
-          <View>
-            <Text style={{marginTop: 5, fontWeight: '700'}}>
-              University<Text style={{color: 'red'}}>*</Text>
-            </Text>
-            <SearchDropdown
-              items={universitiesData}
-              onItemSelect={setUniversity}
-              placeHolder="Select university"
-            />
-          </View>
-          <View>
-            <Text style={{marginTop: 5, fontWeight: '700'}}>
-              Department<Text style={{color: 'red'}}>*</Text>
-            </Text>
-            <SearchDropdown
-              items={departmentsData}
-              onItemSelect={setDepartment}
-              placeHolder="Enter Department"
-            />
-          </View>
+          {user.university === '' || user.department === '' ? (
+            <>
+              <View>
+                <Text style={{marginTop: 5, fontWeight: '700'}}>
+                  University<Text style={{color: 'red'}}>*</Text>
+                </Text>
+                <SearchDropdown
+                  items={universitiesData}
+                  onItemSelect={setUniversity}
+                  placeHolder="Select university"
+                />
+              </View>
+              <View>
+                <Text style={{marginTop: 5, fontWeight: '700'}}>
+                  Department<Text style={{color: 'red'}}>*</Text>
+                </Text>
+                <SearchDropdown
+                  items={departmentsData}
+                  onItemSelect={setDepartment}
+                  placeHolder="Enter Department"
+                />
+              </View>
+            </>
+          ) : null}
           <View>
             <Text style={{marginTop: 5, fontWeight: '700'}}>
               Term of lesson<Text style={{color: 'red'}}>*</Text>
@@ -408,6 +464,16 @@ export default function CreateNoteScreen({navigation}) {
               </View>
             </View>
           </TouchableOpacity>
+          {user.university === '' || user.department === '' ? (
+            <View style={styles.checkboxContainer}>
+              <CheckBox
+                value={saveUserInfo}
+                onValueChange={setSaveUserInfo}
+                style={styles.checkbox}
+              />
+              <Text style={styles.label}>Save my information</Text>
+            </View>
+          ) : null}
 
           <TouchableOpacity
             disabled={createBtnDisableControl()}
@@ -486,5 +552,16 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     color: 'black',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    width: ScreenWidth * 0.9,
+    marginTop: 10,
+  },
+  checkbox: {
+    alignSelf: 'center',
+  },
+  label: {
+    margin: 8,
   },
 });

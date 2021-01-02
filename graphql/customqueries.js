@@ -8,6 +8,7 @@ export const getUser = /* GraphQL */ `
       profilePicture
       name
       university
+      department
       createdAt
       notes {
         items {

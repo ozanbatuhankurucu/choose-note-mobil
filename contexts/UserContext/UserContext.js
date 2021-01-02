@@ -18,10 +18,14 @@ export const UserContextProvider = (props) => {
   const [image, setImage] = useState(null);
   const [name, setName] = useState(null);
   const [university, setUniversity] = useState(null);
+  const [department, setDepartment] = useState(null);
   const [updateProfileIsLoading, setUpdateProfileIsLoading] = useState(false);
   const [nextToken, setNextToken] = useState();
   const [userNotes, setUserNotes] = useState(null);
   const [progressCircle, setProgressCircle] = useState(false);
+  console.log(university +'satir 26')
+  console.log(department)
+  console.log(name)
   console.log('satir 25 --------------------');
   console.log(userNotes);
   console.log('satir 25------------------------------');
@@ -107,7 +111,12 @@ export const UserContextProvider = (props) => {
     console.log('contextten tiklandi kanka satir 24');
     let resultUrl;
     let resultUrlWithKey;
-    if (image !== null || name !== null || university !== null) {
+    if (
+      image !== null ||
+      name !== null ||
+      university !== null ||
+      department !== null
+    ) {
       console.log('icerdeyim baba 29.satir');
       setUpdateProfileIsLoading(true);
       if (image !== null) {
@@ -121,7 +130,8 @@ export const UserContextProvider = (props) => {
         profilePicture:
           resultUrl !== undefined ? resultUrl : user.profilePicture,
         name: name !== null ? name : user.name,
-        university: university !== null ? university : user.university,
+        university: university !== null ? university.name  : user.university,
+        department: department !== null ? department.name  : user.department
       };
       try {
         const updatedUser = await API.graphql({
@@ -182,6 +192,7 @@ export const UserContextProvider = (props) => {
             getNotesWithNexToken,
             userNotes,
             setUserNotes,
+            setDepartment,
           }}>
           {props.children}
         </UserContext.Provider>

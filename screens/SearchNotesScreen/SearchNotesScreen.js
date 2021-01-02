@@ -42,11 +42,11 @@ function SearchNotesScreen({navigation}) {
     //console.log(pictureUrls);
     const tempArray = [];
     let picUrls = pictureUrls;
-    for (const key of picUrls) {
-      const tempPicUrl = await Storage.get(key.key);
-      //console.log(tempPicUrl);
-      tempArray.push({url: tempPicUrl});
-    }
+
+    const tempPicUrl = await Storage.get(picUrls[0].key);
+    //console.log(tempPicUrl);
+    tempArray.push({url: tempPicUrl});
+
     setLoadImage(false);
     return tempArray;
   }
@@ -75,7 +75,7 @@ function SearchNotesScreen({navigation}) {
                     flexDirection: 'row',
                     justifyContent: 'flex-end',
                   }}>
-                  <FontAwesome name="bookmark-o" size={24} color="#B76285" />
+                 <Text style={{fontWeight:'bold',fontSize:15}}>{item.price}₺</Text>
                 </View>
               </View>
               {item.documents.length === 0 ? null : (
@@ -106,23 +106,14 @@ function SearchNotesScreen({navigation}) {
               iconText={termConverter(item.termID)}
             />
             <PostIcon iconName="book" iconSize={18} iconText={item.lesson} />
-            <View style={{flexDirection: 'row', alignItems: 'baseline'}}>
-              <View style={{flex: 1, padding: 3}}>
-                <FontAwesome name="file" size={16} color="black" />
-              </View>
-              <View style={{flex: 7}}>
-                <TouchableOpacity>
-                  <Text
-                    style={{
-                      fontSize: 11,
-                      textDecorationLine: 'underline',
-                      color: 'blue',
-                    }}>
-                    download
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
+            {item.documentFiles.length !== 0 ? (
+              <PostIcon
+                iconName="file"
+                iconSize={16}
+                iconText="download pdf file"
+                isDifferentStyle={true}
+              />
+            ) : null}
           </View>
           <View
             style={{
@@ -135,26 +126,6 @@ function SearchNotesScreen({navigation}) {
               {moment(item.createdAt).format('LLLL')}
             </Text>
           </View>
-          {/* <View>
-              <Text>Username: {item.student.username}</Text>
-              <Image
-                source={{uri: item.student.profilePicture}}
-                style={styles.pickUpImage}
-              />
-
-              <Text>University:{item.university}</Text>
-              <Text>Department: {item.department}</Text>
-              <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                Lesson: {item.lesson}
-              </Text>
-              <Text style={{fontSize: 14, color: '#464647'}}>
-                {item.description}
-              </Text>
-
-              <Text style={{fontSize: 11}}>
-                {moment(item.createdAt).format('LLLL')}
-              </Text>
-            </View> */}
 
           <View
             style={{
@@ -167,30 +138,7 @@ function SearchNotesScreen({navigation}) {
                 flexDirection: 'row',
                 alignItems: 'center',
                 paddingBottom: 12,
-              }}>
-              {/* {item.documents.length === 0 ? null : (
-                <TouchableOpacity
-                  onPress={async () => {
-                    const tempArray = await getPictureUrls(item.documents);
-                    navigation.navigate('Image View', tempArray);
-                  }}>
-                  <EvilIcons name="image" size={32} color="green" />
-                </TouchableOpacity>
-              )}
-              {item.documentFiles.length === 0 ? null : (
-                <TouchableOpacity
-                  style={{
-                    marginLeft: 10,
-                  }}
-                  onPress={async () => {
-                    const tempArray = await getPictureUrls(item.documentFiles);
-                    downloadFile(tempArray[0].url);
-                    console.log(tempArray);
-                  }}>
-                  <Feather name="file" size={20} color="purple" />
-                </TouchableOpacity>
-              )} */}
-            </View>
+              }}></View>
           </View>
         </View>
       </View>

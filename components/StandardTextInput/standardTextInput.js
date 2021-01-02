@@ -1,13 +1,17 @@
-import React, { useState } from 'react'
-import {
-  TextInput,Dimensions
-} from 'react-native'
+import React, {useState} from 'react';
+import {TextInput, Dimensions} from 'react-native';
 
-let ScreenHeight = Dimensions.get('window').height
-let ScreenWidth = Dimensions.get('window').width
+let ScreenHeight = Dimensions.get('window').height;
+let ScreenWidth = Dimensions.get('window').width;
 
-export default function StandardTextInput({value,onChangeFunction,plcHolder,maxVal}) {
-  
+export default function StandardTextInput({
+  value,
+  onChangeFunction,
+  plcHolder,
+  maxVal,
+  defVal,
+}) {
+  console.log(defVal)
   return (
     <TextInput
       style={{
@@ -16,14 +20,14 @@ export default function StandardTextInput({value,onChangeFunction,plcHolder,maxV
         borderWidth: 1,
         borderRadius: 5,
         padding: 12,
-        marginVertical:16,
-        width:ScreenWidth*0.9
-      
+        marginVertical: 8,
+        width: ScreenWidth * 0.9,
       }}
       maxLength={maxVal}
       onChangeText={(text) => onChangeFunction(text)}
       value={value}
       placeholder={plcHolder}
+      defaultValue={defVal}
     />
-  )
+  );
 }

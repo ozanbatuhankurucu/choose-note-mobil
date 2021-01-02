@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   View,
   Text,
@@ -9,9 +9,14 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Modal,
+  LogBox,
 } from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
+import StandardTextInput from '../../components/StandardTextInput/standardTextInput';
 import InputWithTitle from '../../components/InputWithTitle/InputWithTitle';
+import SearchDropdown from '../../components/SearchDropdown/searchDropdown';
+import universitiesData from '../../Datas/universities.json';
+import departmentsData from '../../Datas/departments.json';
 import {UserContext} from '../../contexts/UserContext/UserContext';
 
 function EditProfile({navigation}) {
@@ -21,6 +26,7 @@ function EditProfile({navigation}) {
     image,
     setName,
     setUniversity,
+    setDepartment,
     updateProfileIsLoading,
     isConnectedForUpdate,
   } = useContext(UserContext);
@@ -40,7 +46,10 @@ function EditProfile({navigation}) {
         console.log('Error', e);
       });
   }
-
+  console.log(user);
+  useEffect(() => {
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
+  }, []);
   return (
     <>
       {updateProfileIsLoading === true ? (
@@ -48,7 +57,7 @@ function EditProfile({navigation}) {
           <ActivityIndicator size={'large'} color={'gray'} />
         </View>
       ) : (
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} keyboardShouldPersistTaps="always">
           <View style={styles.imageCont}>
             <View style={{flex: 2, alignItems: 'center'}}>
               <Image
@@ -67,18 +76,37 @@ function EditProfile({navigation}) {
               </Text>
             </View>
           </View>
-          <InputWithTitle
-            onChngText={setName}
-            defVal={user.name}
-            maxLen={80}
-            title="Name"
-          />
-          <InputWithTitle
-            onChngText={setUniversity}
-            defVal={user.university}
-            maxLen={60}
-            title="University"
-          />
+          <View style={{paddingHorizontal: 15,marginTop:10}}>
+            <Text style={{marginTop: 5}}>Name</Text>
+            <StandardTextInput
+              onChangeFunction={setName}
+              plcHolder=""
+              maxVal={80}
+              defVal={user.name}
+            />
+          </View>
+
+          <View style={{paddingHorizontal: 15}}>
+            <Text style={{marginTop: 5}}>
+              University<Text style={{color: 'red'}}>*</Text>
+            </Text>
+            <SearchDropdown
+              items={universitiesData}
+              onItemSelect={setUniversity}
+              placeHolder={user.university}
+            />
+          </View>
+          <View style={{paddingHorizontal: 15}}>
+            <Text style={{marginTop: 5}}>
+              Department<Text style={{color: 'red'}}>*</Text>
+            </Text>
+            <SearchDropdown
+              items={departmentsData}
+              onItemSelect={setDepartment}
+              placeHolder={user.department}
+            />
+          </View>
+          <View style={{height: 400}}></View>
         </ScrollView>
       )}
     </>

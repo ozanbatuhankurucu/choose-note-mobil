@@ -18,30 +18,25 @@ export const SearchContextProvider = (props) => {
   async function searchNote(filter) {
     let result;
     setIsSearching(true);
-    
+
     try {
-      const allNotes = await API.graphql(
-        graphqlOperation(queries.searchNotes, {
-          sort: {
-            field: 'createdAt',
-            direction: 'desc',
-          },
-          filter: filter,
-        }),
-      );
-      console.log(allNotes.data.searchNotes.items);
+      const allNotes = await API.graphql({
+        query: queries.listNotes,
+        variables: {filter: filter},
+      });
+      console.log(allNotes.data.listNotes.items);
       setIsSearching(false);
-      if (allNotes.data.searchNotes.items.length === 0) {
+      if (allNotes.data.listNotes.items.length === 0) {
         setModalVisible(true);
         result = false;
       } else {
-        setSearchedNotes(allNotes.data.searchNotes.items);
+        setSearchedNotes(allNotes.data.listNotes.items);
         result = true;
-        console.log(allNotes.data.searchNotes.items.length);
+        console.log(allNotes.data.listNotes.items.length);
       }
-      console.log(allNotes.data.searchNotes.items);
+      console.log(allNotes.data.listNotes.items);
       console.log('----');
-      console.log(allNotes.data.searchNotes.nextToken);
+      console.log(allNotes.data.listNotes.nextToken);
       console.log('----');
     } catch (e) {
       console.log(e);

@@ -38,7 +38,7 @@ export default function SearchScreen({navigation}) {
   async function getInputDatas() {
   
     let filterArray = [];
-    filterArray.push({isPrivate:{eq:false}})
+  
     if (university !== null) {
       filterArray.push({university: {eq: university.name}});
     }
@@ -49,7 +49,7 @@ export default function SearchScreen({navigation}) {
       filterArray.push({department: {eq: department.name}});
     }
     if (lesson !== '') {
-      filterArray.push({lesson: {matchPhrasePrefix: lesson}});
+      filterArray.push({lesson: {contains: lesson}});
     }
     console.log(filterArray);
     
