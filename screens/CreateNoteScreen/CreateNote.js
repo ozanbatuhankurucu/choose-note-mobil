@@ -62,8 +62,13 @@ export default function CreateNoteScreen({navigation}) {
   const [sizeControl, setSizeControl] = useState(false);
   const [saveUserInfo, setSaveUserInfo] = useState(false);
   const maxKb = 10240000;
-
-  console.log(saveUserInfo);
+  useEffect(() => {
+   if(term !==null){
+    console.log(term.name+'66.satir')
+   }
+  }, [term])
+  console.log(term+'66.satir')
+  console.log(Pictures+'pictures');
   function selectMultipleImagesFromGallery() {
     ImagePicker.openPicker({
       multiple: true,
@@ -199,17 +204,20 @@ export default function CreateNoteScreen({navigation}) {
     }
   }
   function btnDisableTempControl() {
+    let result
     if (Pictures === null && file === null) {
-      return true;
+      result=true
     } else {
       if (Pictures !== null) {
         if (Pictures.length > 20) {
-          return true;
+         result=true
         } else {
-          return false;
+         result=false
         }
       }
     }
+    console.log(result+'result')
+    return result
   }
   function createBtnDisableControl() {
     if (user.university !== '' && user.department !== '') {
@@ -219,8 +227,8 @@ export default function CreateNoteScreen({navigation}) {
         description !== '' &&
         price !== ''
       ) {
-        console.log(btnDisableTempControl);
-        btnDisableTempControl();
+        console.log(btnDisableTempControl+'btnDisable');
+       return btnDisableTempControl();
       } else {
         return true;
       }
@@ -235,7 +243,7 @@ export default function CreateNoteScreen({navigation}) {
         price !== ''
       ) {
         console.log(btnDisableTempControl);
-        btnDisableTempControl();
+       return btnDisableTempControl();
       } else {
         return true;
       }
@@ -294,7 +302,6 @@ export default function CreateNoteScreen({navigation}) {
               <TextInput
                 maxLength={10}
                 style={styles.priceInput}
-                underlineColorAndroid="transparent"
                 placeholder="Enter price"
                 keyboardType="numeric"
                 onChangeText={(val) => {
@@ -319,7 +326,7 @@ export default function CreateNoteScreen({navigation}) {
                 <SearchDropdown
                   items={universitiesData}
                   onItemSelect={setUniversity}
-                  placeHolder="Select university"
+                  placeHolder={university === null ? "Select university" : university.name}
                 />
               </View>
               <View>
@@ -329,7 +336,7 @@ export default function CreateNoteScreen({navigation}) {
                 <SearchDropdown
                   items={departmentsData}
                   onItemSelect={setDepartment}
-                  placeHolder="Enter Department"
+                  placeHolder={department === null ? 'Select department' : department.name}
                 />
               </View>
             </>
@@ -341,7 +348,7 @@ export default function CreateNoteScreen({navigation}) {
             <SearchDropdown
               items={terms}
               onItemSelect={setTerm}
-              placeHolder="Select term"
+              placeHolder={term === null ? 'Select term' : term.name }
             />
           </View>
 
@@ -387,9 +394,11 @@ export default function CreateNoteScreen({navigation}) {
                   </View>
                 ) : (
                   <View style={{flex: 5, paddingHorizontal: 10}}>
+                    <TouchableOpacity onPress={selectMultipleImagesFromGallery}>
                     <Text style={{fontWeight: '700'}}>
                       You should pick min 1, max 20 pictures.
                     </Text>
+                    </TouchableOpacity>
                     <ScrollView horizontal={true}>
                       {Pictures !== null
                         ? Pictures.map((image, index) => {
@@ -411,9 +420,11 @@ export default function CreateNoteScreen({navigation}) {
                 )
               ) : (
                 <View style={{flex: 5}}>
-                  <Text style={{fontWeight: '700'}}>
+                 <TouchableOpacity onPress={selectMultipleImagesFromGallery}>
+                 <Text style={{fontWeight: '700'}}>
                     You should pick min 1, max 20 pictures.
                   </Text>
+                 </TouchableOpacity>
                 </View>
               )}
 

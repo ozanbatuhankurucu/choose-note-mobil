@@ -192,7 +192,7 @@ export const UserContextProvider = (props) => {
             getNotesWithNexToken,
             userNotes,
             setUserNotes,
-            setDepartment,
+            setDepartment,setDepartment
           }}>
           {props.children}
         </UserContext.Provider>

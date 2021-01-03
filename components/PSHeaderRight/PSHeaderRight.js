@@ -12,7 +12,7 @@ function PSHeaderRight({whichOperation}) {
     setImage,
     setUniversity,
     setIsConnectedForUpdate,
-    isConnectedForUpdate,
+    isConnectedForUpdate,setDepartment
   } = useContext(UserContext);
   const navigation = useNavigation();
 
@@ -32,6 +32,7 @@ function PSHeaderRight({whichOperation}) {
             await updateUserInfo();
             setName(null);
             setUniversity(null);
+            setDepartment(null);
             setImage(null);
             navigation.goBack();
           }}>
