@@ -49,7 +49,7 @@ export default function SearchScreen({navigation}) {
       filterArray.push({department: {eq: department.name}});
     }
     if (lesson !== '') {
-      filterArray.push({lesson: {contains: lesson}});
+      filterArray.push({lesson: {contains: lesson.toLowerCase()}});
     }
     console.log(filterArray);
     

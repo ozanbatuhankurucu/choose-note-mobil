@@ -180,7 +180,7 @@ export default function CreateNoteScreen({navigation}) {
       termID: term.id,
       owner: user.owner,
       department: user.department === '' ? department.name : user.department,
-      lesson: lesson,
+      lesson: lesson.toLowerCase(),
       description: description,
       documents: pictureUrls,
       noteStudentId: user.id,

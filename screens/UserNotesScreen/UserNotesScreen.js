@@ -21,6 +21,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
 import {downloadFile} from '../../Services/downloadFileService';
+import ProgressImage from '../../components/ProgressImage/ProgressImage';
 import {Storage, API} from 'aws-amplify';
 import * as queries from '../../graphql/queries';
 import {graphqlOperation} from 'aws-amplify';
@@ -89,39 +90,61 @@ function UserNotesScreen({navigation}) {
     setIsDeleteSpinner(false);
     return tempArray;
   }
+  async function getFirstPicture(picKey) {
+    const tempPicUrl = await Storage.get(picKey);
+    return tempPicUrl;
+  }
   function _renderItem({item}) {
     return (
-      <View
-        key={item.id}
-       >
+      <View key={item.id}>
         <View style={styles.boxWithShadow}>
-          <View style={{flex: 5}}>
-            <View>
-              <Text style={{fontSize: 16, fontWeight: 'bold'}}>
-                {item.lesson}
-              </Text>
-              <Text style={{fontSize: 14, color: '#464647'}}>
-                {item.description}
-              </Text>
-
-              <Text style={{fontSize: 11}}>
-                {moment(item.createdAt).format('LLLL')}
-              </Text>
-            </View>
+          <View style={styles.firstRow}>
+            <Text style={styles.itemLesson}>{item.lesson}</Text>
+            <Text style={{fontWeight: 'bold'}}>{item.price}₺</Text>
           </View>
-          <View
-            style={{
-              flex: 1,
-              alignItems: 'flex-end',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={{fontWeight:'bold'}}>{item.price}₺</Text>
+          <Text style={styles.itemDescription}>{item.description}</Text>
+          <View style={styles.files}>
+            {item.documentFiles.length === 0 ? null : (
+              <TouchableOpacity
+                onPress={async () => {
+                  const tempArray = await getPictureUrls(item.documentFiles);
+                  downloadFile(tempArray[0].url);
+                  console.log(tempArray);
+                }}>
+                <View style={styles.pdfFrame}>
+                  <Text style={styles.pdfText}>PDF</Text>
+                  <Feather name="download" size={20} color="#00509d" />
+                </View>
+              </TouchableOpacity>
+            )}
+
+            {item.documents.length === 0 ? null : (
+              <TouchableOpacity
+                style={{marginLeft: item.documentFiles.length === 0 ? 0 : 10}}
+                onPress={async () => {
+                  const tempArray = await getPictureUrls(item.documents);
+                  navigation.navigate('Image View', tempArray);
+                }}>
+                <ProgressImage
+                  itemDocuments={item.documents}
+                  imgStyle={{borderRadius: 10, width: 60, height: 65}}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <View style={styles.createdCont}>
+            <Text style={styles.createdAtText}>
+              {moment(item.createdAt).format('LLLL')}
+            </Text>
+          </View>
+
+          {/* <View>
+            <Text style={{fontWeight: 'bold'}}>{item.price}₺</Text>
             <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-              
               }}>
               {item.documents.length === 0 ? null : (
                 <TouchableOpacity
@@ -146,8 +169,7 @@ function UserNotesScreen({navigation}) {
                 </TouchableOpacity>
               )}
             </View>
-          
-          </View>
+          </View> */}
         </View>
       </View>
     );
@@ -217,7 +239,7 @@ const styles = StyleSheet.create({
     minHeight: 50,
     borderRadius: 5,
     padding: 10,
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginVertical: 6,
   },
   imageCont: {
@@ -263,11 +285,38 @@ const styles = StyleSheet.create({
     zIndex: 1,
     left: windowWidth * 0.5,
   },
+  pdfFrame: {
+    width: 60,
+    height: 65,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#A2CDFF',
+    alignItems: 'center',
+    paddingTop: 8,
+  },
+  pdfText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#464647',
+  },
+  firstRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  itemDescription: {fontSize: 14, color: '#464647', marginVertical: 8},
+  itemLesson: {fontSize: 16, fontWeight: 'bold'},
+  createdCont: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
+  createdAtText: {fontSize: 11},
+
+  files: {
+    flexDirection: 'row',
+  },
 });
 
 export default UserNotesScreen;
-
-
 
 // onLongPress={() => {
 //   if (item.isPrivate) {

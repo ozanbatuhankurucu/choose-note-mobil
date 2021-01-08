@@ -62,7 +62,7 @@ function SearchNotesScreen({navigation}) {
               />
             </View>
             <View style={{flex: 5}}>
-              <View style={{flexDirection: 'row'}}>
+              <View style={{flexDirection: 'row',marginBottom:10}}>
                 <View style={{flex: 5}}>
                   <Text style={{fontSize: 15, fontWeight: 'bold'}}>
                     {item.student.username}
@@ -75,16 +75,22 @@ function SearchNotesScreen({navigation}) {
                     flexDirection: 'row',
                     justifyContent: 'flex-end',
                   }}>
-                 <Text style={{fontWeight:'bold',fontSize:15}}>{item.price}₺</Text>
+                  <Text style={{fontWeight: 'bold', fontSize: 15}}>
+                    {item.price}₺
+                  </Text>
                 </View>
               </View>
               {item.documents.length === 0 ? null : (
                 <TouchableOpacity
+                style={{borderRadius:10}}
                   onPress={async () => {
                     const tempArray = await getPictureUrls(item.documents);
                     navigation.navigate('Image View', tempArray);
                   }}>
-                  <ProgressImage imageKey={item.documents[0].key} />
+                  <ProgressImage
+                    itemDocuments={item.documents}
+                    imgStyle={{ width: '100%', height: 200,borderRadius: 10}}
+                  />
                 </TouchableOpacity>
               )}
             </View>
