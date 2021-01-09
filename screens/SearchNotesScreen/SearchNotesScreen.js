@@ -24,6 +24,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from 'moment';
 import ProgressImage from '../../components/ProgressImage/ProgressImage';
 import PostIcon from '../../components/PostIcon/PostIcon';
+import AddToCartButton from '../../components/AddToCartButton/AddToCartButton';
 import {termConverter} from '../../HelperFunctions/HelperFunctions';
 import {downloadFile} from '../../Services/downloadFileService';
 import {Storage, API} from 'aws-amplify';
@@ -37,7 +38,7 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 function SearchNotesScreen({navigation}) {
   const {searchedNotes, setSearchedNotes} = useContext(SearchContext);
-  const {saveData} = useContext(ShoppingCartContext);
+  const {saveData, cartNotes} = useContext(ShoppingCartContext);
   const [loadImage, setLoadImage] = useState(false);
   const [test, setTest] = useState(false);
   async function getPictureUrls(pictureUrls) {
@@ -51,18 +52,31 @@ function SearchNotesScreen({navigation}) {
     setLoadImage(false);
     return tempArray;
   }
-  function disableAddToCartButton(note) {
-    console.log(note)
-    let noteID = note.id;
-    let tempArray =searchedNotes
-    let objIndex;
-    //Find index of specific object using findIndex method.
-    objIndex = tempArray.findIndex((note) => note.id === noteID);
-    console.log(objIndex)
-    tempArray[objIndex].buttonDisableProperty = true;
-    console.log(tempArray)
-    setSearchedNotes(tempArray);
+  // function disableAddToCartButton(note) {
+
+  //   let noteID = note.id;
+  //   let tempArray = searchedNotes;
+  //   let objIndex;
+  //   //Find index of specific object using findIndex method.
+  //   objIndex = tempArray.findIndex((note) => note.id === noteID);
+  //   console.log(objIndex);
+  //   tempArray[objIndex].buttonDisableProperty = true;
+  //   console.log(tempArray);
+  //   setSearchedNotes(tempArray);
+  // }
+  console.log(cartNotes + '67');
+  function isInCartControl(cameNote) {
+    let result = false;
+    console.log(cartNotes);
+    cartNotes.forEach((note) => {
+      if (note.id === cameNote.id) {
+        result = true;
+      }
+    });
+
+    return result;
   }
+
   function _renderItem({item}) {
     return (
       <View key={item.id}>
@@ -138,29 +152,8 @@ function SearchNotesScreen({navigation}) {
             <Text style={{fontSize: 11}}>
               {moment(item.createdAt).format('LLLL')}
             </Text>
-            <TouchableOpacity
-              style={{
-                borderRadius: 4,
-                borderWidth: 1,
-                paddingVertical: 5,
-                paddingHorizontal: 15,
-                borderColor:
-                  item.buttonDisableProperty === true ? 'gray' : '#00509d',
-              }}
-              disabled={item.buttonDisableProperty === undefined ? false : true}
-              onPress={() => {
-                disableAddToCartButton(item);
-                saveData(item);
-              }}>
-              <Text
-                style={{
-                  fontWeight: 'bold',
-                  color:
-                    item.buttonDisableProperty === true ? 'gray' : '#00509d',
-                }}>
-                Add to cart
-              </Text>
-            </TouchableOpacity>
+
+            <AddToCartButton note={item} isInCart={isInCartControl(item)} />
           </View>
         </View>
       </View>
