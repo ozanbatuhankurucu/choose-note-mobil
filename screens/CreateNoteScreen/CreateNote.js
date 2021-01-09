@@ -62,13 +62,7 @@ export default function CreateNoteScreen({navigation}) {
   const [sizeControl, setSizeControl] = useState(false);
   const [saveUserInfo, setSaveUserInfo] = useState(false);
   const maxKb = 10240000;
-  useEffect(() => {
-   if(term !==null){
-    console.log(term.name+'66.satir')
-   }
-  }, [term])
-  console.log(term+'66.satir')
-  console.log(Pictures+'pictures');
+
   function selectMultipleImagesFromGallery() {
     ImagePicker.openPicker({
       multiple: true,
@@ -78,13 +72,10 @@ export default function CreateNoteScreen({navigation}) {
       mediaType: 'photo',
     })
       .then((images) => {
-        console.log(images);
         setPictures(images);
       })
       .catch((error) => {
-        console.log('----------');
         console.log('Error', error);
-        console.log('----------');
       });
   }
 
@@ -103,11 +94,6 @@ export default function CreateNoteScreen({navigation}) {
         setFile(null);
         setSizeControl(true);
       }
-      console.log('------');
-      console.log(res);
-      console.log(res.size);
-      console.log(typeof res.size);
-      console.log('------');
     } catch (err) {
       if (DocumentPicker.isCancel(err)) {
         // User cancelled the picker, exit any dialogs or menus and move on
@@ -118,11 +104,6 @@ export default function CreateNoteScreen({navigation}) {
     }
   }
 
-  console.log(university);
-  console.log(term);
-  console.log(department);
-  console.log(lesson);
-  console.log(description);
   async function updateUserUniAndDepartment() {
     const userDetails = {
       id: user.id,
@@ -138,12 +119,11 @@ export default function CreateNoteScreen({navigation}) {
       });
       let updatedUserTemp = updatedUser.data.updateUser;
       setUser(updatedUserTemp);
-      console.log(updatedUserTemp);
     } catch (e) {
       console.log(e);
     }
   }
-  console.log(user);
+
   async function createNote() {
     setIsUploadPicture(true);
     if (
@@ -159,8 +139,7 @@ export default function CreateNoteScreen({navigation}) {
 
     if (file !== null) {
       const fileUrlResult = await storageServiceFile(file, 'fileDocuments');
-      console.log(fileUrlResult);
-      console.log(file);
+
       fileDocumentUrls.push({
         bucket: bucket,
         region: region,
@@ -170,7 +149,7 @@ export default function CreateNoteScreen({navigation}) {
     if (Pictures !== null) {
       for (const pic of Pictures) {
         const urlResult = await storageService(pic, 'notes');
-        console.log(urlResult);
+
         pictureUrls.push({bucket: bucket, region: region, key: urlResult});
       }
     }
@@ -195,8 +174,6 @@ export default function CreateNoteScreen({navigation}) {
       });
       addNoteToUserNotes(newNote.data.createNote);
 
-      console.log('302.satir' + newNote);
-      console.log(newNote.data.createNote);
       setIsUploadPicture(false);
       setModalVisible(true);
     } catch (e) {
@@ -204,20 +181,20 @@ export default function CreateNoteScreen({navigation}) {
     }
   }
   function btnDisableTempControl() {
-    let result
+    let result;
     if (Pictures === null && file === null) {
-      result=true
+      result = true;
     } else {
       if (Pictures !== null) {
         if (Pictures.length > 20) {
-         result=true
+          result = true;
         } else {
-         result=false
+          result = false;
         }
       }
     }
-    console.log(result+'result')
-    return result
+
+    return result;
   }
   function createBtnDisableControl() {
     if (user.university !== '' && user.department !== '') {
@@ -227,13 +204,11 @@ export default function CreateNoteScreen({navigation}) {
         description !== '' &&
         price !== ''
       ) {
-        console.log(btnDisableTempControl+'btnDisable');
-       return btnDisableTempControl();
+        return btnDisableTempControl();
       } else {
         return true;
       }
     } else {
-      console.log('elseteyim');
       if (
         university !== null &&
         term !== null &&
@@ -242,8 +217,7 @@ export default function CreateNoteScreen({navigation}) {
         description !== '' &&
         price !== ''
       ) {
-        console.log(btnDisableTempControl);
-       return btnDisableTempControl();
+        return btnDisableTempControl();
       } else {
         return true;
       }
@@ -326,7 +300,9 @@ export default function CreateNoteScreen({navigation}) {
                 <SearchDropdown
                   items={universitiesData}
                   onItemSelect={setUniversity}
-                  placeHolder={university === null ? "Select university" : university.name}
+                  placeHolder={
+                    university === null ? 'Select university' : university.name
+                  }
                 />
               </View>
               <View>
@@ -336,7 +312,9 @@ export default function CreateNoteScreen({navigation}) {
                 <SearchDropdown
                   items={departmentsData}
                   onItemSelect={setDepartment}
-                  placeHolder={department === null ? 'Select department' : department.name}
+                  placeHolder={
+                    department === null ? 'Select department' : department.name
+                  }
                 />
               </View>
             </>
@@ -348,7 +326,7 @@ export default function CreateNoteScreen({navigation}) {
             <SearchDropdown
               items={terms}
               onItemSelect={setTerm}
-              placeHolder={term === null ? 'Select term' : term.name }
+              placeHolder={term === null ? 'Select term' : term.name}
             />
           </View>
 
@@ -395,9 +373,9 @@ export default function CreateNoteScreen({navigation}) {
                 ) : (
                   <View style={{flex: 5, paddingHorizontal: 10}}>
                     <TouchableOpacity onPress={selectMultipleImagesFromGallery}>
-                    <Text style={{fontWeight: '700'}}>
-                      You should pick min 1, max 20 pictures.
-                    </Text>
+                      <Text style={{fontWeight: '700'}}>
+                        You should pick min 1, max 20 pictures.
+                      </Text>
                     </TouchableOpacity>
                     <ScrollView horizontal={true}>
                       {Pictures !== null
@@ -420,11 +398,11 @@ export default function CreateNoteScreen({navigation}) {
                 )
               ) : (
                 <View style={{flex: 5}}>
-                 <TouchableOpacity onPress={selectMultipleImagesFromGallery}>
-                 <Text style={{fontWeight: '700'}}>
-                    You should pick min 1, max 20 pictures.
-                  </Text>
-                 </TouchableOpacity>
+                  <TouchableOpacity onPress={selectMultipleImagesFromGallery}>
+                    <Text style={{fontWeight: '700'}}>
+                      You should pick min 1, max 20 pictures.
+                    </Text>
+                  </TouchableOpacity>
                 </View>
               )}
 

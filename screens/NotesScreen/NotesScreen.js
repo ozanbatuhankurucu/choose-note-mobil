@@ -13,7 +13,9 @@ import {
   SafeAreaView,
   Image,
   RefreshControl,
-  ScrollView, Platform,Alert 
+  ScrollView,
+  Platform,
+  Alert,
 } from 'react-native';
 import moment from 'moment';
 let ScreenHeight = Dimensions.get('window').height;
@@ -39,10 +41,7 @@ export default function NotesScreen() {
     const allNotes = await API.graphql(graphqlOperation(queries.listNotes));
 
     setAllNotes(allNotes.data.listNotes.items);
-    //console.log(allNotes.data.listNotes.items); // result: { "data": { "listTodos": { "items": [/* ..... */] } } }
   };
- 
- 
 
   useEffect(() => {
     //getNotes();
@@ -62,8 +61,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-
 
 // {allNotes !== null ? (
 //   allNotes.map((note, index) => {

@@ -30,25 +30,38 @@ import {Storage, API} from 'aws-amplify';
 import * as queries from '../../graphql/queries';
 import {graphqlOperation} from 'aws-amplify';
 import {SearchContext} from '../../contexts/SearchContext/SearchContext';
+import {ShoppingCartContext} from '../../contexts/ShoppingCartContext/ShoppingCartContext';
+import debounce from 'lodash/debounce';
 import * as mutations from '../../graphql/mutations';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 function SearchNotesScreen({navigation}) {
-  const {searchedNotes} = useContext(SearchContext);
+  const {searchedNotes, setSearchedNotes} = useContext(SearchContext);
+  const {saveData} = useContext(ShoppingCartContext);
   const [loadImage, setLoadImage] = useState(false);
-  console.log(loadImage);
+  const [test, setTest] = useState(false);
   async function getPictureUrls(pictureUrls) {
     setLoadImage(true);
-    //console.log(pictureUrls);
     const tempArray = [];
     let picUrls = pictureUrls;
 
     const tempPicUrl = await Storage.get(picUrls[0].key);
-    //console.log(tempPicUrl);
     tempArray.push({url: tempPicUrl});
 
     setLoadImage(false);
     return tempArray;
+  }
+  function disableAddToCartButton(note) {
+    console.log(note)
+    let noteID = note.id;
+    let tempArray =searchedNotes
+    let objIndex;
+    //Find index of specific object using findIndex method.
+    objIndex = tempArray.findIndex((note) => note.id === noteID);
+    console.log(objIndex)
+    tempArray[objIndex].buttonDisableProperty = true;
+    console.log(tempArray)
+    setSearchedNotes(tempArray);
   }
   function _renderItem({item}) {
     return (
@@ -62,7 +75,7 @@ function SearchNotesScreen({navigation}) {
               />
             </View>
             <View style={{flex: 5}}>
-              <View style={{flexDirection: 'row',marginBottom:10}}>
+              <View style={{flexDirection: 'row', marginBottom: 10}}>
                 <View style={{flex: 5}}>
                   <Text style={{fontSize: 15, fontWeight: 'bold'}}>
                     {item.student.username}
@@ -82,14 +95,14 @@ function SearchNotesScreen({navigation}) {
               </View>
               {item.documents.length === 0 ? null : (
                 <TouchableOpacity
-                style={{borderRadius:10}}
+                  style={{borderRadius: 10}}
                   onPress={async () => {
                     const tempArray = await getPictureUrls(item.documents);
                     navigation.navigate('Image View', tempArray);
                   }}>
                   <ProgressImage
                     itemDocuments={item.documents}
-                    imgStyle={{ width: '100%', height: 200,borderRadius: 10}}
+                    imgStyle={{width: '100%', height: 200, borderRadius: 10}}
                   />
                 </TouchableOpacity>
               )}
@@ -121,30 +134,33 @@ function SearchNotesScreen({navigation}) {
               />
             ) : null}
           </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              marginTop: 15,
-              paddingHorizontal: 15,
-            }}>
+          <View style={styles.bottomCont}>
             <Text style={{fontSize: 11}}>
               {moment(item.createdAt).format('LLLL')}
             </Text>
-          </View>
-
-          <View
-            style={{
-              alignItems: 'flex-end',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}>
-            <View
+            <TouchableOpacity
               style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                paddingBottom: 12,
-              }}></View>
+                borderRadius: 4,
+                borderWidth: 1,
+                paddingVertical: 5,
+                paddingHorizontal: 15,
+                borderColor:
+                  item.buttonDisableProperty === true ? 'gray' : '#00509d',
+              }}
+              disabled={item.buttonDisableProperty === undefined ? false : true}
+              onPress={() => {
+                disableAddToCartButton(item);
+                saveData(item);
+              }}>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color:
+                    item.buttonDisableProperty === true ? 'gray' : '#00509d',
+                }}>
+                Add to cart
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
@@ -192,6 +208,14 @@ const styles = StyleSheet.create({
     top: windowHeight * 0.4,
     zIndex: 1,
     left: windowWidth * 0.5,
+  },
+  bottomCont: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+    marginTop: 15,
+    paddingHorizontal: 10,
+    marginBottom: 10,
   },
 });
 

@@ -1,5 +1,4 @@
 export function termConverter(termID) {
-    console.log(termID)
   if (termID === '1') {
     return 'First Term';
   } else if (termID === '2') {

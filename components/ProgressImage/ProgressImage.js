@@ -9,10 +9,8 @@ function ProgressImage({itemDocuments, imgStyle}) {
   
 
   async function getPicture(picKey) {
-    console.log(picKey);
     let tempPicUrl;
     tempPicUrl = await Storage.get(picKey);
-    console.log(tempPicUrl);
     if (tempPicUrl !== undefined) {
       setLoading(false);
       setImgUrl(tempPicUrl);
@@ -47,6 +45,7 @@ const styles = StyleSheet.create({
     top: -5,
     alignItems: 'center',
     zIndex: 1,
+    justifyContent:'center'
   },
   picLengthText: {
     fontSize: 11,

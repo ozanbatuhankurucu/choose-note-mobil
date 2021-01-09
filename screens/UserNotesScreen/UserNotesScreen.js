@@ -34,7 +34,6 @@ function UserNotesScreen({navigation}) {
   const [deleteNoteDetails, setDeleteNoteDetails] = useState();
   const [isDeleteSpinner, setIsDeleteSpinner] = useState(false);
 
-  console.log(deleteNoteDetails);
   const {
     user,
     setUser,
@@ -43,17 +42,13 @@ function UserNotesScreen({navigation}) {
     setUserNotes,
   } = useContext(UserContext);
   async function onEndReached() {
-    console.log('sonuna ulastik listenin');
     const nextNotes = await getNotesWithNexToken(user.owner);
-    console.log('satir 27 usernotesscreen');
-    console.log(nextNotes);
     if (nextNotes !== null) {
       setUserNotes((prev) => {
         return [...prev, ...nextNotes];
       });
     }
   }
-  console.log(userNotes);
   async function deleteNote() {
     setModalVisible(!modalVisible);
     let arr;
@@ -68,9 +63,9 @@ function UserNotesScreen({navigation}) {
         query: mutations.deleteNote,
         variables: {input: noteDetails},
       });
-      console.log(deletedNote);
+
       arr = userNotes.filter((item) => item.id !== deleteNoteDetails.id);
-      console.log(arr);
+
       setUserNotes(arr);
       setIsDeleteSpinner(false);
     } catch (e) {
@@ -79,12 +74,10 @@ function UserNotesScreen({navigation}) {
   }
   async function getPictureUrls(pictureUrls) {
     setIsDeleteSpinner(true);
-    console.log(pictureUrls);
     const tempArray = [];
     let picUrls = pictureUrls;
     for (const key of picUrls) {
       const tempPicUrl = await Storage.get(key.key);
-      console.log(tempPicUrl);
       tempArray.push({url: tempPicUrl});
     }
     setIsDeleteSpinner(false);
@@ -109,7 +102,7 @@ function UserNotesScreen({navigation}) {
                 onPress={async () => {
                   const tempArray = await getPictureUrls(item.documentFiles);
                   downloadFile(tempArray[0].url);
-                  console.log(tempArray);
+                  
                 }}>
                 <View style={styles.pdfFrame}>
                   <Text style={styles.pdfText}>PDF</Text>
@@ -138,38 +131,6 @@ function UserNotesScreen({navigation}) {
               {moment(item.createdAt).format('LLLL')}
             </Text>
           </View>
-
-          {/* <View>
-            <Text style={{fontWeight: 'bold'}}>{item.price}₺</Text>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              {item.documents.length === 0 ? null : (
-                <TouchableOpacity
-                  onPress={async () => {
-                    const tempArray = await getPictureUrls(item.documents);
-                    navigation.navigate('Image View', tempArray);
-                  }}>
-                  <EvilIcons name="image" size={32} color="green" />
-                </TouchableOpacity>
-              )}
-              {item.documentFiles.length === 0 ? null : (
-                <TouchableOpacity
-                  style={{
-                    marginLeft: 10,
-                  }}
-                  onPress={async () => {
-                    const tempArray = await getPictureUrls(item.documentFiles);
-                    downloadFile(tempArray[0].url);
-                    console.log(tempArray);
-                  }}>
-                  <Feather name="file" size={20} color="purple" />
-                </TouchableOpacity>
-              )}
-            </View>
-          </View> */}
         </View>
       </View>
     );

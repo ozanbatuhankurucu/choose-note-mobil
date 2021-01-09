@@ -24,7 +24,7 @@ export const SearchContextProvider = (props) => {
         query: queries.listNotes,
         variables: {filter: filter},
       });
-      console.log(allNotes.data.listNotes.items);
+     
       setIsSearching(false);
       if (allNotes.data.listNotes.items.length === 0) {
         setModalVisible(true);
@@ -32,12 +32,9 @@ export const SearchContextProvider = (props) => {
       } else {
         setSearchedNotes(allNotes.data.listNotes.items);
         result = true;
-        console.log(allNotes.data.listNotes.items.length);
+        
       }
-      console.log(allNotes.data.listNotes.items);
-      console.log('----');
-      console.log(allNotes.data.listNotes.nextToken);
-      console.log('----');
+     
     } catch (e) {
       console.log(e);
     }
@@ -50,7 +47,7 @@ export const SearchContextProvider = (props) => {
         isSearching,
         modalVisible,
         setModalVisible,
-        searchedNotes,
+        searchedNotes,setSearchedNotes
       }}>
       {props.children}
     </SearchContext.Provider>

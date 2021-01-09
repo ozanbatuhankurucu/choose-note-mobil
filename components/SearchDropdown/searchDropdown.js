@@ -15,7 +15,6 @@ export default function SearchDropdown({placeHolder, items, onItemSelect}) {
   return (
     <SearchableDropdown
       onItemSelect={(item) => {
-        console.log(item.name+'18.satir');
         onItemSelect(item);
       }}
       containerStyle={{paddingVertical: 8, width: ScreenWidth * 0.9}}

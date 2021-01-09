@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useState, useEffect,useContext} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   StyleSheet,
   Text,
@@ -21,7 +21,7 @@ import {terms} from '../../Datas/dropdownDatas';
 import SearchDropdown from '../../components/SearchDropdown/searchDropdown';
 import StandardTextInput from '../../components/StandardTextInput/standardTextInput';
 import Entypo from 'react-native-vector-icons/Entypo';
-import {API,graphqlOperation} from 'aws-amplify';
+import {API, graphqlOperation} from 'aws-amplify';
 import * as queries from '../../graphql/queries';
 import {SearchContext} from '../../contexts/SearchContext/SearchContext';
 
@@ -32,13 +32,14 @@ export default function SearchScreen({navigation}) {
   const [term, setTerm] = useState(null);
   const [department, setDepartment] = useState(null);
   const [lesson, setLesson] = useState('');
-  
-  const {searchNote,isSearching,modalVisible,setModalVisible} = useContext(SearchContext);
+
+  const {searchNote, isSearching, modalVisible, setModalVisible} = useContext(
+    SearchContext,
+  );
 
   async function getInputDatas() {
-  
     let filterArray = [];
-  
+
     if (university !== null) {
       filterArray.push({university: {eq: university.name}});
     }
@@ -51,22 +52,18 @@ export default function SearchScreen({navigation}) {
     if (lesson !== '') {
       filterArray.push({lesson: {contains: lesson.toLowerCase()}});
     }
-    console.log(filterArray);
-    
+
     let filter = {
       and: filterArray,
     };
-    const searchNavigationResult = await searchNote(filter)
-    console.log(searchNavigationResult)
-    if(searchNavigationResult===true){
-      setUniversity(null)
-      setTerm(null)
-      setDepartment(null)
-      setLesson('')
-      navigation.navigate('Searched Notes')
+    const searchNavigationResult = await searchNote(filter);
+    if (searchNavigationResult === true) {
+      setUniversity(null);
+      setTerm(null);
+      setDepartment(null);
+      setLesson('');
+      navigation.navigate('Searched Notes');
     }
-  
-  
   }
   function searchBtnDisableControl() {
     if (

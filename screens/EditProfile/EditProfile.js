@@ -39,14 +39,13 @@ function EditProfile({navigation}) {
       compressImageQuality: 0.3,
     })
       .then((image) => {
-        console.log(image);
         setImage(image);
       })
       .catch((e) => {
         console.log('Error', e);
       });
   }
-  console.log(user);
+
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
@@ -76,7 +75,7 @@ function EditProfile({navigation}) {
               </Text>
             </View>
           </View>
-          <View style={{paddingHorizontal: 15,marginTop:10}}>
+          <View style={{paddingHorizontal: 15, marginTop: 10}}>
             <Text style={{marginTop: 5}}>Name</Text>
             <StandardTextInput
               onChangeFunction={setName}

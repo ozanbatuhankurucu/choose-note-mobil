@@ -11,7 +11,6 @@ export default function StandardTextInput({
   maxVal,
   defVal,
 }) {
-  console.log(defVal)
   return (
     <TextInput
       style={{

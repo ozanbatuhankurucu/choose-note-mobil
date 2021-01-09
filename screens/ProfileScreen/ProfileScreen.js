@@ -26,18 +26,18 @@ const windowHeight = Dimensions.get('window').height;
 
 export default function ProfileScreen({navigation}) {
   const [userInfo, setUserInfo] = useState(null);
-  const {user} = useContext(UserContext);
-  console.log(user.ppTemp)
+  const {user, signOut} = useContext(UserContext);
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
-        <TouchableOpacity onPress={()=> navigation.navigate('Image View',[{url:user.profilePicture}])}>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('Image View', [{url: user.profilePicture}])
+          }>
           <Image
             source={{uri: user.profilePicture}}
             style={styles.pickUpImage}
           />
-
-        
         </TouchableOpacity>
       </View>
 
@@ -59,8 +59,11 @@ export default function ProfileScreen({navigation}) {
         iconName="note-multiple-outline"
         title="For Sale"
       />
-
-      
+      <ProfileCard
+        navigationPress={() => signOut()}
+        iconName="sign-out"
+        title="Sign out"
+      />
     </ScrollView>
   );
 }

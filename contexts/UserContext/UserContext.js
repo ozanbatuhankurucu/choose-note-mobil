@@ -23,12 +23,7 @@ export const UserContextProvider = (props) => {
   const [nextToken, setNextToken] = useState();
   const [userNotes, setUserNotes] = useState(null);
   const [progressCircle, setProgressCircle] = useState(false);
-  console.log(university +'satir 26')
-  console.log(department)
-  console.log(name)
-  console.log('satir 25 --------------------');
-  console.log(userNotes);
-  console.log('satir 25------------------------------');
+
   async function checkUser() {
     const unsubscribe = NetInfo.addEventListener(async (state) => {
       console.log('Connection type', state.type);
@@ -43,18 +38,13 @@ export const UserContextProvider = (props) => {
             }),
           );
 
-          console.log('---------');
-          console.log(currentUser.data.getUser);
-          // console.log(currentUser);
-          console.log(currentUser.data.getUser.owner);
-          //currentUser.data.getUser.ppTemp = ppUrl;
-
+        
           const notes = await getNotes(currentUser.data.getUser.owner);
           setUserNotes(notes);
 
           setUser(currentUser.data.getUser);
           setProgressCircle(false);
-          console.log('user', currentUser.data.getUser);
+         
         } catch (error) {
           console.log(error);
         }
@@ -64,12 +54,10 @@ export const UserContextProvider = (props) => {
       }
     });
   }
-  console.log(nextToken);
+
   async function getNotes(owner) {
     let firstOperation;
-    console.log(nextToken + 'nextTokeni bastigim yer');
-
-    console.log('next token null 43');
+    
     firstOperation = await API.graphql({
       query: queries.listNotes,
       variables: {
@@ -78,15 +66,14 @@ export const UserContextProvider = (props) => {
         limit: 10,
       },
     });
-    console.log(firstOperation.data.listNotes.nextToken);
+ 
     setNextToken(firstOperation.data.listNotes.nextToken);
 
-    console.log('satir 50');
-    console.log(firstOperation.data.listNotes.items);
+    
     return firstOperation.data.listNotes.items;
   }
   async function getNotesWithNexToken(owner) {
-    console.log(nextToken + 'nextTokeni bastigim yer withNextToken');
+  
 
     if (nextToken !== null) {
       let firstOperation;
@@ -100,7 +87,7 @@ export const UserContextProvider = (props) => {
         },
       });
 
-      console.log(firstOperation.data.listNotes);
+      
       setNextToken(firstOperation.data.listNotes.nextToken);
       return firstOperation.data.listNotes.items;
     } else {
@@ -108,7 +95,7 @@ export const UserContextProvider = (props) => {
     }
   }
   async function updateUserInfo() {
-    console.log('contextten tiklandi kanka satir 24');
+  
     let resultUrl;
     let resultUrlWithKey;
     if (
@@ -117,13 +104,12 @@ export const UserContextProvider = (props) => {
       university !== null ||
       department !== null
     ) {
-      console.log('icerdeyim baba 29.satir');
+     
       setUpdateProfileIsLoading(true);
       if (image !== null) {
         resultUrl = await storageService(image, 'profilePictures');
       }
-      console.log(user.id);
-      console.log(resultUrl);
+     
 
       const userDetails = {
         id: user.id,
@@ -142,7 +128,7 @@ export const UserContextProvider = (props) => {
         });
         let updatedUserTemp = updatedUser.data.updateUser;
 
-        console.log(updatedUserTemp);
+       
         setUser(updatedUserTemp);
         setUpdateProfileIsLoading(false);
       } catch (e) {
@@ -151,7 +137,7 @@ export const UserContextProvider = (props) => {
     }
   }
   function addNoteToUserNotes(newNote) {
-    console.log('addNoteToUSERnOTES');
+   
     setUserNotes((prev) => {
       const newArray = [newNote].concat(userNotes);
       return newArray;

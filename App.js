@@ -34,12 +34,15 @@ import EditProfile from './screens/EditProfile/EditProfile';
 import UserNotesScreen from './screens/UserNotesScreen/UserNotesScreen';
 import SearchNotesScreen from './screens/SearchNotesScreen/SearchNotesScreen';
 import ImageViewScreen from './screens/ImageViewScreen/ImageViewScreen';
+import ShoppingCartScreen from './screens/ShoppingCartScreen/ShoppingCartScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import PSHeaderRight from './components/PSHeaderRight/PSHeaderRight';
+import EditUserRight from './components/EditUserRight/EditUserRight';
+import ShoppingCartRight from './components/ShoppingCartRight/ShoppingCartRight';
 import {UserContextProvider} from './contexts/UserContext/UserContext';
 import {SearchContextProvider} from './contexts/SearchContext/SearchContext';
+import {ShoppingCartContextProvider} from './contexts/ShoppingCartContext/ShoppingCartContext';
 import {withAuthenticator, Authenticator} from 'aws-amplify-react-native';
 import NetInfo from '@react-native-community/netinfo';
 import Amplify from '@aws-amplify/core';
@@ -66,35 +69,35 @@ function Home({navigation}) {
         tabBarIcon: ({focused, color, size}) => {
           if (route.name === 'Notes') {
             return focused ? (
-              <MaterialCommunityIcons name="note" size={24} color="#403A3A" />
+              <MaterialCommunityIcons name="note" size={24} color="#1C56E6" />
             ) : (
               <MaterialCommunityIcons
                 name="note-outline"
                 size={24}
-                color="#A5A5A6"
+                color="#B7C6D9"
               />
             );
           } else if (route.name === 'Create Note') {
             return focused ? (
-              <Ionicons name="ios-add-circle" size={24} color="#403A3A" />
+              <Ionicons name="ios-add-circle" size={24} color="#1C56E6" />
             ) : (
               <Ionicons
                 name="ios-add-circle-outline"
                 size={24}
-                color="#A5A5A6"
+                color="#B7C6D9"
               />
             );
           } else if (route.name === 'Search Note') {
             return focused ? (
-              <Ionicons name="search" size={24} color="#403A3A" />
+              <Ionicons name="search" size={24} color="#1C56E6" />
             ) : (
-              <Ionicons name="search-outline" size={24} color="#A5A5A6" />
+              <Ionicons name="search-outline" size={24} color="#B7C6D9" />
             );
           } else if (route.name === 'Profile') {
             return focused ? (
-              <MaterialIcons name="person" size={24} color="#403A3A" />
+              <MaterialIcons name="person" size={24} color="#1C56E6" />
             ) : (
-              <MaterialIcons name="person-outline" size={24} color="#A5A5A6" />
+              <MaterialIcons name="person-outline" size={24} color="#B7C6D9" />
             );
           }
         },
@@ -152,51 +155,63 @@ const App = () => {
       case 'Search Note':
         return '';
       case 'Profile':
-        return <PSHeaderRight whichOperation="signOut" />;
+        return '';
     }
   }
 
   return (
     <>
-      <UserContextProvider>
-        <SearchContextProvider>
-          <NavigationContainer>
-            <Stack.Navigator>
-              <Stack.Screen
-                name="Notes"
-                component={Home}
-                options={({route}) => ({
-                  headerTitle: getHeaderTitle(route),
-                  headerRight: () => getHeaderIcon(route),
-                })}
-              />
-              <Stack.Screen name="Create Note" component={CreateNoteScreen} />
-              <Stack.Screen
-                name="Edit Profile"
-                component={EditProfile}
-                options={({route}) => ({
-                  headerRight: () => (
-                    <PSHeaderRight whichOperation="updateUserInfo" />
-                  ),
-                  headerRightContainerStyle: {
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    justifyContent: 'flex-start',
-                  },
-                })}
-              />
+      <ShoppingCartContextProvider>
+        <UserContextProvider>
+          <SearchContextProvider>
+            <NavigationContainer>
+              <Stack.Navigator>
+                <Stack.Screen
+                  name="NoteUp"
+                  component={Home}
+                  options={({route}) => ({
+                    //headerTitle: getHeaderTitle(route),
+                    headerRight: () => <ShoppingCartRight />,
+                    headerRightContainerStyle: styles.headerRightContStyle,
+                  })}
+                />
+                <Stack.Screen name="Create Note" component={CreateNoteScreen} />
+                <Stack.Screen
+                  name="Edit Profile"
+                  component={EditProfile}
+                  options={({route}) => ({
+                    headerRight: () => <EditUserRight />,
+                    headerRightContainerStyle: styles.headerRightContStyle,
+                  })}
+                />
 
-              <Stack.Screen name="For Sale" component={UserNotesScreen} />
-              <Stack.Screen name='Searched Notes'  component={SearchNotesScreen} />
-              <Stack.Screen
-                name="Image View"
-                component={ImageViewScreen}
-                options={{headerShown: false}}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </SearchContextProvider>
-      </UserContextProvider>
+                <Stack.Screen
+                  name="For Sale"
+                  component={UserNotesScreen}
+                  options={({route}) => ({
+                    headerRight: () => <ShoppingCartRight />,
+                    headerRightContainerStyle: styles.headerRightContStyle,
+                  })}
+                />
+                <Stack.Screen
+                  name="Searched Notes"
+                  component={SearchNotesScreen}
+                  options={({route}) => ({
+                    headerRight: () => <ShoppingCartRight />,
+                    headerRightContainerStyle: styles.headerRightContStyle,
+                  })}
+                />
+                <Stack.Screen
+                  name="Image View"
+                  component={ImageViewScreen}
+                  options={{headerShown: false}}
+                />
+                <Stack.Screen name="Your Cart" component={ShoppingCartScreen} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </SearchContextProvider>
+        </UserContextProvider>
+      </ShoppingCartContextProvider>
     </>
   );
 };
@@ -214,6 +229,12 @@ const styles = StyleSheet.create({
 
   highlight: {
     fontWeight: '700',
+  },
+  headerRightContStyle: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    marginRight: 10,
   },
 });
 

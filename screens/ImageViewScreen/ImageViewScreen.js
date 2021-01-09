@@ -1,11 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Modal,TouchableOpacity} from 'react-native';
+import {View, Text, Modal, TouchableOpacity} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import Entypo from 'react-native-vector-icons/Entypo';
 function ImageViewScreen({route, navigation}) {
-  //console.log(route.params)
-
- 
   return (
     <Modal visible={true} transparent={true}>
       <ImageViewer
@@ -21,8 +18,7 @@ function ImageViewScreen({route, navigation}) {
               marginTop: 8,
               marginRight: 8,
             }}
-            onPress={()=> navigation.goBack()}
-            >
+            onPress={() => navigation.goBack()}>
             <Entypo name="cross" size={26} color="white"></Entypo>
           </TouchableOpacity>
         )}
