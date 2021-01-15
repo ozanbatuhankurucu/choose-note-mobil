@@ -13,11 +13,9 @@ export const ShoppingCartContext = createContext();
 export const ShoppingCartContextProvider = (props) => {
   const [cartNotes, setCartNotes] = useState(null);
 
-  const myArray = ['ozan', 'batuhan'];
-  console.log(cartNotes);
+  
 
   const saveData = async (note) => {
-    console.log('bir kere girdim');
 
     let tempArray = cartNotes;
     let newNote = {
@@ -52,14 +50,16 @@ export const ShoppingCartContextProvider = (props) => {
   };
 
   const readData = async () => {
+    setProgressCircle(true);
     try {
       const cartNotes = await AsyncStorage.getItem(STORAGE_KEY);
-      console.log(cartNotes + 'Cart noes 27.satir');
+     
       if (cartNotes !== null) {
         setCartNotes(JSON.parse(cartNotes));
       } else {
         setCartNotes([]);
       }
+      setProgressCircle(false);
     } catch (e) {
       console.log('Failed to fetch the data from storage', e);
     }

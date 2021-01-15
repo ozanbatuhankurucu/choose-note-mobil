@@ -31,14 +31,14 @@ import {Storage, API} from 'aws-amplify';
 import * as queries from '../../graphql/queries';
 import {graphqlOperation} from 'aws-amplify';
 import {SearchContext} from '../../contexts/SearchContext/SearchContext';
-import {ShoppingCartContext} from '../../contexts/ShoppingCartContext/ShoppingCartContext';
+import {UserContext} from '../../contexts/UserContext/UserContext';
 import debounce from 'lodash/debounce';
 import * as mutations from '../../graphql/mutations';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 function SearchNotesScreen({navigation}) {
   const {searchedNotes, setSearchedNotes} = useContext(SearchContext);
-  const {saveData, cartNotes} = useContext(ShoppingCartContext);
+  const {saveData,cartNotes} = useContext(UserContext);
   const [loadImage, setLoadImage] = useState(false);
   const [test, setTest] = useState(false);
   async function getPictureUrls(pictureUrls) {
@@ -52,22 +52,10 @@ function SearchNotesScreen({navigation}) {
     setLoadImage(false);
     return tempArray;
   }
-  // function disableAddToCartButton(note) {
-
-  //   let noteID = note.id;
-  //   let tempArray = searchedNotes;
-  //   let objIndex;
-  //   //Find index of specific object using findIndex method.
-  //   objIndex = tempArray.findIndex((note) => note.id === noteID);
-  //   console.log(objIndex);
-  //   tempArray[objIndex].buttonDisableProperty = true;
-  //   console.log(tempArray);
-  //   setSearchedNotes(tempArray);
-  // }
+ 
   console.log(cartNotes + '67');
   function isInCartControl(cameNote) {
     let result = false;
-    console.log(cartNotes);
     cartNotes.forEach((note) => {
       if (note.id === cameNote.id) {
         result = true;

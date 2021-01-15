@@ -42,7 +42,6 @@ import EditUserRight from './components/EditUserRight/EditUserRight';
 import ShoppingCartRight from './components/ShoppingCartRight/ShoppingCartRight';
 import {UserContextProvider} from './contexts/UserContext/UserContext';
 import {SearchContextProvider} from './contexts/SearchContext/SearchContext';
-import {ShoppingCartContextProvider} from './contexts/ShoppingCartContext/ShoppingCartContext';
 import {withAuthenticator, Authenticator} from 'aws-amplify-react-native';
 import NetInfo from '@react-native-community/netinfo';
 import Amplify from '@aws-amplify/core';
@@ -161,7 +160,7 @@ const App = () => {
 
   return (
     <>
-      <ShoppingCartContextProvider>
+      
         <UserContextProvider>
           <SearchContextProvider>
             <NavigationContainer>
@@ -211,7 +210,7 @@ const App = () => {
             </NavigationContainer>
           </SearchContextProvider>
         </UserContextProvider>
-      </ShoppingCartContextProvider>
+     
     </>
   );
 };

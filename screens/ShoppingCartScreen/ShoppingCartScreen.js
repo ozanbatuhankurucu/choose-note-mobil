@@ -11,13 +11,10 @@ import {
   Modal,
   LogBox,
 } from 'react-native';
-import {ShoppingCartContext} from '../../contexts/ShoppingCartContext/ShoppingCartContext';
+import {UserContext} from '../../contexts/UserContext/UserContext';
 function ShoppingCartScreen({navigation}) {
-  const {cartNotes} = useContext(ShoppingCartContext);
-  useEffect(() => {
-    console.log(typeof cartNotes);
-    console.log(cartNotes)
-  }, []);
+  const {cartNotes} = useContext(UserContext);
+  
   return (
     <>
       <View>

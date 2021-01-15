@@ -3,7 +3,7 @@ import {View, StyleSheet, Text, Alert} from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {useNavigation} from '@react-navigation/native';
 import {UserContext} from '../../contexts/UserContext/UserContext';
-import {ShoppingCartContext} from '../../contexts/ShoppingCartContext/ShoppingCartContext';
+
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 function ShoppingCartRight() {
@@ -12,10 +12,8 @@ function ShoppingCartRight() {
     setName,
     setImage,
     setUniversity,
-    setDepartment,
+    setDepartment,cartNotes
   } = useContext(UserContext);
-  const {cartNotes} = useContext(ShoppingCartContext);
-  console.log(cartNotes)
   const navigation = useNavigation();
 
   return (

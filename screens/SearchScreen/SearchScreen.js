@@ -24,6 +24,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {API, graphqlOperation} from 'aws-amplify';
 import * as queries from '../../graphql/queries';
 import {SearchContext} from '../../contexts/SearchContext/SearchContext';
+import {UserContext} from '../../contexts/UserContext/UserContext';
 
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
@@ -37,9 +38,12 @@ export default function SearchScreen({navigation}) {
     SearchContext,
   );
 
+  const {user} = useContext(UserContext);
+
   async function getInputDatas() {
     let filterArray = [];
 
+    filterArray.push({owner: {ne: user.username}});
     if (university !== null) {
       filterArray.push({university: {eq: university.name}});
     }

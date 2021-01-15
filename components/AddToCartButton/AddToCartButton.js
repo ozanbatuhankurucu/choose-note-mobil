@@ -1,11 +1,12 @@
 import {TouchableOpacity, Text} from 'react-native';
 import React, {useState, useContext} from 'react';
-import {ShoppingCartContext} from '../../contexts/ShoppingCartContext/ShoppingCartContext';
+import {UserContext} from '../../contexts/UserContext/UserContext';
 
 function AddToCartButton({note, isInCart}) {
   const [executing, setExecuting] = useState(false);
-  const {saveData} = useContext(ShoppingCartContext);
-  console.log(isInCart)
+  const {
+   saveData
+  } = useContext(UserContext);
   const onRealClick = async (event) => {
     setExecuting(true);
     await saveData(note);

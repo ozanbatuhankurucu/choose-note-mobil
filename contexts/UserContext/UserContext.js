@@ -1,5 +1,5 @@
 import React, {createContext, useEffect, useState} from 'react';
-import {ActivityIndicator, View, Alert} from 'react-native';
+import {ActivityIndicator, View, Alert, AsyncStorage} from 'react-native';
 import NetInfo from '@react-native-community/netinfo';
 import {storageService} from '../../Services/storageService';
 import {Storage, API, graphqlOperation} from 'aws-amplify';
@@ -12,6 +12,7 @@ const {
   aws_user_files_s3_bucket_region: region,
   aws_user_files_s3_bucket: bucket,
 } = config;
+const STORAGE_KEY = '@cartNotes';
 export const UserContext = createContext();
 export const UserContextProvider = (props) => {
   const [user, setUser] = useState(null);
@@ -23,13 +24,15 @@ export const UserContextProvider = (props) => {
   const [nextToken, setNextToken] = useState();
   const [userNotes, setUserNotes] = useState(null);
   const [progressCircle, setProgressCircle] = useState(false);
-
+  const [cartNotes, setCartNotes] = useState(null);
   async function checkUser() {
     const unsubscribe = NetInfo.addEventListener(async (state) => {
       console.log('Connection type', state.type);
       console.log('Is connected?', state.isConnected);
       if (state.isConnected) {
         setProgressCircle(true);
+        // carttaki notlari cekiyoruz burada.
+        readData();
         try {
           const authUser = await Auth.currentAuthenticatedUser();
           const currentUser = await API.graphql(
@@ -38,13 +41,11 @@ export const UserContextProvider = (props) => {
             }),
           );
 
-        
           const notes = await getNotes(currentUser.data.getUser.owner);
           setUserNotes(notes);
 
           setUser(currentUser.data.getUser);
           setProgressCircle(false);
-         
         } catch (error) {
           console.log(error);
         }
@@ -57,7 +58,7 @@ export const UserContextProvider = (props) => {
 
   async function getNotes(owner) {
     let firstOperation;
-    
+
     firstOperation = await API.graphql({
       query: queries.listNotes,
       variables: {
@@ -66,15 +67,12 @@ export const UserContextProvider = (props) => {
         limit: 10,
       },
     });
- 
+
     setNextToken(firstOperation.data.listNotes.nextToken);
 
-    
     return firstOperation.data.listNotes.items;
   }
   async function getNotesWithNexToken(owner) {
-  
-
     if (nextToken !== null) {
       let firstOperation;
       firstOperation = await API.graphql({
@@ -87,7 +85,6 @@ export const UserContextProvider = (props) => {
         },
       });
 
-      
       setNextToken(firstOperation.data.listNotes.nextToken);
       return firstOperation.data.listNotes.items;
     } else {
@@ -95,7 +92,6 @@ export const UserContextProvider = (props) => {
     }
   }
   async function updateUserInfo() {
-  
     let resultUrl;
     let resultUrlWithKey;
     if (
@@ -104,20 +100,18 @@ export const UserContextProvider = (props) => {
       university !== null ||
       department !== null
     ) {
-     
       setUpdateProfileIsLoading(true);
       if (image !== null) {
         resultUrl = await storageService(image, 'profilePictures');
       }
-     
 
       const userDetails = {
         id: user.id,
         profilePicture:
           resultUrl !== undefined ? resultUrl : user.profilePicture,
         name: name !== null ? name : user.name,
-        university: university !== null ? university.name  : user.university,
-        department: department !== null ? department.name  : user.department
+        university: university !== null ? university.name : user.university,
+        department: department !== null ? department.name : user.department,
       };
       try {
         const updatedUser = await API.graphql({
@@ -128,7 +122,6 @@ export const UserContextProvider = (props) => {
         });
         let updatedUserTemp = updatedUser.data.updateUser;
 
-       
         setUser(updatedUserTemp);
         setUpdateProfileIsLoading(false);
       } catch (e) {
@@ -137,7 +130,6 @@ export const UserContextProvider = (props) => {
     }
   }
   function addNoteToUserNotes(newNote) {
-   
     setUserNotes((prev) => {
       const newArray = [newNote].concat(userNotes);
       return newArray;
@@ -150,6 +142,50 @@ export const UserContextProvider = (props) => {
       console.log('error signing out: ', error);
     }
   }
+  const readData = async () => {
+    try {
+      const cartNotes = await AsyncStorage.getItem(STORAGE_KEY);
+      if (cartNotes !== null) {
+        setCartNotes(JSON.parse(cartNotes));
+      } else {
+        setCartNotes([]);
+      }
+    } catch (e) {
+      console.log('Failed to fetch the data from storage', e);
+    }
+  };
+  const saveData = async (note) => {
+    let tempArray = cartNotes;
+    let newNote = {
+      createdAt: note.createdAt,
+      department: note.department,
+      description: note.description,
+      documentFiles: note.documentFiles,
+      documents: note.documents,
+      id: note.id,
+      lesson: note.lesson,
+      owner: note.owner,
+      price: note.price,
+      ownerPP: note.student.profilePicture,
+    };
+
+    try {
+      let cartNotes = [];
+      await AsyncStorage.getItem(STORAGE_KEY)
+        .then((res) => {
+          if (res !== null) {
+            cartNotes = JSON.parse(res);
+          }
+        })
+        .catch((err) => console.log(err));
+      cartNotes.push(newNote);
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(cartNotes));
+      setCartNotes(cartNotes);
+      console.log(cartNotes.length + '=> cartNotes length');
+    } catch (e) {
+      console.log('Failed to save the data to the storage' + e);
+    }
+  };
   useEffect(() => {
     checkUser();
   }, []);
@@ -178,7 +214,10 @@ export const UserContextProvider = (props) => {
             getNotesWithNexToken,
             userNotes,
             setUserNotes,
-            setDepartment,setDepartment
+            setDepartment,
+            setDepartment,
+            cartNotes,
+            saveData,
           }}>
           {props.children}
         </UserContext.Provider>
