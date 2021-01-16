@@ -18,25 +18,22 @@ import {UserContext} from '../../contexts/UserContext/UserContext';
 import {Storage, API} from 'aws-amplify';
 import ProgressImage from '../../components/ProgressImage/ProgressImage';
 import CartCollapsable from '../../components/CartCollapsable/CartCollapsable';
+import Feather from 'react-native-vector-icons/Feather';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 function ShoppingCartScreen({navigation}) {
-  const {cartNotes} = useContext(UserContext);
-  const [totalAmountOfNotes, setTotalAmountOfNotes] = useState(null);
+  const {
+    cartNotes,
+    removeData,
+    setTotalAmountOfNotes,
+    totalAmountOfNotes,
+    totalOfCart,
+  } = useContext(UserContext);
+
   const [loadImage, setLoadImage] = useState(false);
 
   console.log(cartNotes.length);
 
-  const totalOfCart = () => {
-    console.log('icerdeyim');
-    let total = 0;
-    if (cartNotes.length !== 0) {
-      for (const prop in cartNotes) {
-        total += cartNotes[prop].price;
-      }
-      setTotalAmountOfNotes(total);
-    }
-  };
   async function getPictureUrls(pictureUrls) {
     setLoadImage(true);
     const tempArray = [];
@@ -71,6 +68,14 @@ function ShoppingCartScreen({navigation}) {
                   />
                 </TouchableOpacity>
               )}
+
+              {item.documents.length === 0 &&
+              item.documentFiles.length !== 0 ? (
+                <View style={styles.pdfFrame}>
+                  <Text style={styles.pdfText}>PDF</Text>
+                  <Feather name="download" size={20} color="#00509d" />
+                </View>
+              ) : null}
             </View>
             <View style={{flex: 8, paddingLeft: 8}}>
               <Text style={{fontWeight: 'bold'}}>
@@ -95,7 +100,7 @@ function ShoppingCartScreen({navigation}) {
               borderTopWidth: 1,
               borderColor: '#B7C6D9',
             }}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => removeData(item)}>
               <Text style={{color: '#1F93FF', fontSize: 12}}>Remove</Text>
             </TouchableOpacity>
           </View>
@@ -105,7 +110,7 @@ function ShoppingCartScreen({navigation}) {
   }
 
   useEffect(() => {
-    totalOfCart();
+    totalOfCart(cartNotes);
   }, []);
   return (
     <>
@@ -197,6 +202,20 @@ const styles = StyleSheet.create({
     top: windowHeight * 0.4,
     zIndex: 1,
     left: windowWidth * 0.5,
+  },
+  pdfFrame: {
+    width: 60,
+    height: 65,
+    borderWidth: 1,
+    borderRadius: 10,
+    borderColor: '#A2CDFF',
+    alignItems: 'center',
+    paddingTop: 8,
+  },
+  pdfText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#464647',
   },
 });
 

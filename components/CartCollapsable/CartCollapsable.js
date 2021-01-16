@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, Text,View} from 'react-native';
+import {TouchableOpacity, Text, View} from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import PostIcon from '../PostIcon/PostIcon';
+import moment from 'moment';
 import {termConverter} from '../../HelperFunctions/HelperFunctions';
 
 function CartCollapsable({note}) {
@@ -37,6 +38,19 @@ function CartCollapsable({note}) {
             iconSize={14}
             iconText={termConverter(note.termID)}
           />
+          <PostIcon
+            iconName="calendar"
+            iconSize={14}
+            iconText={moment(note.createdAt).format('LLLL')}
+          />
+          {note.documents.length !== 0 && note.documentFiles.length !== 0 ? (
+            <PostIcon
+              iconName="file"
+              iconSize={16}
+              iconText="download pdf file"
+              isDifferentStyle={true}
+            />
+          ) : null}
         </View>
       </Collapsible>
     </>

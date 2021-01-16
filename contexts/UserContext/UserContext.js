@@ -25,6 +25,7 @@ export const UserContextProvider = (props) => {
   const [userNotes, setUserNotes] = useState(null);
   const [progressCircle, setProgressCircle] = useState(false);
   const [cartNotes, setCartNotes] = useState(null);
+  const [totalAmountOfNotes, setTotalAmountOfNotes] = useState(null);
   async function checkUser() {
     const unsubscribe = NetInfo.addEventListener(async (state) => {
       console.log('Connection type', state.type);
@@ -73,7 +74,7 @@ export const UserContextProvider = (props) => {
     return firstOperation.data.notesByOwner.items;
   }
   async function getNotesWithNexToken(owner) {
-    console.log(nextToken)
+    console.log(nextToken);
     if (nextToken !== null) {
       let firstOperation;
       firstOperation = await API.graphql({
@@ -146,7 +147,7 @@ export const UserContextProvider = (props) => {
   const readData = async () => {
     try {
       const cartNotes = await AsyncStorage.getItem(STORAGE_KEY);
-      
+
       if (cartNotes !== null) {
         setCartNotes(JSON.parse(cartNotes));
       } else {
@@ -189,6 +190,23 @@ export const UserContextProvider = (props) => {
       console.log('Failed to save the data to the storage' + e);
     }
   };
+  const removeData = async (note) => {
+    console.log(note);
+    const result = cartNotes.filter((item) => item.id !== note.id);
+    await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+    setCartNotes(result);
+    totalOfCart(result);
+  };
+  const totalOfCart = (cartNotes) => {
+    console.log('icerdeyim');
+    let total = 0;
+    if (cartNotes.length !== 0) {
+      for (const prop in cartNotes) {
+        total += cartNotes[prop].price;
+      }
+      setTotalAmountOfNotes(total);
+    }
+  };
   useEffect(() => {
     checkUser();
     //AsyncStorage.clear()
@@ -222,6 +240,10 @@ export const UserContextProvider = (props) => {
             setDepartment,
             cartNotes,
             saveData,
+            removeData,
+            totalAmountOfNotes,
+            setTotalAmountOfNotes,
+            totalOfCart,
           }}>
           {props.children}
         </UserContext.Provider>

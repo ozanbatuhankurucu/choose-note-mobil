@@ -19,12 +19,12 @@ import {
   Modal,
   Alert,
 } from 'react-native';
-
 import {
   NavigationContainer,
   getFocusedRouteNameFromRoute,
 } from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {CommonActions} from '@react-navigation/native';
+import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import NotesScreen from './screens/NotesScreen/NotesScreen';
 import CreateNoteScreen from './screens/CreateNoteScreen/CreateNote';
@@ -40,6 +40,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import EditUserRight from './components/EditUserRight/EditUserRight';
 import ShoppingCartRight from './components/ShoppingCartRight/ShoppingCartRight';
+import GoBackCartScreen from './components/GoBackCartScreen/GoBackCartScreen';
 import {UserContextProvider} from './contexts/UserContext/UserContext';
 import {SearchContextProvider} from './contexts/SearchContext/SearchContext';
 import {withAuthenticator, Authenticator} from 'aws-amplify-react-native';
@@ -203,7 +204,13 @@ const App = () => {
                 component={ImageViewScreen}
                 options={{headerShown: false}}
               />
-              <Stack.Screen name="Your Cart" component={ShoppingCartScreen} />
+              <Stack.Screen
+                name="Your Cart"
+                component={ShoppingCartScreen}
+                options={({route}) => ({
+                  headerLeft: () => <GoBackCartScreen />,
+                })}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </SearchContextProvider>
