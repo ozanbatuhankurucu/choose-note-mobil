@@ -155,8 +155,11 @@ export const UserContextProvider = (props) => {
     }
   };
   const saveData = async (note) => {
+    console.log(note);
     let tempArray = cartNotes;
     let newNote = {
+      termID: note.termID,
+      university: note.university,
       createdAt: note.createdAt,
       department: note.department,
       description: note.description,
@@ -164,9 +167,7 @@ export const UserContextProvider = (props) => {
       documents: note.documents,
       id: note.id,
       lesson: note.lesson,
-      owner: note.owner,
       price: note.price,
-      ownerPP: note.student.profilePicture,
     };
 
     try {
