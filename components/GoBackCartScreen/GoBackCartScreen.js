@@ -6,15 +6,17 @@ import {SearchContext} from '../../contexts/SearchContext/SearchContext';
 
 function GoBackCartScreen() {
   const navigation = useNavigation();
-  const {searchedNotes, setSearchedNotes, searchNotesWithNexToken} = useContext(
-    SearchContext,
-  );
+  const {
+    searchedNotes,
+    setSearchedNotes,
+    searchNotesWithNexToken,
+    tempSearchedNotes,
+  } = useContext(SearchContext);
+  console.log(tempSearchedNotes);
   return (
     <HeaderBackButton
       onPress={() => {
-        console.log('geri butonu');
-        setSearchedNotes(searchedNotes);
-        navigation.goBack();
+        navigation.navigate('NoteUp');
       }}
       title="Info"
     />

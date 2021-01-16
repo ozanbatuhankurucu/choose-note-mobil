@@ -42,8 +42,6 @@ function SearchNotesScreen({navigation, route}) {
   );
   const {saveData, cartNotes} = useContext(UserContext);
   const [loadImage, setLoadImage] = useState(false);
-  const [test, setTest] = useState(false);
-  console.log(searchedNotes.length);
   async function onEndReached() {
     const nextSearchedNotes = await searchNotesWithNexToken(
       route.params.filter,

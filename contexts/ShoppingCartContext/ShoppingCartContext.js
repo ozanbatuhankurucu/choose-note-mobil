@@ -13,10 +13,7 @@ export const ShoppingCartContext = createContext();
 export const ShoppingCartContextProvider = (props) => {
   const [cartNotes, setCartNotes] = useState(null);
 
-  
-
   const saveData = async (note) => {
-
     let tempArray = cartNotes;
     let newNote = {
       createdAt: note.createdAt,
@@ -43,7 +40,6 @@ export const ShoppingCartContextProvider = (props) => {
       cartNotes.push(newNote);
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(cartNotes));
       setCartNotes(cartNotes);
-      console.log(cartNotes.length + '=> cartNotes length');
     } catch (e) {
       console.log('Failed to save the data to the storage' + e);
     }
@@ -53,7 +49,7 @@ export const ShoppingCartContextProvider = (props) => {
     setProgressCircle(true);
     try {
       const cartNotes = await AsyncStorage.getItem(STORAGE_KEY);
-     
+
       if (cartNotes !== null) {
         setCartNotes(JSON.parse(cartNotes));
       } else {
@@ -67,7 +63,6 @@ export const ShoppingCartContextProvider = (props) => {
   useEffect(() => {
     readData();
     //saveData();
-    
   }, []);
   return (
     <>

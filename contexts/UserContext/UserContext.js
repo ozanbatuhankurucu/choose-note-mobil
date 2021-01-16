@@ -185,20 +185,17 @@ export const UserContextProvider = (props) => {
       cartNotes.push(newNote);
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(cartNotes));
       setCartNotes(cartNotes);
-      console.log(cartNotes.length + '=> cartNotes length');
     } catch (e) {
       console.log('Failed to save the data to the storage' + e);
     }
   };
   const removeData = async (note) => {
-    console.log(note);
     const result = cartNotes.filter((item) => item.id !== note.id);
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(result));
     setCartNotes(result);
     totalOfCart(result);
   };
   const totalOfCart = (cartNotes) => {
-    console.log('icerdeyim');
     let total = 0;
     if (cartNotes.length !== 0) {
       for (const prop in cartNotes) {

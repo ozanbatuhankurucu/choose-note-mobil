@@ -17,8 +17,8 @@ export const SearchContextProvider = (props) => {
   const [isSearching, setIsSearching] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [nextToken, setNextToken] = useState();
+  const [tempSearchedNotes, setTempSearchedNotes] = useState();
   async function searchNote(filter) {
-    console.log(filter);
     let result;
     setIsSearching(true);
     // {
@@ -29,8 +29,7 @@ export const SearchContextProvider = (props) => {
       const allNotes = await API.graphql(
         graphqlOperation(queries.listNotes, {limit, filter}),
       );
-      console.log(allNotes.data);
-      console.log(allNotes.data.listNotes.items.length);
+
       setIsSearching(false);
       if (allNotes.data.listNotes.items.length === 0) {
         setModalVisible(true);
@@ -47,7 +46,7 @@ export const SearchContextProvider = (props) => {
     return result;
   }
   async function searchNotesWithNexToken(filter) {
-    console.log(nextToken)
+    console.log(nextToken);
     if (nextToken !== null) {
       let firstOperation;
       firstOperation = await API.graphql(
@@ -64,14 +63,14 @@ export const SearchContextProvider = (props) => {
       return null;
     }
   }
-  function sortNotesByCreatedAt(searchNotes) {
-    let sortedArray = searchNotes.sort(function (a, b) {
-      // Turn your strings into dates, and then subtract them
-      // to get a value that is either negative, positive, or zero.
-      return new Date(b.createdAt) - new Date(a.createdAt);
-    });
-    return sortedArray;
-  }
+  // function sortNotesByCreatedAt(searchNotes) {
+  //   let sortedArray = searchNotes.sort(function (a, b) {
+  //     // Turn your strings into dates, and then subtract them
+  //     // to get a value that is either negative, positive, or zero.
+  //     return new Date(b.createdAt) - new Date(a.createdAt);
+  //   });
+  //   return sortedArray;
+  // }
   return (
     <SearchContext.Provider
       value={{
@@ -81,7 +80,7 @@ export const SearchContextProvider = (props) => {
         setModalVisible,
         searchedNotes,
         setSearchedNotes,
-        searchNotesWithNexToken,
+        searchNotesWithNexToken,setTempSearchedNotes,tempSearchedNotes
       }}>
       {props.children}
     </SearchContext.Provider>

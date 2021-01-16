@@ -19,6 +19,9 @@ import {Storage, API} from 'aws-amplify';
 import ProgressImage from '../../components/ProgressImage/ProgressImage';
 import CartCollapsable from '../../components/CartCollapsable/CartCollapsable';
 import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {SearchContext} from '../../contexts/SearchContext/SearchContext';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 function ShoppingCartScreen({navigation}) {
@@ -29,10 +32,9 @@ function ShoppingCartScreen({navigation}) {
     totalAmountOfNotes,
     totalOfCart,
   } = useContext(UserContext);
-
+  const {searchedNotes, setSearchedNotes} = useContext(SearchContext);
   const [loadImage, setLoadImage] = useState(false);
-
-  console.log(cartNotes.length);
+  const [tempSearchedNotes, setTempSearchedNotes] = useState(null);
 
   async function getPictureUrls(pictureUrls) {
     setLoadImage(true);
@@ -115,8 +117,13 @@ function ShoppingCartScreen({navigation}) {
   return (
     <>
       {cartNotes.length === 0 ? (
-        <View style={{flex: 1}}>
-          <Text>cart bostur</Text>
+        <View style={{flex: 1, alignItems: 'center'}}>
+          <View style={{marginTop: 70, alignItems: 'center'}}>
+            <MaterialIcons name="add-shopping-cart" size={68} color="#1F93FF" />
+            <Text style={{marginTop: 35, fontWeight: '700', fontSize: 16,color:'#9898AD'}}>
+              Your Shopping Cart is Empty.
+            </Text>
+          </View>
         </View>
       ) : (
         <View style={{flex: 1}}>

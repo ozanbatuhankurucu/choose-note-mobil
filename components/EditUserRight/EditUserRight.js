@@ -15,7 +15,7 @@ function EditUserRight() {
   const navigation = useNavigation();
 
   return (
-    <View>
+    <View style={styles.profileHeaderIcon}>
       <Text
         style={styles.updateProfile}
         onPress={async () => {
@@ -36,7 +36,6 @@ export default EditUserRight;
 
 const styles = StyleSheet.create({
   profileHeaderIcon: {
-    marginTop: 10,
     marginRight: 10,
   },
   updateProfile: {
