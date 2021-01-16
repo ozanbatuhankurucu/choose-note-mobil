@@ -68,7 +68,7 @@ function Home({navigation}) {
         tabBarIcon: ({focused, color, size}) => {
           if (route.name === 'Notes') {
             return focused ? (
-              <MaterialCommunityIcons name="note" size={24} color="#1C56E6" />
+              <MaterialCommunityIcons name="note" size={24} color="#1F93FF" />
             ) : (
               <MaterialCommunityIcons
                 name="note-outline"
@@ -78,7 +78,7 @@ function Home({navigation}) {
             );
           } else if (route.name === 'Create Note') {
             return focused ? (
-              <Ionicons name="ios-add-circle" size={24} color="#1C56E6" />
+              <Ionicons name="ios-add-circle" size={24} color="#1F93FF" />
             ) : (
               <Ionicons
                 name="ios-add-circle-outline"
@@ -88,13 +88,13 @@ function Home({navigation}) {
             );
           } else if (route.name === 'Search Note') {
             return focused ? (
-              <Ionicons name="search" size={24} color="#1C56E6" />
+              <Ionicons name="search" size={24} color="#1F93FF" />
             ) : (
               <Ionicons name="search-outline" size={24} color="#B7C6D9" />
             );
           } else if (route.name === 'Profile') {
             return focused ? (
-              <MaterialIcons name="person" size={24} color="#1C56E6" />
+              <MaterialIcons name="person" size={24} color="#1F93FF" />
             ) : (
               <MaterialIcons name="person-outline" size={24} color="#B7C6D9" />
             );
@@ -160,57 +160,54 @@ const App = () => {
 
   return (
     <>
-      
-        <UserContextProvider>
-          <SearchContextProvider>
-            <NavigationContainer>
-              <Stack.Navigator>
-                <Stack.Screen
-                  name="NoteUp"
-                  component={Home}
-                  options={({route}) => ({
-                    //headerTitle: getHeaderTitle(route),
-                    headerRight: () => <ShoppingCartRight />,
-                    headerRightContainerStyle: styles.headerRightContStyle,
-                  })}
-                />
-                <Stack.Screen name="Create Note" component={CreateNoteScreen} />
-                <Stack.Screen
-                  name="Edit Profile"
-                  component={EditProfile}
-                  options={({route}) => ({
-                    headerRight: () => <EditUserRight />,
-                    headerRightContainerStyle: styles.headerRightContStyle,
-                  })}
-                />
+      <UserContextProvider>
+        <SearchContextProvider>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="NoteUp"
+                component={Home}
+                options={({route}) => ({
+                  //headerTitle: getHeaderTitle(route),
+                  headerRight: () => <ShoppingCartRight />,
+                  headerRightContainerStyle: styles.headerRightContStyle,
+                })}
+              />
+              <Stack.Screen name="Create Note" component={CreateNoteScreen} />
+              <Stack.Screen
+                name="Edit Profile"
+                component={EditProfile}
+                options={({route}) => ({
+                  headerRight: () => <EditUserRight />,
+                })}
+              />
 
-                <Stack.Screen
-                  name="For Sale"
-                  component={UserNotesScreen}
-                  options={({route}) => ({
-                    headerRight: () => <ShoppingCartRight />,
-                    headerRightContainerStyle: styles.headerRightContStyle,
-                  })}
-                />
-                <Stack.Screen
-                  name="Searched Notes"
-                  component={SearchNotesScreen}
-                  options={({route}) => ({
-                    headerRight: () => <ShoppingCartRight />,
-                    headerRightContainerStyle: styles.headerRightContStyle,
-                  })}
-                />
-                <Stack.Screen
-                  name="Image View"
-                  component={ImageViewScreen}
-                  options={{headerShown: false}}
-                />
-                <Stack.Screen name="Your Cart" component={ShoppingCartScreen} />
-              </Stack.Navigator>
-            </NavigationContainer>
-          </SearchContextProvider>
-        </UserContextProvider>
-     
+              <Stack.Screen
+                name="For Sale"
+                component={UserNotesScreen}
+                options={({route}) => ({
+                  headerRight: () => <ShoppingCartRight />,
+                  headerRightContainerStyle: styles.headerRightContStyle,
+                })}
+              />
+              <Stack.Screen
+                name="Searched Notes"
+                component={SearchNotesScreen}
+                options={({route}) => ({
+                  headerRight: () => <ShoppingCartRight />,
+                  headerRightContainerStyle: styles.headerRightContStyle,
+                })}
+              />
+              <Stack.Screen
+                name="Image View"
+                component={ImageViewScreen}
+                options={{headerShown: false}}
+              />
+              <Stack.Screen name="Your Cart" component={ShoppingCartScreen} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </SearchContextProvider>
+      </UserContextProvider>
     </>
   );
 };

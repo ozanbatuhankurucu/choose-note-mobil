@@ -1,19 +1,12 @@
 {
-  "function": {
-    "noteup397d678bPostConfirmation": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  },
   "auth": {
-    "noteup397d678b": {
+    "noteupd9fa056e": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
           "category": "function",
-          "resourceName": "noteup397d678bPostConfirmation",
+          "resourceName": "noteupd9fa056ePostConfirmation",
           "triggerProvider": "Cognito",
           "attributes": [
             "Arn",
@@ -29,7 +22,7 @@
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "noteup397d678b",
+          "resourceName": "noteupd9fa056e",
           "attributes": [
             "UserPoolId",
             "AppClientIDWeb",
@@ -49,7 +42,7 @@
           "defaultAuthentication": {
             "authenticationType": "AMAZON_COGNITO_USER_POOLS",
             "userPoolConfig": {
-              "userPoolId": "authnoteup397d678b"
+              "userPoolId": "authnoteupd9fa056e"
             }
           },
           "additionalAuthenticationProviders": []
@@ -57,14 +50,21 @@
       }
     }
   },
+  "function": {
+    "noteupd9fa056ePostConfirmation": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
   "storage": {
-    "s348d15118": {
+    "s3596c1cce": {
       "service": "S3",
       "providerPlugin": "awscloudformation",
       "dependsOn": [
         {
           "category": "auth",
-          "resourceName": "noteup397d678b",
+          "resourceName": "noteupd9fa056e",
           "attributes": [
             "UserPoolId"
           ]

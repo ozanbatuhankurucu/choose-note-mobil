@@ -89,8 +89,8 @@ export const listUsers = /* GraphQL */ `
   }
 `;
 export const getNote = /* GraphQL */ `
-  query GetNote($owner: String!, $createdAt: AWSDateTime!) {
-    getNote(owner: $owner, createdAt: $createdAt) {
+  query GetNote($id: ID!) {
+    getNote(id: $id) {
       id
       university
       termID
@@ -149,21 +149,11 @@ export const getNote = /* GraphQL */ `
 `;
 export const listNotes = /* GraphQL */ `
   query ListNotes(
-    $owner: String
-    $createdAt: ModelStringKeyConditionInput
     $filter: ModelNoteFilterInput
     $limit: Int
     $nextToken: String
-    $sortDirection: ModelSortDirection
   ) {
-    listNotes(
-      owner: $owner
-      createdAt: $createdAt
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
+    listNotes(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         university
@@ -352,6 +342,92 @@ export const getOrder = /* GraphQL */ `
         updatedAt
       }
       notes {
+        termID
+        university
+        createdAt
+        department
+        description
+        documentFiles {
+          bucket
+          region
+          key
+        }
+        documents {
+          bucket
+          region
+          key
+        }
+        id
+        lesson
+        price
+      }
+      totalPrice
+      owner
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listOrders = /* GraphQL */ `
+  query ListOrders(
+    $filter: ModelOrderFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        user {
+          id
+          username
+          owner
+          email
+          iban
+          address
+          profilePicture
+          name
+          university
+          department
+          createdAt
+          updatedAt
+        }
+        notes {
+          termID
+          university
+          createdAt
+          department
+          description
+          id
+          lesson
+          price
+        }
+        totalPrice
+        owner
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const notesByOwner = /* GraphQL */ `
+  query NotesByOwner(
+    $owner: String
+    $createdAt: ModelStringKeyConditionInput
+    $sortDirection: ModelSortDirection
+    $filter: ModelNoteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    notesByOwner(
+      owner: $owner
+      createdAt: $createdAt
+      sortDirection: $sortDirection
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
+      items {
         id
         university
         termID
@@ -388,53 +464,6 @@ export const getOrder = /* GraphQL */ `
           createdAt
           updatedAt
         }
-        updatedAt
-      }
-      totalPrice
-      owner
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listOrders = /* GraphQL */ `
-  query ListOrders(
-    $filter: ModelOrderFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        user {
-          id
-          username
-          owner
-          email
-          iban
-          address
-          profilePicture
-          name
-          university
-          department
-          createdAt
-          updatedAt
-        }
-        notes {
-          id
-          university
-          termID
-          department
-          lesson
-          description
-          price
-          owner
-          createdAt
-          updatedAt
-        }
-        totalPrice
-        owner
-        createdAt
         updatedAt
       }
       nextToken

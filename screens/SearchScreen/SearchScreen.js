@@ -66,7 +66,7 @@ export default function SearchScreen({navigation}) {
       setTerm(null);
       setDepartment(null);
       setLesson('');
-      navigation.navigate('Searched Notes');
+      navigation.navigate('Searched Notes',{filter});
     }
   }
   function searchBtnDisableControl() {

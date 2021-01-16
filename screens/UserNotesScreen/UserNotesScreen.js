@@ -93,7 +93,7 @@ function UserNotesScreen({navigation}) {
         <View style={styles.boxWithShadow}>
           <View style={styles.firstRow}>
             <Text style={styles.itemLesson}>{item.lesson}</Text>
-            <Text style={{fontWeight: 'bold'}}>{item.price}₺</Text>
+            <Text style={{fontWeight: 'bold'}}>{item.price} TL</Text>
           </View>
           <Text style={styles.itemDescription}>{item.description}</Text>
           <View style={styles.files}>

@@ -15,7 +15,7 @@ function EditUserRight() {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.profileHeaderIcon}>
+    <View>
       <Text
         style={styles.updateProfile}
         onPress={async () => {

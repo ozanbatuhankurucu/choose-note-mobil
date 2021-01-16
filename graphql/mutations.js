@@ -614,43 +614,24 @@ export const createOrder = /* GraphQL */ `
         updatedAt
       }
       notes {
-        id
-        university
         termID
+        university
+        createdAt
         department
-        lesson
         description
-        documents {
-          bucket
-          region
-          key
-        }
         documentFiles {
           bucket
           region
           key
         }
+        documents {
+          bucket
+          region
+          key
+        }
+        id
+        lesson
         price
-        comments {
-          nextToken
-        }
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          iban
-          address
-          profilePicture
-          name
-          university
-          department
-          createdAt
-          updatedAt
-        }
-        updatedAt
       }
       totalPrice
       owner
@@ -690,43 +671,24 @@ export const updateOrder = /* GraphQL */ `
         updatedAt
       }
       notes {
-        id
-        university
         termID
+        university
+        createdAt
         department
-        lesson
         description
-        documents {
-          bucket
-          region
-          key
-        }
         documentFiles {
           bucket
           region
           key
         }
+        documents {
+          bucket
+          region
+          key
+        }
+        id
+        lesson
         price
-        comments {
-          nextToken
-        }
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          iban
-          address
-          profilePicture
-          name
-          university
-          department
-          createdAt
-          updatedAt
-        }
-        updatedAt
       }
       totalPrice
       owner
@@ -766,43 +728,24 @@ export const deleteOrder = /* GraphQL */ `
         updatedAt
       }
       notes {
-        id
-        university
         termID
+        university
+        createdAt
         department
-        lesson
         description
-        documents {
-          bucket
-          region
-          key
-        }
         documentFiles {
           bucket
           region
           key
         }
+        documents {
+          bucket
+          region
+          key
+        }
+        id
+        lesson
         price
-        comments {
-          nextToken
-        }
-        owner
-        createdAt
-        student {
-          id
-          username
-          owner
-          email
-          iban
-          address
-          profilePicture
-          name
-          university
-          department
-          createdAt
-          updatedAt
-        }
-        updatedAt
       }
       totalPrice
       owner

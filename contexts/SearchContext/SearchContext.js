@@ -9,14 +9,14 @@ import config from '../../aws-exports';
 import * as queries from '../../graphql/queries';
 import * as mutations from '../../graphql/mutations';
 import * as customqueries from '../../graphql/customqueries';
-
+const limit = 10;
 export const SearchContext = createContext();
 export const SearchContextProvider = (props) => {
   const {user} = useContext(UserContext);
   const [searchedNotes, setSearchedNotes] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [nextToken, setNextToken] = useState();
   async function searchNote(filter) {
     console.log(filter);
     let result;
@@ -26,11 +26,11 @@ export const SearchContextProvider = (props) => {
     //   variables: { filter: filter},
     // }
     try {
-      const limit = 1242;
       const allNotes = await API.graphql(
-        graphqlOperation(queries.listNotes, {filter}),
+        graphqlOperation(queries.listNotes, {limit, filter}),
       );
-      console.log(allNotes.data.listNotes.items);
+      console.log(allNotes.data);
+      console.log(allNotes.data.listNotes.items.length);
       setIsSearching(false);
       if (allNotes.data.listNotes.items.length === 0) {
         setModalVisible(true);
@@ -38,7 +38,7 @@ export const SearchContextProvider = (props) => {
       } else {
         //let sortedNotes = sortNotesByCreatedAt(allNotes);
         setSearchedNotes(allNotes.data.listNotes.items);
-
+        setNextToken(allNotes.data.listNotes.nextToken);
         result = true;
       }
     } catch (e) {
@@ -46,7 +46,24 @@ export const SearchContextProvider = (props) => {
     }
     return result;
   }
+  async function searchNotesWithNexToken(filter) {
+    console.log(nextToken)
+    if (nextToken !== null) {
+      let firstOperation;
+      firstOperation = await API.graphql(
+        graphqlOperation(queries.listNotes, {
+          limit: limit,
+          filter: filter,
+          nextToken: nextToken,
+        }),
+      );
 
+      setNextToken(firstOperation.data.listNotes.nextToken);
+      return firstOperation.data.listNotes.items;
+    } else {
+      return null;
+    }
+  }
   function sortNotesByCreatedAt(searchNotes) {
     let sortedArray = searchNotes.sort(function (a, b) {
       // Turn your strings into dates, and then subtract them
@@ -64,6 +81,7 @@ export const SearchContextProvider = (props) => {
         setModalVisible,
         searchedNotes,
         setSearchedNotes,
+        searchNotesWithNexToken,
       }}>
       {props.children}
     </SearchContext.Provider>

@@ -61,12 +61,12 @@
         "FunctionName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "noteup397d678bPostConfirmation",
+            "noteupd9fa056ePostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "noteup397d678bPostConfirmation",
+                  "noteupd9fa056ePostConfirmation",
                   "-",
                   {
                     "Ref": "env"
@@ -101,8 +101,8 @@
         "Runtime": "nodejs10.x",
         "Timeout": "25",
         "Code": {
-          "S3Bucket": "amplify-noteup-dev-174706-deployment",
-          "S3Key": "amplify-builds/noteup397d678bPostConfirmation-472f567761666562537a-build.zip"
+          "S3Bucket": "amplify-noteup-dev-35643-deployment",
+          "S3Key": "amplify-builds/noteupd9fa056ePostConfirmation-773245444746724c7841-build.zip"
         }
       }
     },
@@ -112,12 +112,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "noteup397d678bPostConfirmation",
+            "noteupd9fa056ePostConfirmation",
             {
               "Fn::Join": [
                 "",
                 [
-                  "noteup397d678bPostConfirmation",
+                  "noteupd9fa056ePostConfirmation",
                   "-",
                   {
                     "Ref": "env"

@@ -36,11 +36,25 @@ import debounce from 'lodash/debounce';
 import * as mutations from '../../graphql/mutations';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-function SearchNotesScreen({navigation}) {
-  const {searchedNotes, setSearchedNotes} = useContext(SearchContext);
-  const {saveData,cartNotes} = useContext(UserContext);
+function SearchNotesScreen({navigation, route}) {
+  const {searchedNotes, setSearchedNotes, searchNotesWithNexToken} = useContext(
+    SearchContext,
+  );
+  const {saveData, cartNotes} = useContext(UserContext);
   const [loadImage, setLoadImage] = useState(false);
   const [test, setTest] = useState(false);
+  console.log(searchedNotes.length);
+  async function onEndReached() {
+    const nextSearchedNotes = await searchNotesWithNexToken(
+      route.params.filter,
+    );
+    if (nextSearchedNotes !== null) {
+      setSearchedNotes((prev) => {
+        return [...prev, ...nextSearchedNotes];
+      });
+    }
+  }
+
   async function getPictureUrls(pictureUrls) {
     setLoadImage(true);
     const tempArray = [];
@@ -52,8 +66,7 @@ function SearchNotesScreen({navigation}) {
     setLoadImage(false);
     return tempArray;
   }
- 
-  console.log(cartNotes + '67');
+
   function isInCartControl(cameNote) {
     let result = false;
     cartNotes.forEach((note) => {
@@ -91,7 +104,7 @@ function SearchNotesScreen({navigation}) {
                     justifyContent: 'flex-end',
                   }}>
                   <Text style={{fontWeight: 'bold', fontSize: 15}}>
-                    {item.price}₺
+                    {item.price} TL
                   </Text>
                 </View>
               </View>
@@ -159,7 +172,7 @@ function SearchNotesScreen({navigation}) {
           return item.id;
         }}
         data={searchedNotes}
-        //onEndReached={onEndReached}
+        onEndReached={onEndReached}
         onEndReachedThreshold={0.1}
         renderItem={_renderItem}
       />

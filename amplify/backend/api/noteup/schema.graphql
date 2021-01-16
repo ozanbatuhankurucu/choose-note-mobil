@@ -16,7 +16,7 @@ type User
   profilePicture: String
   name: String
   university: String
-  department:String
+  department: String
   createdAt: String!
   notes: [Note] @connection(name: "userNotes")
   orders: [Order] @connection(name: "UserOrders")
@@ -25,7 +25,7 @@ type User
 
 type Note
   @model
-  @key(fields: ["owner", "createdAt"])
+  @key(name: "ByOwner", fields: ["owner", "createdAt"], queryField: "notesByOwner")
   @aws_cognito_user_pools
   @auth(
     rules: [
@@ -77,8 +77,20 @@ type Order
   @auth(rules: [{allow: owner, operations: [create, read, update, delete]}]) {
   id: ID!
   user: User @connection(name: "UserOrders")
-  notes: [Note]
+  notes: [OrderNote]
   totalPrice: Float
   owner: String
   createdAt: String!
+}
+type OrderNote {
+  termID: String
+  university: String
+  createdAt: String
+  department: String
+  description: String
+  documentFiles: [S3Object]
+  documents: [S3Object]
+  id: String
+  lesson: String
+  price: Float
 }

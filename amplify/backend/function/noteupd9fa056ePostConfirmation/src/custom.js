@@ -6,10 +6,9 @@ exports.handler = async (event, context, callback) => {
 
   let date = new Date();
 
-  const tableName = 'User-4t3qj766djfldlu2cnvfrkblpm-dev';
+  const tableName = 'User-thhlosrxyraodjqkxxirqlb4ba-dev';
   const region = 'eu-central-1';
-  const bucket = 'elma465e3c0417e547c9bd6e56b2048a968b32733-dev';
-  const url = 'https://elma465e3c0417e547c9bd6e56b2048a968b32733-dev.s3.eu-central-1.amazonaws.com/public/profilePictures/anonimpp.jpg';
+  const url = 'https://noteupb16334d6e3054dcf86e33a9c3f03c056174706-dev.s3.eu-central-1.amazonaws.com/public/profilePictures/anonimpp.jpg';
  
   console.log("table=" + tableName + " -- region=" + region);
 

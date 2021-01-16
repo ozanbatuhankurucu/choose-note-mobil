@@ -67,7 +67,7 @@ export const ShoppingCartContextProvider = (props) => {
   useEffect(() => {
     readData();
     //saveData();
-    //AsyncStorage.clear()
+    
   }, []);
   return (
     <>

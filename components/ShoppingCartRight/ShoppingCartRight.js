@@ -12,7 +12,8 @@ function ShoppingCartRight() {
     setName,
     setImage,
     setUniversity,
-    setDepartment,cartNotes
+    setDepartment,
+    cartNotes,
   } = useContext(UserContext);
   const navigation = useNavigation();
 
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
     color: '#464647',
   },
   shoppingCartCont: {
-    backgroundColor: 'rgba(95,197,123,0.8)',
+    backgroundColor: '#1F93FF',
     width: 17,
     height: 17,
     borderRadius: 17 / 2,

@@ -4,16 +4,15 @@
     "add-to-group",
     "custom"
   ],
-  "parentResource": "noteup397d678b",
-  "functionName": "noteup397d678bPostConfirmation",
-  "resourceName": "noteup397d678bPostConfirmation",
+  "parentResource": "noteupd9fa056e",
+  "functionName": "noteupd9fa056ePostConfirmation",
+  "resourceName": "noteupd9fa056ePostConfirmation",
   "parentStack": "auth",
-  "triggerEnvs": "[]",
+  "triggerEnvs": [],
   "triggerDir": "C:\\Users\\partn\\AppData\\Roaming\\npm\\node_modules\\@aws-amplify\\cli\\node_modules\\amplify-category-auth\\provider-utils\\awscloudformation\\triggers\\PostConfirmation",
   "triggerTemplate": "PostConfirmation.json.ejs",
-  "roleName": "noteup397d678bPostConfirmation",
+  "roleName": "noteupd9fa056ePostConfirmation",
   "skipEdit": true,
   "GROUP": "everyone",
-  "enableCors": false,
-  "triggerEventPath": "PostConfirmation.event.json"
+  "enableCors": false
 }

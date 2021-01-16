@@ -60,7 +60,7 @@ export const UserContextProvider = (props) => {
     let firstOperation;
 
     firstOperation = await API.graphql({
-      query: queries.listNotes,
+      query: queries.notesByOwner,
       variables: {
         owner: owner,
         sortDirection: 'DESC',
@@ -68,15 +68,16 @@ export const UserContextProvider = (props) => {
       },
     });
 
-    setNextToken(firstOperation.data.listNotes.nextToken);
+    setNextToken(firstOperation.data.notesByOwner.nextToken);
 
-    return firstOperation.data.listNotes.items;
+    return firstOperation.data.notesByOwner.items;
   }
   async function getNotesWithNexToken(owner) {
+    console.log(nextToken)
     if (nextToken !== null) {
       let firstOperation;
       firstOperation = await API.graphql({
-        query: queries.listNotes,
+        query: queries.notesByOwner,
         variables: {
           owner: owner,
           sortDirection: 'DESC',
@@ -85,8 +86,8 @@ export const UserContextProvider = (props) => {
         },
       });
 
-      setNextToken(firstOperation.data.listNotes.nextToken);
-      return firstOperation.data.listNotes.items;
+      setNextToken(firstOperation.data.notesByOwner.nextToken);
+      return firstOperation.data.notesByOwner.items;
     } else {
       return null;
     }
@@ -145,6 +146,7 @@ export const UserContextProvider = (props) => {
   const readData = async () => {
     try {
       const cartNotes = await AsyncStorage.getItem(STORAGE_KEY);
+      
       if (cartNotes !== null) {
         setCartNotes(JSON.parse(cartNotes));
       } else {
@@ -189,6 +191,7 @@ export const UserContextProvider = (props) => {
   };
   useEffect(() => {
     checkUser();
+    //AsyncStorage.clear()
   }, []);
 
   return (

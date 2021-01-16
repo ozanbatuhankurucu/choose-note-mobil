@@ -1,24 +1,24 @@
 {
   "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-noteup-dev-174706-authRole",
-      "UnauthRoleArn": "arn:aws:iam::121309892392:role/amplify-noteup-dev-174706-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::121309892392:role/amplify-noteup-dev-174706-authRole",
+      "AuthRoleName": "amplify-noteup-dev-35643-authRole",
+      "UnauthRoleArn": "arn:aws:iam::121309892392:role/amplify-noteup-dev-35643-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::121309892392:role/amplify-noteup-dev-35643-authRole",
       "Region": "eu-central-1",
-      "DeploymentBucketName": "amplify-noteup-dev-174706-deployment",
-      "UnauthRoleName": "amplify-noteup-dev-174706-unauthRole",
-      "StackName": "amplify-noteup-dev-174706",
-      "StackId": "arn:aws:cloudformation:eu-central-1:121309892392:stack/amplify-noteup-dev-174706/47508c60-4c83-11eb-97cb-02e71ad80288",
-      "AmplifyAppId": "dmv1ekolfsr3g"
+      "DeploymentBucketName": "amplify-noteup-dev-35643-deployment",
+      "UnauthRoleName": "amplify-noteup-dev-35643-unauthRole",
+      "StackName": "amplify-noteup-dev-35643",
+      "StackId": "arn:aws:cloudformation:eu-central-1:121309892392:stack/amplify-noteup-dev-35643/c3bc92c0-57d8-11eb-bc25-0a7551246bf8",
+      "AmplifyAppId": "d3d6eli9x8nwa8"
     },
     "categories": {
+      "auth": {
+        "noteupd9fa056e": {}
+      },
       "function": {
-        "noteup397d678bPostConfirmation": {
+        "noteupd9fa056ePostConfirmation": {
           "GROUP": "everyone"
         }
-      },
-      "auth": {
-        "noteup397d678b": {}
       }
     }
   }

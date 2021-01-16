@@ -16,8 +16,8 @@ import {
   LogBox,
   Alert,
   TextInput,
-  CheckBox,
 } from 'react-native';
+import CheckBox from '@react-native-community/checkbox';
 import universitiesData from '../../Datas/universities.json';
 import departmentsData from '../../Datas/departments.json';
 import {terms} from '../../Datas/dropdownDatas';
@@ -62,7 +62,7 @@ export default function CreateNoteScreen({navigation}) {
   const [sizeControl, setSizeControl] = useState(false);
   const [saveUserInfo, setSaveUserInfo] = useState(false);
   const maxKb = 10240000;
-
+  console.log(saveUserInfo);
   function selectMultipleImagesFromGallery() {
     ImagePicker.openPicker({
       multiple: true,
@@ -108,7 +108,7 @@ export default function CreateNoteScreen({navigation}) {
     const userDetails = {
       id: user.id,
       university: user.university === '' ? university.name : user.university,
-      department: user.university === '' ? department.name : user.department,
+      department: user.department === '' ? department.name : user.department,
     };
     try {
       const updatedUser = await API.graphql({
@@ -126,13 +126,18 @@ export default function CreateNoteScreen({navigation}) {
 
   async function createNote() {
     setIsUploadPicture(true);
-    if (
-      user.university === '' &&
-      user.department === '' &&
-      saveUserInfo === true
-    ) {
-      await updateUserUniAndDepartment();
+    if (saveUserInfo === true) {
+      console.log(user);
+      if (user.university === '' || user.department === '') {
+        await updateUserUniAndDepartment();
+      }
     }
+    // if (
+    //   user.university === '' ||
+    //   (user.department === '' && saveUserInfo === true)
+    // ) {
+
+    // }
 
     const pictureUrls = [];
     const fileDocumentUrls = [];
