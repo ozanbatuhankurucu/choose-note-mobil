@@ -23,7 +23,7 @@ export const UserContextProvider = (props) => {
   const [updateProfileIsLoading, setUpdateProfileIsLoading] = useState(false);
   const [nextToken, setNextToken] = useState();
   const [userNotes, setUserNotes] = useState(null);
-  const [progressCircle, setProgressCircle] = useState(false);
+  const [progressCircle, setProgressCircle] = useState(true);
   const [cartNotes, setCartNotes] = useState(null);
   const [totalAmountOfNotes, setTotalAmountOfNotes] = useState(null);
   async function checkUser() {
@@ -31,9 +31,9 @@ export const UserContextProvider = (props) => {
       console.log('Connection type', state.type);
       console.log('Is connected?', state.isConnected);
       if (state.isConnected) {
-        setProgressCircle(true);
         // carttaki notlari cekiyoruz burada.
-        readData();
+        await readData();
+        setProgressCircle(true);
         try {
           const authUser = await Auth.currentAuthenticatedUser();
           const currentUser = await API.graphql(
@@ -74,7 +74,6 @@ export const UserContextProvider = (props) => {
     return firstOperation.data.notesByOwner.items;
   }
   async function getNotesWithNexToken(owner) {
-    console.log(nextToken);
     if (nextToken !== null) {
       let firstOperation;
       firstOperation = await API.graphql({
@@ -158,7 +157,6 @@ export const UserContextProvider = (props) => {
     }
   };
   const saveData = async (note) => {
-    console.log(note);
     let tempArray = cartNotes;
     let newNote = {
       termID: note.termID,
@@ -211,7 +209,7 @@ export const UserContextProvider = (props) => {
 
   return (
     <>
-      {progressCircle ? (
+      {progressCircle === true ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ActivityIndicator size={'large'} color={'gray'} />
         </View>

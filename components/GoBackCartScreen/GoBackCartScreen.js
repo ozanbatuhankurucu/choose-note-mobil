@@ -12,7 +12,6 @@ function GoBackCartScreen() {
     searchNotesWithNexToken,
     tempSearchedNotes,
   } = useContext(SearchContext);
-  console.log(tempSearchedNotes);
   return (
     <HeaderBackButton
       onPress={() => {

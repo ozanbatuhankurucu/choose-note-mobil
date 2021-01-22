@@ -47,6 +47,20 @@ function ShoppingCartScreen({navigation}) {
     setLoadImage(false);
     return tempArray;
   }
+  function makeActiveAddToCartBtn(cartNote) {
+    let tempArray = [];
+    if (searchedNotes !== null) {
+      searchedNotes.forEach((note) => {
+        if (note.id === cartNote.id) {
+          note['isButtonActive'] = true;
+          tempArray.push(note);
+        } else {
+          tempArray.push(note);
+        }
+      });
+      setSearchedNotes(tempArray);
+    }
+  }
   function _renderItem({item}) {
     return (
       <View style={{paddingHorizontal: 20, paddingVertical: 5}} key={item.id}>
@@ -102,7 +116,11 @@ function ShoppingCartScreen({navigation}) {
               borderTopWidth: 1,
               borderColor: '#B7C6D9',
             }}>
-            <TouchableOpacity onPress={() => removeData(item)}>
+            <TouchableOpacity
+              onPress={() => {
+                makeActiveAddToCartBtn(item);
+                removeData(item);
+              }}>
               <Text style={{color: '#1F93FF', fontSize: 12}}>Remove</Text>
             </TouchableOpacity>
           </View>
@@ -120,7 +138,13 @@ function ShoppingCartScreen({navigation}) {
         <View style={{flex: 1, alignItems: 'center'}}>
           <View style={{marginTop: 70, alignItems: 'center'}}>
             <MaterialIcons name="add-shopping-cart" size={68} color="#1F93FF" />
-            <Text style={{marginTop: 35, fontWeight: '700', fontSize: 16,color:'#9898AD'}}>
+            <Text
+              style={{
+                marginTop: 35,
+                fontWeight: '700',
+                fontSize: 16,
+                color: '#9898AD',
+              }}>
               Your Shopping Cart is Empty.
             </Text>
           </View>

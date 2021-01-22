@@ -26,12 +26,12 @@ import {
 import {CommonActions} from '@react-navigation/native';
 import {createStackNavigator, HeaderBackButton} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import NotesScreen from './screens/NotesScreen/NotesScreen';
 import CreateNoteScreen from './screens/CreateNoteScreen/CreateNote';
-import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
-import SearchScreen from './screens/SearchScreen/SearchScreen';
 import EditProfile from './screens/EditProfile/EditProfile';
 import UserNotesScreen from './screens/UserNotesScreen/UserNotesScreen';
+import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
+import SearchScreen from './screens/SearchScreen/SearchScreen';
+import NotesScreen from './screens/NotesScreen/NotesScreen';
 import SearchNotesScreen from './screens/SearchNotesScreen/SearchNotesScreen';
 import ImageViewScreen from './screens/ImageViewScreen/ImageViewScreen';
 import ShoppingCartScreen from './screens/ShoppingCartScreen/ShoppingCartScreen';
@@ -124,10 +124,7 @@ function Home({navigation}) {
     </Tab.Navigator>
   );
 }
-
 const App = () => {
-  const [isConnected, setIsConnected] = useState(true);
-
   function getHeaderTitle(route) {
     // If the focused route is not found, we need to assume it's the initial screen
     // This can happen during if there hasn't been any navigation inside the screen
@@ -207,9 +204,9 @@ const App = () => {
               <Stack.Screen
                 name="Your Cart"
                 component={ShoppingCartScreen}
-                options={({route}) => ({
-                  headerLeft: () => <GoBackCartScreen />,
-                })}
+                // options={({route}) => ({
+                //   headerLeft: () => <GoBackCartScreen />,
+                // })}
               />
             </Stack.Navigator>
           </NavigationContainer>

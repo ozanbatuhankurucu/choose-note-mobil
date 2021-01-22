@@ -165,7 +165,7 @@ export default function SearchScreen({navigation}) {
               height: 50,
               borderRadius: 5,
               backgroundColor:
-                searchBtnDisableControl() === true ? '#CCC' : '#8ad7c1',
+                searchBtnDisableControl() === true ? '#CCC' : '#1F93FF',
             }}
             onPress={() => getInputDatas()}>
             <Text

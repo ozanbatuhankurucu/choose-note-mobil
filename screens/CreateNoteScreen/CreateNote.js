@@ -62,7 +62,6 @@ export default function CreateNoteScreen({navigation}) {
   const [sizeControl, setSizeControl] = useState(false);
   const [saveUserInfo, setSaveUserInfo] = useState(false);
   const maxKb = 10240000;
-  console.log(saveUserInfo);
   function selectMultipleImagesFromGallery() {
     ImagePicker.openPicker({
       multiple: true,

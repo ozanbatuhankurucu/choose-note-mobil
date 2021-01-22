@@ -47,12 +47,11 @@ export default function NotesScreen() {
     //getNotes();
   }, []);
   return (
-    <ScrollView
-      style={styles.container}
-      // refreshControl={
-      //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      // }
-    ></ScrollView>
+   <View>
+     <Text>
+       Ozan Kurucu
+     </Text>
+   </View>
   );
 }
 

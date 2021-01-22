@@ -46,7 +46,7 @@ export const SearchContextProvider = (props) => {
     return result;
   }
   async function searchNotesWithNexToken(filter) {
-    console.log(nextToken);
+   
     if (nextToken !== null) {
       let firstOperation;
       firstOperation = await API.graphql(

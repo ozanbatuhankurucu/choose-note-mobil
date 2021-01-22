@@ -158,9 +158,7 @@ function SearchNotesScreen({navigation, route}) {
       </View>
     );
   }
-  useEffect(() => {
-    console.log('kanka calistim')
-  }, [])
+
   return (
     <View style={styles.mainCont}>
       {loadImage === true ? (
