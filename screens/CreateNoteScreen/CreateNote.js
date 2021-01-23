@@ -438,7 +438,12 @@ export default function CreateNoteScreen({navigation}) {
                 borderRadius: 5,
               }}>
               <View style={{flex: 5}}>
-                <Text style={{fontWeight: '700'}}>Upload Pdf File</Text>
+                <Text style={{fontWeight: '700'}}>
+                  Upload Pdf File{' '}
+                  <Text style={{color: 'gray', fontWeight: '400'}}>
+                    (Max file size should be 10mb.)
+                  </Text>
+                </Text>
                 {sizeControl === true ? (
                   <Text style={{color: 'red'}}>
                     Please select a maximum file size of 10mb.
