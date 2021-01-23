@@ -31,6 +31,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import DocumentPicker from 'react-native-document-picker';
 import RadioButtonRN from 'radio-buttons-react-native';
 import NetInfo from '@react-native-community/netinfo';
+import ProgressCircle from 'react-native-progress-circle';
 import {
   storageService,
   storageServiceFile,
@@ -61,6 +62,17 @@ export default function CreateNoteScreen({navigation}) {
   const [file, setFile] = useState(null);
   const [sizeControl, setSizeControl] = useState(false);
   const [saveUserInfo, setSaveUserInfo] = useState(false);
+
+  const [totalFileSizes, setTotalFileSizes] = useState({
+    totalPicsFileSize: 0,
+    totalFileSize: 0,
+  });
+  const [accumulatingPicsFileSize, setAccumulatingPicsFileSize] = useState(0);
+   console.log(accumulatingPicsFileSize + ' ben biriken degerim');
+  //console.log(totalFileSizes.totalPicsFileSize + 'ben total pics sizeim');
+  // console.log(totalFileSizes);
+  // console.log(totalFileSizes.totalPicsFileSize +
+  //   totalFileSizes.totalFileSize)
   const maxKb = 10240000;
   function selectMultipleImagesFromGallery() {
     ImagePicker.openPicker({
@@ -71,6 +83,17 @@ export default function CreateNoteScreen({navigation}) {
       mediaType: 'photo',
     })
       .then((images) => {
+        let totalPicsSize = 0;
+        for (const pic of images) {
+          totalPicsSize += pic.size;
+        }
+        setTotalFileSizes((prev) => {
+          return {
+            ...prev,
+            totalPicsFileSize: totalPicsSize,
+          };
+        });
+        console.log(images);
         setPictures(images);
       })
       .catch((error) => {
@@ -89,6 +112,12 @@ export default function CreateNoteScreen({navigation}) {
       if (res.size < maxKb) {
         setFile(res);
         setSizeControl(false);
+        setTotalFileSizes((prev) => {
+          return {
+            ...prev,
+            totalFileSize: res.size,
+          };
+        });
       } else {
         setFile(null);
         setSizeControl(true);
@@ -140,22 +169,39 @@ export default function CreateNoteScreen({navigation}) {
 
     const pictureUrls = [];
     const fileDocumentUrls = [];
+    if (Pictures !== null) {
+      for (const pic of Pictures) {
+        const urlResult = await storageService(
+          pic,
+          'notes',
+          setAccumulatingPicsFileSize,
+        );
+        // if (file !== null) {
+        //   setUploadPercentage((prev) => prev + 100 / Pictures.length + 1);
+        // } else {
+        //   setUploadPercentage((prev) => prev + 100 / Pictures.length);
+        // }
 
+        pictureUrls.push({bucket: bucket, region: region, key: urlResult});
+      }
+    }
     if (file !== null) {
-      const fileUrlResult = await storageServiceFile(file, 'fileDocuments');
+      const fileUrlResult = await storageServiceFile(
+        file,
+        'fileDocuments',
+        setAccumulatingPicsFileSize,Pictures
+      );
+      // if (Pictures !== null) {
+      //   setUploadPercentage((prev) => prev + 100 / Pictures.length + 1);
+      // } else {
+      //   setUploadPercentage((prev) => prev + 100 / 1);
+      // }
 
       fileDocumentUrls.push({
         bucket: bucket,
         region: region,
         key: fileUrlResult,
       });
-    }
-    if (Pictures !== null) {
-      for (const pic of Pictures) {
-        const urlResult = await storageService(pic, 'notes');
-
-        pictureUrls.push({bucket: bucket, region: region, key: urlResult});
-      }
     }
 
     const noteDetails = {
@@ -235,7 +281,25 @@ export default function CreateNoteScreen({navigation}) {
     <>
       {isUploadPicture === true ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-          <ActivityIndicator size={'large'} color={'gray'} />
+          <ProgressCircle
+            percent={parseInt(
+              (accumulatingPicsFileSize * 100) /
+                (totalFileSizes.totalPicsFileSize +
+                  totalFileSizes.totalFileSize),
+            )}
+            radius={45}
+            borderWidth={8}
+            color="green"
+            shadowColor="#999"
+            bgColor="#fff">
+            <Text style={{fontSize: 18}}>
+              {parseInt(
+                (accumulatingPicsFileSize * 100) /
+                  (totalFileSizes.totalPicsFileSize +
+                    totalFileSizes.totalFileSize),
+              ) + '%'}
+            </Text>
+          </ProgressCircle>
         </View>
       ) : (
         <ScrollView

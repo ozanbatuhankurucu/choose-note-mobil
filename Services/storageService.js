@@ -6,7 +6,11 @@ const {
   aws_user_files_s3_bucket_region: region,
   aws_user_files_s3_bucket: bucket,
 } = config;
-export async function storageService(pic, folderName) {
+export async function storageService(
+  pic,
+  folderName,
+  setAccumulatingPicsFileSize,
+) {
   let picUrl;
 
   var testUUID = uuid.v1();
@@ -16,6 +20,16 @@ export async function storageService(pic, folderName) {
   let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
   await Storage.put(key, blob, {
     contentType: pic.mime,
+    progressCallback(progress) {
+      //example 7447/7447
+
+      if (progress.loaded / progress.total === 1) {
+        console.log('1 oldu kanka');
+        setAccumulatingPicsFileSize((prev) => prev + progress.total);
+      }
+
+      console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+    },
   })
     .then((data) => {
       if (folderName === 'profilePictures') {
@@ -29,7 +43,12 @@ export async function storageService(pic, folderName) {
   return picUrl;
 }
 
-export async function storageServiceFile(file, folderName) {
+export async function storageServiceFile(
+  file,
+  folderName,
+  setAccumulatingPicsFileSize,
+  Pictures,
+) {
   let fileUrl;
 
   var testUUID = uuid.v1();
@@ -39,6 +58,26 @@ export async function storageServiceFile(file, folderName) {
   let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
   await Storage.put(key, blob, {
     contentType: file.type,
+    progressCallback(progress) {
+      // if (progress.loaded / progress.total === 1) {
+      //   console.log('1 oldu kanka');
+      //   setAccumulatingPicsFileSize((prev) => prev + progress.total);
+      // }
+      if (Pictures === null) {
+        if (progress.loaded === progress.total) {
+          console.log('loaded ve total birbirine esit');
+          setAccumulatingPicsFileSize((prev) => prev + (progress.total - prev));
+        } else {
+          console.log('loaded ve total birbirine esit degil');
+          setAccumulatingPicsFileSize((prev) => prev + progress.loaded);
+        }
+      } else {
+        if (progress.loaded / progress.total === 1) {
+          setAccumulatingPicsFileSize((prev) => prev + progress.total);
+        }
+      }
+      console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+    },
   })
     .then((data) => {
       fileUrl = key;

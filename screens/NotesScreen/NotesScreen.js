@@ -18,6 +18,7 @@ import {
   Alert,
 } from 'react-native';
 import moment from 'moment';
+
 let ScreenHeight = Dimensions.get('window').height;
 let ScreenWidth = Dimensions.get('window').width;
 
@@ -47,11 +48,9 @@ export default function NotesScreen() {
     //getNotes();
   }, []);
   return (
-   <View>
-     <Text>
-       Ozan Kurucu
-     </Text>
-   </View>
+    <View>
+     
+    </View>
   );
 }
 

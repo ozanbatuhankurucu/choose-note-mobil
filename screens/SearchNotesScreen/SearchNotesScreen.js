@@ -148,9 +148,9 @@ function SearchNotesScreen({navigation, route}) {
             ) : null}
           </View>
           <View style={styles.bottomCont}>
-            <Text style={{fontSize: 11}}>
+            {/* <Text style={{fontSize: 11}}>
               {moment(item.createdAt).format('LLLL')}
-            </Text>
+            </Text> */}
 
             <AddToCartButton note={item} isInCart={isInCartControl(item)} />
           </View>
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   },
   bottomCont: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     alignItems: 'flex-end',
     marginTop: 15,
     paddingHorizontal: 10,
