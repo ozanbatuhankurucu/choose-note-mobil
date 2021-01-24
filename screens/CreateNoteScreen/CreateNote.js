@@ -68,9 +68,9 @@ export default function CreateNoteScreen({navigation}) {
     totalFileSize: 0,
   });
   const [accumulatingPicsFileSize, setAccumulatingPicsFileSize] = useState(0);
-   console.log(accumulatingPicsFileSize + ' ben biriken degerim');
+  console.log(accumulatingPicsFileSize + ' ben biriken degerim');
   //console.log(totalFileSizes.totalPicsFileSize + 'ben total pics sizeim');
-  // console.log(totalFileSizes);
+  console.log(totalFileSizes);
   // console.log(totalFileSizes.totalPicsFileSize +
   //   totalFileSizes.totalFileSize)
   const maxKb = 10240000;
@@ -160,12 +160,6 @@ export default function CreateNoteScreen({navigation}) {
         await updateUserUniAndDepartment();
       }
     }
-    // if (
-    //   user.university === '' ||
-    //   (user.department === '' && saveUserInfo === true)
-    // ) {
-
-    // }
 
     const pictureUrls = [];
     const fileDocumentUrls = [];
@@ -176,11 +170,6 @@ export default function CreateNoteScreen({navigation}) {
           'notes',
           setAccumulatingPicsFileSize,
         );
-        // if (file !== null) {
-        //   setUploadPercentage((prev) => prev + 100 / Pictures.length + 1);
-        // } else {
-        //   setUploadPercentage((prev) => prev + 100 / Pictures.length);
-        // }
 
         pictureUrls.push({bucket: bucket, region: region, key: urlResult});
       }
@@ -189,13 +178,9 @@ export default function CreateNoteScreen({navigation}) {
       const fileUrlResult = await storageServiceFile(
         file,
         'fileDocuments',
-        setAccumulatingPicsFileSize,Pictures
+        setAccumulatingPicsFileSize,
+        Pictures,
       );
-      // if (Pictures !== null) {
-      //   setUploadPercentage((prev) => prev + 100 / Pictures.length + 1);
-      // } else {
-      //   setUploadPercentage((prev) => prev + 100 / 1);
-      // }
 
       fileDocumentUrls.push({
         bucket: bucket,
@@ -223,9 +208,13 @@ export default function CreateNoteScreen({navigation}) {
         variables: {input: noteDetails},
       });
       addNoteToUserNotes(newNote.data.createNote);
-
       setIsUploadPicture(false);
       setModalVisible(true);
+      setAccumulatingPicsFileSize(0);
+      setTotalFileSizes({
+        totalPicsFileSize: 0,
+        totalFileSize: 0,
+      });
     } catch (e) {
       console.log(e);
     }

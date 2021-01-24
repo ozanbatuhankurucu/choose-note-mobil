@@ -21,14 +21,11 @@ export async function storageService(
   await Storage.put(key, blob, {
     contentType: pic.mime,
     progressCallback(progress) {
-      //example 7447/7447
-
       if (progress.loaded / progress.total === 1) {
-        console.log('1 oldu kanka');
         setAccumulatingPicsFileSize((prev) => prev + progress.total);
       }
 
-      console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+      //console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
     },
   })
     .then((data) => {
@@ -59,24 +56,14 @@ export async function storageServiceFile(
   await Storage.put(key, blob, {
     contentType: file.type,
     progressCallback(progress) {
-      // if (progress.loaded / progress.total === 1) {
-      //   console.log('1 oldu kanka');
-      //   setAccumulatingPicsFileSize((prev) => prev + progress.total);
-      // }
       if (Pictures === null) {
-        if (progress.loaded === progress.total) {
-          console.log('loaded ve total birbirine esit');
-          setAccumulatingPicsFileSize((prev) => prev + (progress.total - prev));
-        } else {
-          console.log('loaded ve total birbirine esit degil');
-          setAccumulatingPicsFileSize((prev) => prev + progress.loaded);
-        }
+        setAccumulatingPicsFileSize(progress.loaded);
       } else {
         if (progress.loaded / progress.total === 1) {
           setAccumulatingPicsFileSize((prev) => prev + progress.total);
         }
       }
-      console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
+      //console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
     },
   })
     .then((data) => {
