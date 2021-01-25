@@ -20,7 +20,6 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
-import {downloadFile} from '../../Services/downloadFileService';
 import ProgressImage from '../../components/ProgressImage/ProgressImage';
 import UserOwnNote from '../../components/UserOwnNote/UserOwnNote';
 import {Storage, API} from 'aws-amplify';
@@ -73,21 +72,6 @@ function UserNotesScreen({navigation}) {
       console.log(e);
     }
   }
-  async function getPictureUrls(pictureUrls) {
-    setIsDeleteSpinner(true);
-    const tempArray = [];
-    let picUrls = pictureUrls;
-    for (const key of picUrls) {
-      const tempPicUrl = await Storage.get(key.key);
-      tempArray.push({url: tempPicUrl});
-    }
-    setIsDeleteSpinner(false);
-    return tempArray;
-  }
-  async function getFirstPicture(picKey) {
-    const tempPicUrl = await Storage.get(picKey);
-    return tempPicUrl;
-  }
 
   return (
     <View style={{position: 'relative'}}>
@@ -136,7 +120,9 @@ function UserNotesScreen({navigation}) {
         data={userNotes}
         onEndReached={onEndReached}
         onEndReachedThreshold={0.1}
-        renderItem={({item}) => <UserOwnNote note={item} />}
+        renderItem={({item}) => (
+          <UserOwnNote note={item} setIsDeleteSpinner={setIsDeleteSpinner} />
+        )}
       />
     </View>
   );

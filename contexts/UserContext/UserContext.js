@@ -198,8 +198,9 @@ export const UserContextProvider = (props) => {
     if (cartNotes.length !== 0) {
       for (const prop in cartNotes) {
         total += cartNotes[prop].price;
+        console.log(cartNotes[prop].price)
       }
-      setTotalAmountOfNotes(total);
+      setTotalAmountOfNotes(total.toFixed(2));
     }
   };
   useEffect(() => {

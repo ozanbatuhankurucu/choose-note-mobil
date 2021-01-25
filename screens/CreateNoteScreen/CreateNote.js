@@ -331,12 +331,13 @@ export default function CreateNoteScreen({navigation}) {
             </Text>
             <View style={styles.TLSection}>
               <TextInput
-                maxLength={10}
+                maxLength={5}
                 style={styles.priceInput}
                 placeholder="Enter price"
                 keyboardType="numeric"
                 onChangeText={(val) => {
                   setPrice(parseFloat(val.replace(',', '.')).toFixed(2));
+                  console.log(parseFloat(val.replace(',', '.')).toFixed(2))
                 }}
               />
               <FontAwesome

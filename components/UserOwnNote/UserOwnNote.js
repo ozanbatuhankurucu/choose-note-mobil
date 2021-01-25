@@ -11,10 +11,25 @@ import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
 import ProgressImage from '../../components/ProgressImage/ProgressImage';
-
+import {downloadFile} from '../../Services/downloadFileService';
+import {useNavigation} from '@react-navigation/native';
+import {Storage, API} from 'aws-amplify';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const UserOwnNote = React.memo(({note}) => {
+const UserOwnNote = React.memo(({note,setIsDeleteSpinner}) => {
+  const navigation = useNavigation();
+  async function getPictureUrls(pictureUrls) {
+    setIsDeleteSpinner(true);
+    const tempArray = [];
+    let picUrls = pictureUrls;
+    for (const key of picUrls) {
+      const tempPicUrl = await Storage.get(key.key);
+      tempArray.push({url: tempPicUrl});
+    }
+    setIsDeleteSpinner(false);
+    return tempArray;
+  }
+
   return (
     <View key={note.id}>
       <View style={styles.boxWithShadow}>
