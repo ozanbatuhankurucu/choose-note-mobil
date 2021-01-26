@@ -33,7 +33,7 @@ function UserNotesScreen({navigation}) {
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteNoteDetails, setDeleteNoteDetails] = useState();
   const [isDeleteSpinner, setIsDeleteSpinner] = useState(false);
-
+  const [paginationLoading, setPaginationLoading] = useState(false);
   const {
     user,
     setUser,
@@ -41,14 +41,26 @@ function UserNotesScreen({navigation}) {
     userNotes,
     setUserNotes,
   } = useContext(UserContext);
+  const [
+    onEndReachedCalledDuringMomentum,
+    setOnEndReachedCalledDuringMomentum,
+  ] = useState();
+  const [counter, setCounter] = useState(0);
   async function onEndReached() {
+    console.log('onEndReached tetiklendi');
+    //setPaginationLoading(true);
     const nextNotes = await getNotesWithNexToken(user.owner);
+    //onsole.log(nextNotes)
     if (nextNotes !== null) {
+      //setPaginationLoading(false);
+      setCounter((prev) => prev + 1);
       setUserNotes((prev) => {
         return [...prev, ...nextNotes];
       });
     }
   }
+  console.log(counter);
+  console.log(userNotes.length);
   async function deleteNote() {
     setModalVisible(!modalVisible);
     let arr;
@@ -114,12 +126,21 @@ function UserNotesScreen({navigation}) {
         </View>
       ) : null}
       <FlatList
-        keyExtractor={(item, index) => {
-          return item.id;
-        }}
+        keyExtractor={(item, index) => String(index)}
         data={userNotes}
-        onEndReached={onEndReached}
+        onEndReached={() => {
+          if (!onEndReachedCalledDuringMomentum) {
+            onEndReached(); // LOAD MORE DATA
+            setOnEndReachedCalledDuringMomentum(true);
+          }
+        }}
         onEndReachedThreshold={0.1}
+        onMomentumScrollBegin={() => setOnEndReachedCalledDuringMomentum(false)}
+        ListFooterComponent={() =>
+          paginationLoading ? (
+            <ActivityIndicator size="large" color={'gray'} animating />
+          ) : null
+        }
         renderItem={({item}) => (
           <UserOwnNote note={item} setIsDeleteSpinner={setIsDeleteSpinner} />
         )}

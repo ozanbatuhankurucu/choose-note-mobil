@@ -29,9 +29,9 @@ const UserOwnNote = React.memo(({note,setIsDeleteSpinner}) => {
     setIsDeleteSpinner(false);
     return tempArray;
   }
-
+//console.log(note)
   return (
-    <View key={note.id}>
+    <View>
       <View style={styles.boxWithShadow}>
         <View style={styles.firstRow}>
           <Text style={styles.itemLesson}>{note.lesson}</Text>
