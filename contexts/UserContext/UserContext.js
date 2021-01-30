@@ -56,7 +56,6 @@ export const UserContextProvider = (props) => {
       }
     });
   }
-  console.log(nextToken)
   async function getNotes(owner) {
     let firstOperation;
 

@@ -45,22 +45,19 @@ function UserNotesScreen({navigation}) {
     onEndReachedCalledDuringMomentum,
     setOnEndReachedCalledDuringMomentum,
   ] = useState();
-  const [counter, setCounter] = useState(0);
+
   async function onEndReached() {
-    console.log('onEndReached tetiklendi');
-    //setPaginationLoading(true);
+    setPaginationLoading(true);
     const nextNotes = await getNotesWithNexToken(user.owner);
-    //onsole.log(nextNotes)
+
     if (nextNotes !== null) {
-      //setPaginationLoading(false);
-      setCounter((prev) => prev + 1);
       setUserNotes((prev) => {
         return [...prev, ...nextNotes];
       });
+    } else {
+      setPaginationLoading(false);
     }
   }
-  console.log(counter);
-  console.log(userNotes.length);
   async function deleteNote() {
     setModalVisible(!modalVisible);
     let arr;
@@ -138,7 +135,7 @@ function UserNotesScreen({navigation}) {
         onMomentumScrollBegin={() => setOnEndReachedCalledDuringMomentum(false)}
         ListFooterComponent={() =>
           paginationLoading ? (
-            <ActivityIndicator size="large" color={'gray'} animating />
+            <ActivityIndicator size="large" color={'green'} animating />
           ) : null
         }
         renderItem={({item}) => (

@@ -42,14 +42,27 @@ function SearchNotesScreen({navigation, route}) {
   );
   const {saveData, cartNotes} = useContext(UserContext);
   const [loadImage, setLoadImage] = useState(false);
+  const [
+    onEndReachedCalledDuringMomentum,
+    setOnEndReachedCalledDuringMomentum,
+  ] = useState();
+  const [paginationLoading, setPaginationLoading] = useState(false);
+
+  console.log(searchedNotes.length);
   async function onEndReached() {
+    console.log('onendreached');
+    setPaginationLoading(true);
     const nextSearchedNotes = await searchNotesWithNexToken(
       route.params.filter,
     );
-    if (nextSearchedNotes !== null) {
+    console.log(nextSearchedNotes);
+
+    if (nextSearchedNotes !== null && nextSearchedNotes.length !== 0) {
       setSearchedNotes((prev) => {
         return [...prev, ...nextSearchedNotes];
       });
+    } else {
+      setPaginationLoading(false);
     }
   }
 
@@ -148,9 +161,9 @@ function SearchNotesScreen({navigation, route}) {
             ) : null}
           </View>
           <View style={styles.bottomCont}>
-            {/* <Text style={{fontSize: 11}}>
+            <Text style={{fontSize: 11}}>
               {moment(item.createdAt).format('LLLL')}
-            </Text> */}
+            </Text>
 
             <AddToCartButton note={item} isInCart={isInCartControl(item)} />
           </View>
@@ -167,17 +180,27 @@ function SearchNotesScreen({navigation, route}) {
         </View>
       ) : null}
       <FlatList
-        keyExtractor={(item, index) => {
-          return item.id;
-        }}
+        keyExtractor={(item, index) => item.id}
         data={searchedNotes}
-        onEndReached={onEndReached}
+        onEndReached={() => {
+          if (!onEndReachedCalledDuringMomentum) {
+            onEndReached(); // LOAD MORE DATA
+            setOnEndReachedCalledDuringMomentum(true);
+          }
+        }}
         onEndReachedThreshold={0.1}
+        ListFooterComponent={() =>
+          paginationLoading ? (
+            <ActivityIndicator size="large" color={'green'} animating />
+          ) : null
+        }
+        onMomentumScrollBegin={() => setOnEndReachedCalledDuringMomentum(false)}
         renderItem={_renderItem}
       />
     </View>
   );
 }
+//TODO bilerek keyExtractor da item.id koyuldu eger fazladan data cekilip ayni idler gelirse uygulama patlasin diye.
 
 const styles = StyleSheet.create({
   mainCont: {
@@ -204,7 +227,7 @@ const styles = StyleSheet.create({
   },
   bottomCont: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     alignItems: 'flex-end',
     marginTop: 15,
     paddingHorizontal: 10,

@@ -16,7 +16,7 @@ import {useNavigation} from '@react-navigation/native';
 import {Storage, API} from 'aws-amplify';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const UserOwnNote = React.memo(({note,setIsDeleteSpinner}) => {
+const UserOwnNote = React.memo(({note, setIsDeleteSpinner}) => {
   const navigation = useNavigation();
   async function getPictureUrls(pictureUrls) {
     setIsDeleteSpinner(true);
@@ -29,9 +29,9 @@ const UserOwnNote = React.memo(({note,setIsDeleteSpinner}) => {
     setIsDeleteSpinner(false);
     return tempArray;
   }
-//console.log(note)
+  //console.log(note)
   return (
-    <View>
+    <View style={styles.userOwnNote}>
       <View style={styles.boxWithShadow}>
         <View style={styles.firstRow}>
           <Text style={styles.itemLesson}>{note.lesson}</Text>
@@ -78,6 +78,9 @@ const UserOwnNote = React.memo(({note,setIsDeleteSpinner}) => {
 });
 
 const styles = StyleSheet.create({
+  userOwnNote: {
+   paddingHorizontal:10
+  },
   boxWithShadow: {
     backgroundColor: '#fff',
     minHeight: 50,
@@ -85,6 +88,7 @@ const styles = StyleSheet.create({
     padding: 10,
     flexDirection: 'column',
     marginVertical: 6,
+    
   },
   pdfFrame: {
     width: 60,

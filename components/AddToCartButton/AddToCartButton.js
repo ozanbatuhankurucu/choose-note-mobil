@@ -27,7 +27,6 @@ function AddToCartButton({note, isInCart}) {
     // console.log(tempArray);
     // tempArray.forEach((test) => console.log(test.isButtonActive));
   }
-  console.log(note.isButtonActive + '14.satir');
   return (
     <TouchableOpacity
       style={{

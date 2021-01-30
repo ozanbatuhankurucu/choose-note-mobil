@@ -9,7 +9,7 @@ import config from '../../aws-exports';
 import * as queries from '../../graphql/queries';
 import * as mutations from '../../graphql/mutations';
 import * as customqueries from '../../graphql/customqueries';
-const limit = 10;
+const limit = 30;
 export const SearchContext = createContext();
 export const SearchContextProvider = (props) => {
   const {user} = useContext(UserContext);
@@ -18,6 +18,7 @@ export const SearchContextProvider = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [nextToken, setNextToken] = useState();
   const [tempSearchedNotes, setTempSearchedNotes] = useState();
+  
   async function searchNote(filter) {
     let result;
     setIsSearching(true);
@@ -58,6 +59,7 @@ export const SearchContextProvider = (props) => {
       );
 
       setNextToken(firstOperation.data.listNotes.nextToken);
+      console.log(firstOperation.data.listNotes.items)
       return firstOperation.data.listNotes.items;
     } else {
       return null;

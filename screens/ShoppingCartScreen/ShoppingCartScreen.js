@@ -63,7 +63,7 @@ function ShoppingCartScreen({navigation}) {
   }
   function _renderItem({item}) {
     return (
-      <View style={{paddingHorizontal: 20, paddingVertical: 5}} key={item.id}>
+      <View style={{paddingHorizontal: 20, paddingVertical: 5}}>
         <View style={styles.boxWithShadow}>
           <View
             style={{
@@ -118,6 +118,7 @@ function ShoppingCartScreen({navigation}) {
             }}>
             <TouchableOpacity
               onPress={() => {
+                console.log('tikladim 121 shopping cart screen')
                 makeActiveAddToCartBtn(item);
                 removeData(item);
               }}>
@@ -158,9 +159,7 @@ function ShoppingCartScreen({navigation}) {
               </View>
             ) : null}
             <FlatList
-              keyExtractor={(item, index) => {
-                return item.id;
-              }}
+              keyExtractor={(item, index) => String(index)}
               data={cartNotes}
               onEndReachedThreshold={0.1}
               renderItem={_renderItem}
