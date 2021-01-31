@@ -9,7 +9,7 @@ import config from '../../aws-exports';
 import * as queries from '../../graphql/queries';
 import * as mutations from '../../graphql/mutations';
 import * as customqueries from '../../graphql/customqueries';
-const limit = 30;
+const limit = 20;
 export const SearchContext = createContext();
 export const SearchContextProvider = (props) => {
   const {user} = useContext(UserContext);
@@ -18,14 +18,10 @@ export const SearchContextProvider = (props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [nextToken, setNextToken] = useState();
   const [tempSearchedNotes, setTempSearchedNotes] = useState();
-  
+
   async function searchNote(filter) {
     let result;
     setIsSearching(true);
-    // {
-    //   query: queries.listNotes,
-    //   variables: { filter: filter},
-    // }
     try {
       const allNotes = await API.graphql(
         graphqlOperation(queries.listNotes, {limit, filter}),
@@ -47,7 +43,6 @@ export const SearchContextProvider = (props) => {
     return result;
   }
   async function searchNotesWithNexToken(filter) {
-   
     if (nextToken !== null) {
       let firstOperation;
       firstOperation = await API.graphql(
@@ -59,7 +54,7 @@ export const SearchContextProvider = (props) => {
       );
 
       setNextToken(firstOperation.data.listNotes.nextToken);
-      console.log(firstOperation.data.listNotes.items)
+      console.log(firstOperation.data.listNotes.items);
       return firstOperation.data.listNotes.items;
     } else {
       return null;
@@ -82,7 +77,9 @@ export const SearchContextProvider = (props) => {
         setModalVisible,
         searchedNotes,
         setSearchedNotes,
-        searchNotesWithNexToken,setTempSearchedNotes,tempSearchedNotes
+        searchNotesWithNexToken,
+        setTempSearchedNotes,
+        tempSearchedNotes,
       }}>
       {props.children}
     </SearchContext.Provider>

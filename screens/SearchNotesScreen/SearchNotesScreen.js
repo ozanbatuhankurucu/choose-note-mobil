@@ -45,12 +45,15 @@ function SearchNotesScreen({navigation, route}) {
   const [
     onEndReachedCalledDuringMomentum,
     setOnEndReachedCalledDuringMomentum,
-  ] = useState();
+  ] = useState(true);
   const [paginationLoading, setPaginationLoading] = useState(false);
-
+  const [counter,setCounter] = useState(0)
   console.log(searchedNotes.length);
+  //console.log(route.params.filter)
+  console.log(counter)
   async function onEndReached() {
     console.log('onendreached');
+    setCounter((prev) => prev+1)
     setPaginationLoading(true);
     const nextSearchedNotes = await searchNotesWithNexToken(
       route.params.filter,
@@ -180,7 +183,7 @@ function SearchNotesScreen({navigation, route}) {
         </View>
       ) : null}
       <FlatList
-        keyExtractor={(item, index) => item.id}
+        keyExtractor={(item, index) => String(index)}
         data={searchedNotes}
         onEndReached={() => {
           if (!onEndReachedCalledDuringMomentum) {
