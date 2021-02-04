@@ -45,7 +45,7 @@ function UserNotesScreen({navigation}) {
     onEndReachedCalledDuringMomentum,
     setOnEndReachedCalledDuringMomentum,
   ] = useState();
-
+  console.log(userNotes.length)
   async function onEndReached() {
     setPaginationLoading(true);
     const nextNotes = await getNotesWithNexToken(user.owner);

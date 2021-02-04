@@ -47,23 +47,26 @@ function SearchNotesScreen({navigation, route}) {
     setOnEndReachedCalledDuringMomentum,
   ] = useState(true);
   const [paginationLoading, setPaginationLoading] = useState(false);
-  const [counter,setCounter] = useState(0)
+
+  const [multipleTriggerControl, setMultipleTriggerControl] = useState(true);
   console.log(searchedNotes.length);
-  //console.log(route.params.filter)
-  console.log(counter)
+ 
   async function onEndReached() {
     console.log('onendreached');
-    setCounter((prev) => prev+1)
+    setMultipleTriggerControl(false);
+    
     setPaginationLoading(true);
+
     const nextSearchedNotes = await searchNotesWithNexToken(
       route.params.filter,
     );
-    console.log(nextSearchedNotes);
 
-    if (nextSearchedNotes !== null && nextSearchedNotes.length !== 0) {
+    //&& nextSearchedNotes.length !== 0
+    if (nextSearchedNotes !== null) {
       setSearchedNotes((prev) => {
         return [...prev, ...nextSearchedNotes];
       });
+      setMultipleTriggerControl(true);
     } else {
       setPaginationLoading(false);
     }
@@ -186,12 +189,12 @@ function SearchNotesScreen({navigation, route}) {
         keyExtractor={(item, index) => String(index)}
         data={searchedNotes}
         onEndReached={() => {
-          if (!onEndReachedCalledDuringMomentum) {
+          if (!onEndReachedCalledDuringMomentum && multipleTriggerControl) {
             onEndReached(); // LOAD MORE DATA
             setOnEndReachedCalledDuringMomentum(true);
           }
         }}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.01}
         ListFooterComponent={() =>
           paginationLoading ? (
             <ActivityIndicator size="large" color={'green'} animating />
