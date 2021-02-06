@@ -187,8 +187,11 @@ export const UserContextProvider = (props) => {
     }
   };
   const removeData = async (note) => {
+    console.log(note.id)
     const result = cartNotes.filter((item) => item.id !== note.id);
+    console.log(result)
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(result));
+  
     setCartNotes(result);
     totalOfCart(result);
   };

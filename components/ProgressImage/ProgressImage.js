@@ -17,7 +17,7 @@ function ProgressImage({itemDocuments, imgStyle, isEyeBe}) {
 
   useEffect(() => {
     getPicture(itemDocuments[0].key);
-  }, []);
+  }, [itemDocuments]);
 
   return (
     <View style={imgStyle}>
