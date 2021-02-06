@@ -81,6 +81,7 @@ function ShoppingCartScreen({navigation}) {
                   <ProgressImage
                     itemDocuments={item.documents}
                     imgStyle={{borderRadius: 10, width: 60, height: 65}}
+                    isEyeBe={true}
                   />
                 </TouchableOpacity>
               )}
@@ -118,7 +119,7 @@ function ShoppingCartScreen({navigation}) {
             }}>
             <TouchableOpacity
               onPress={() => {
-                console.log('tikladim 121 shopping cart screen')
+                console.log('tikladim 121 shopping cart screen');
                 makeActiveAddToCartBtn(item);
                 removeData(item);
               }}>

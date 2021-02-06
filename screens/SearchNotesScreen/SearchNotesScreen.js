@@ -135,6 +135,7 @@ function SearchNotesScreen({navigation, route}) {
                   <ProgressImage
                     itemDocuments={item.documents}
                     imgStyle={{width: '100%', height: 200, borderRadius: 10}}
+                    isEyeBe={false}
                   />
                 </TouchableOpacity>
               )}

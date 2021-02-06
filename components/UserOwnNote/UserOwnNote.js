@@ -62,6 +62,7 @@ const UserOwnNote = React.memo(({note, setIsDeleteSpinner}) => {
               <ProgressImage
                 itemDocuments={note.documents}
                 imgStyle={{borderRadius: 10, width: 60, height: 65}}
+                isEyeBe={true}
               />
             </TouchableOpacity>
           )}

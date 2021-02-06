@@ -20,7 +20,6 @@ import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import Feather from 'react-native-vector-icons/Feather';
 import Entypo from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
-import ProgressImage from '../../components/ProgressImage/ProgressImage';
 import UserOwnNote from '../../components/UserOwnNote/UserOwnNote';
 import {Storage, API} from 'aws-amplify';
 import * as queries from '../../graphql/queries';

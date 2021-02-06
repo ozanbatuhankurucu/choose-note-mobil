@@ -32,6 +32,7 @@ import DocumentPicker from 'react-native-document-picker';
 import RadioButtonRN from 'radio-buttons-react-native';
 import NetInfo from '@react-native-community/netinfo';
 import ProgressCircle from 'react-native-progress-circle';
+import ImageView from 'react-native-image-viewing';
 import {
   storageService,
   storageServiceFile,
@@ -62,17 +63,14 @@ export default function CreateNoteScreen({navigation}) {
   const [file, setFile] = useState(null);
   const [sizeControl, setSizeControl] = useState(false);
   const [saveUserInfo, setSaveUserInfo] = useState(false);
-
   const [totalFileSizes, setTotalFileSizes] = useState({
     totalPicsFileSize: 0,
     totalFileSize: 0,
   });
   const [accumulatingPicsFileSize, setAccumulatingPicsFileSize] = useState(0);
-  console.log(accumulatingPicsFileSize + ' ben biriken degerim');
-  //console.log(totalFileSizes.totalPicsFileSize + 'ben total pics sizeim');
-  console.log(totalFileSizes);
-  // console.log(totalFileSizes.totalPicsFileSize +
-  //   totalFileSizes.totalFileSize)
+  const [modalViewVisible, setModalViewVisible] = useState(false);
+  const [modalViewIndex, setModalViewIndex] = useState(0);
+
   const maxKb = 10240000;
   function selectMultipleImagesFromGallery() {
     ImagePicker.openPicker({
@@ -93,7 +91,6 @@ export default function CreateNoteScreen({navigation}) {
             totalPicsFileSize: totalPicsSize,
           };
         });
-        console.log(images);
         setPictures(images);
       })
       .catch((error) => {
@@ -155,7 +152,6 @@ export default function CreateNoteScreen({navigation}) {
   async function createNote() {
     setIsUploadPicture(true);
     if (saveUserInfo === true) {
-      console.log(user);
       if (user.university === '' || user.department === '') {
         await updateUserUniAndDepartment();
       }
@@ -263,9 +259,34 @@ export default function CreateNoteScreen({navigation}) {
     }
   }
 
+  function makeImageView() {
+    //path
+    let imgArray = [];
+    if (Pictures !== null) {
+      Pictures.forEach((img) => {
+        imgArray.push({
+          uri: img.path,
+        });
+      });
+    }
+
+    return imgArray;
+  }
+
   useEffect(() => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
   }, []);
+  const images = [
+    {
+      uri: 'https://images.unsplash.com/photo-1571501679680-de32f1e7aad4',
+    },
+    {
+      uri: 'https://images.unsplash.com/photo-1573273787173-0eb81a833b34',
+    },
+    {
+      uri: 'https://images.unsplash.com/photo-1569569970363-df7b6160d111',
+    },
+  ];
   return (
     <>
       {isUploadPicture === true ? (
@@ -337,7 +358,6 @@ export default function CreateNoteScreen({navigation}) {
                 keyboardType="numeric"
                 onChangeText={(val) => {
                   setPrice(parseFloat(val.replace(',', '.')).toFixed(2));
-                  console.log(parseFloat(val.replace(',', '.')).toFixed(2))
                 }}
               />
               <FontAwesome
@@ -439,15 +459,21 @@ export default function CreateNoteScreen({navigation}) {
                       {Pictures !== null
                         ? Pictures.map((image, index) => {
                             return (
-                              <Image
-                                style={{
-                                  width: 50,
-                                  height: 50,
-                                  borderRadius: 30,
-                                }}
+                              <TouchableOpacity
                                 key={index}
-                                source={{uri: image.path}}
-                              />
+                                onPress={() => {
+                                  setModalViewVisible(true);
+                                  setModalViewIndex(index);
+                                }}>
+                                <Image
+                                  style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: 30,
+                                  }}
+                                  source={{uri: image.path}}
+                                />
+                              </TouchableOpacity>
                             );
                           })
                         : null}
@@ -478,10 +504,7 @@ export default function CreateNoteScreen({navigation}) {
 
           <TouchableOpacity
             style={{width: ScreenWidth * 0.9}}
-            onPress={() => {
-              console.log('tikladim kanks');
-              pickDocumentFile();
-            }}>
+            onPress={() => pickDocumentFile()}>
             <View
               style={{
                 borderWidth: 1,
@@ -550,6 +573,19 @@ export default function CreateNoteScreen({navigation}) {
               CREATE NOTE
             </Text>
           </TouchableOpacity>
+          <ImageView
+            images={makeImageView()}
+            imageIndex={modalViewIndex}
+            visible={modalViewVisible}
+            onRequestClose={() => setModalViewVisible(false)}
+            FooterComponent={(x) => (
+              <View style={{alignItems: 'center', paddingBottom: 20}}>
+                <Text style={{color: '#fff', fontWeight: 'bold'}}>
+                  {x.imageIndex + 1 + '/' + Pictures.length}
+                </Text>
+              </View>
+            )}
+          />
           <View style={{height: 300}}></View>
         </ScrollView>
       )}
