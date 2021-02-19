@@ -13,12 +13,8 @@
     },
     "categories": {
       "auth": {
-        "noteupd9fa056e": {}
-      },
-      "function": {
-        "noteupd9fa056ePostConfirmation": {
-          "GROUP": "everyone"
-        }
+        "noteupd9fa056e": {},
+        "userPoolGroups": {}
       }
     }
   }

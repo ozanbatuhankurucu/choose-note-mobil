@@ -163,7 +163,7 @@ const App = () => {
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen
-                name="NoteUp"
+                name="ChooseNote"
                 component={Home}
                 options={({route}) => ({
                   //headerTitle: getHeaderTitle(route),

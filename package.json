@@ -37,7 +37,7 @@
     "react-native-screens": "^2.15.0",
     "react-native-searchable-dropdown": "^1.1.1",
     "react-native-uuid": "^1.4.9",
-    "react-native-vector-icons": "^7.1.0",
+    "react-native-vector-icons": "^8.0.0",
     "react-native-wizard": "^2.1.0",
     "react-navigation": "^4.4.3",
     "rn-fetch-blob": "^0.12.0"
