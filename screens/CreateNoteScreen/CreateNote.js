@@ -16,6 +16,7 @@ import {
   LogBox,
   Alert,
   TextInput,
+  Platform,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import universitiesData from '../../Datas/universities.json';
@@ -29,10 +30,9 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
 import DocumentPicker from 'react-native-document-picker';
-import RadioButtonRN from 'radio-buttons-react-native';
-import NetInfo from '@react-native-community/netinfo';
 import ProgressCircle from 'react-native-progress-circle';
 import ImageView from 'react-native-image-viewing';
+import RNFetchBlob from 'rn-fetch-blob';
 import {
   storageService,
   storageServiceFile,
@@ -80,11 +80,23 @@ export default function CreateNoteScreen({navigation}) {
       compressImageQuality: 0.4,
       mediaType: 'photo',
     })
-      .then((images) => {
+      .then(async (images) => {
         let totalPicsSize = 0;
+        console.log(images);
         for (const pic of images) {
-          totalPicsSize += pic.size;
+          if (Platform.OS === 'ios') {
+            let result;
+            const {sourceURL} = pic;
+            const filePath = sourceURL.replace('file://', '');
+            result = await RNFetchBlob.fs.stat(filePath);
+            totalPicsSize += result.size;
+            console.log('result size: ' + result.size);
+            console.log(result);
+          } else if (Platform.OS === 'android') {
+            totalPicsSize += pic.size;
+          }
         }
+        console.log(totalPicsSize);
         setTotalFileSizes((prev) => {
           return {
             ...prev,
@@ -287,15 +299,18 @@ export default function CreateNoteScreen({navigation}) {
       uri: 'https://images.unsplash.com/photo-1569569970363-df7b6160d111',
     },
   ];
+  console.log('accumulatingPicsFileSize: ' + accumulatingPicsFileSize);
+  console.log('totalPicsFİleSize: ' + totalFileSizes.totalPicsFileSize);
   return (
     <>
       {isUploadPicture === true ? (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
           <ProgressCircle
             percent={parseInt(
-              (accumulatingPicsFileSize * 100) /
+              (accumulatingPicsFileSize /
                 (totalFileSizes.totalPicsFileSize +
-                  totalFileSizes.totalFileSize),
+                  totalFileSizes.totalFileSize)) *
+                100,
             )}
             radius={45}
             borderWidth={8}
@@ -303,11 +318,12 @@ export default function CreateNoteScreen({navigation}) {
             shadowColor="#999"
             bgColor="#fff">
             <Text style={{fontSize: 18}}>
-              {parseInt(
-                (accumulatingPicsFileSize * 100) /
+              {`${parseInt(
+                (accumulatingPicsFileSize /
                   (totalFileSizes.totalPicsFileSize +
-                    totalFileSizes.totalFileSize),
-              ) + '%'}
+                    totalFileSizes.totalFileSize)) *
+                  100,
+              )} %`}
             </Text>
           </ProgressCircle>
         </View>

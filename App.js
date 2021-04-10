@@ -101,11 +101,7 @@ function Home({navigation}) {
             );
           }
         },
-      })}
-      tabBarOptions={{
-        activeTintColor: 'black',
-        inactiveTintColor: 'gray',
-      }}>
+      })}>
       <Tab.Screen name="Notes" component={NotesScreen} />
       <Tab.Screen
         name="Create Note"

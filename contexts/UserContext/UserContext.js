@@ -93,7 +93,6 @@ export const UserContextProvider = (props) => {
   }
   async function updateUserInfo() {
     let resultUrl;
-    let resultUrlWithKey;
     if (
       image !== null ||
       name !== null ||
@@ -187,11 +186,11 @@ export const UserContextProvider = (props) => {
     }
   };
   const removeData = async (note) => {
-    console.log(note.id)
+    console.log(note.id);
     const result = cartNotes.filter((item) => item.id !== note.id);
-    console.log(result)
+    console.log(result);
     await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(result));
-  
+
     setCartNotes(result);
     totalOfCart(result);
   };
@@ -200,7 +199,7 @@ export const UserContextProvider = (props) => {
     if (cartNotes.length !== 0) {
       for (const prop in cartNotes) {
         total += cartNotes[prop].price;
-        console.log(cartNotes[prop].price)
+        console.log(cartNotes[prop].price);
       }
       setTotalAmountOfNotes(total.toFixed(2));
     }
@@ -234,7 +233,6 @@ export const UserContextProvider = (props) => {
             getNotesWithNexToken,
             userNotes,
             setUserNotes,
-            setDepartment,
             setDepartment,
             cartNotes,
             saveData,

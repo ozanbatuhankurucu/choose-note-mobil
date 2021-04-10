@@ -1,7 +1,8 @@
 import config from '../aws-exports';
 import uuid from 'react-native-uuid';
 import {Storage} from 'aws-amplify';
-
+import RNFetchBlob from 'rn-fetch-blob';
+import {Platform} from 'react-native';
 const {
   aws_user_files_s3_bucket_region: region,
   aws_user_files_s3_bucket: bucket,
@@ -14,18 +15,35 @@ export async function storageService(
   let picUrl;
 
   var testUUID = uuid.v1();
+  //Resiml yüklediğimizde Android tarafında size aynı yüklenirken
+  //Ios tarafındaki size yüklendikten sonra farklı bir değer oluyordu.
+  //Bu yüzden bunun kontrolünü sağlayıp Ios için sourceUrl kısmını S3 ye gönderiyoruz.
+  let result;
+  if (Platform.OS === 'ios') {
+    const {sourceURL} = pic;
+    const filePath = sourceURL.replace('file://', '');
+    pic = await RNFetchBlob.fs.stat(filePath);
+  }
   let response = await fetch(pic.path);
-  let blob = await response.blob();
+  result = await response.blob();
+
   let key = `${folderName}/${testUUID}`;
   let url = `https://${bucket}.s3.${region}.amazonaws.com/public/${key}`;
-  await Storage.put(key, blob, {
+  await Storage.put(key, result, {
     contentType: pic.mime,
     progressCallback(progress) {
-      if (progress.loaded / progress.total === 1) {
+      console.log('----');
+      console.log(pic);
+      console.log(progress);
+      console.log('----');
+
+      if (
+        setAccumulatingPicsFileSize !== undefined &&
+        progress.loaded / progress.total === 1
+      ) {
+        console.log('progress total:' + progress.total);
         setAccumulatingPicsFileSize((prev) => prev + progress.total);
       }
-
-      //console.log(`Uploaded: ${progress.loaded}/${progress.total}`);
     },
   })
     .then((data) => {
